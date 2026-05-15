@@ -160,7 +160,7 @@ function App() {
 
   // global subtle reveal-on-scroll for content sections after the marquee
   useEffect(() => {
-    const targets = ["reel", "manufacturers", "projects", "discontinued", "systems", "partners", "journal", "contact"];
+    const targets = ["manufacturers", "projects", "discontinued", "systems", "partners", "journal", "contact"];
     const els = targets.map((id) => document.getElementById(id)).filter(Boolean);
     els.forEach((el) => el.classList.add("scroll-reveal"));
     const io = new IntersectionObserver(
