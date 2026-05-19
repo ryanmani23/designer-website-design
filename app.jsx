@@ -124,7 +124,6 @@ function CustomCursor() {
 }
 
 function App() {
-  const [active, setActive] = useState("top");
   const [onLight, setOnLight] = useState(false);
   const [introVisible, setIntroVisible] = useState(true);
   const [introLeaving, setIntroLeaving] = useState(false);
@@ -137,15 +136,13 @@ function App() {
     return () => { clearTimeout(t1); clearTimeout(t2); document.body.classList.remove("intro-active"); };
   }, []);
 
-  // observe sections to set active nav state and decide nav color
+  // observe sections to decide nav color (light vs dark bg)
   useEffect(() => {
-    const ids = ["top", "manufacturers", "projects", "discontinued", "systems", "partners", "contact"];
+    const ids = ["top", "manufacturers", "systems"];
     const opts = { rootMargin: "-30% 0px -60% 0px", threshold: 0 };
     const obs = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (e.isIntersecting) {
-          setActive(e.target.id);
-          // sections with light background:
           const lightSections = ["manufacturers", "systems"];
           setOnLight(lightSections.includes(e.target.id));
         }
@@ -158,9 +155,9 @@ function App() {
     return () => obs.disconnect();
   }, []);
 
-  // global subtle reveal-on-scroll for content sections after the marquee
+  // global subtle reveal-on-scroll for content sections
   useEffect(() => {
-    const targets = ["manufacturers", "projects", "discontinued", "systems", "partners", "journal", "contact"];
+    const targets = ["manufacturers", "projects", "discontinued", "systems", "partners", "journal"];
     const els = targets.map((id) => document.getElementById(id)).filter(Boolean);
     els.forEach((el) => el.classList.add("scroll-reveal"));
     const io = new IntersectionObserver(
@@ -178,27 +175,17 @@ function App() {
     return () => io.disconnect();
   }, []);
 
-  const onJump = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 60;
-      window.scrollTo({ top, behavior: "smooth" });
-    } else if (id === "top") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
   return (
     <React.Fragment>
       <CustomCursor />
       {introVisible && <Intro leaving={introLeaving} />}
-      <Nav active={active} onLight={onLight} onJump={onJump} />
+      <Nav onLight={onLight} />
       <Hero revealed={heroRevealed} />
       <TrustBar />
       <RoofReel />
       <Manufacturers />
       <Projects />
-      <Discontinued onJump={onJump} />
+      <Discontinued onJump={(id) => window.location.href = `contact.html`} />
       <SystemsNote />
       <Partners />
       <Journal />

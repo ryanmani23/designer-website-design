@@ -31,6 +31,36 @@ const JOURNAL = [
     tag: "Material Science",
     date: "March 2026",
   },
+  {
+    title: "The Case for Copper Gutters on a Slate Roof — and Why Most Contractors Won't Touch Them",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80",
+    tag: "Craftsmanship",
+    date: "February 2026",
+  },
+  {
+    title: "How to Read a Roofing Estimate: What Every Line Item Actually Means",
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80",
+    tag: "Field Notes",
+    date: "February 2026",
+  },
+  {
+    title: "Why Historic Designation Changes Everything About Your Roofing Options",
+    image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=80",
+    tag: "Restoration",
+    date: "January 2026",
+  },
+  {
+    title: "The Difference Between a Repair and a Replacement — A Field Guide for Estate Owners",
+    image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=900&q=80",
+    tag: "Field Notes",
+    date: "January 2026",
+  },
+  {
+    title: "Ice and Water Shield: When Felt-15 Isn't Enough and What to Use Instead",
+    image: "https://images.unsplash.com/photo-1565953554309-9e60d3edec64?w=900&q=80",
+    tag: "Material Science",
+    date: "December 2025",
+  },
 ];
 
 // ---------- Data: manufacturers, projects, discontinued products, partners ----------
@@ -71,6 +101,7 @@ const PROJECTS = [
     name: "John Rothwell Estate",
     loc: "Highland Park, TX",
     tag: "Restoration · Slate",
+    type: "Slate",
     desc: "Full slate strip, re-deck and re-flash on a 1928 Tudor estate. Original Vermont slate matched and re-laid in coursing.",
     image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=2200&auto=format&fit=crop&q=85",
   },
@@ -78,6 +109,7 @@ const PROJECTS = [
     name: "The Beaumont House",
     loc: "Preston Hollow, TX",
     tag: "Clay Tile · Ludowici",
+    type: "Clay Tile",
     desc: "Discontinued Heinz tile profile reproduced through Ludowici. Hand-blended into existing field for a seamless restoration.",
     image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=2200&auto=format&fit=crop&q=85",
   },
@@ -85,6 +117,7 @@ const PROJECTS = [
     name: "Wexler Manor",
     loc: "Park Cities, TX",
     tag: "Standing Seam · Copper",
+    type: "Metal",
     desc: "Hand-formed copper standing-seam over historic dormers and turrets. Hand-soldered ridge and flashing detailing.",
     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=2200&auto=format&fit=crop&q=85",
   },
@@ -92,8 +125,57 @@ const PROJECTS = [
     name: "The Caldwell Residence",
     loc: "Southlake, TX",
     tag: "Clay Tile · Mineral Wells",
+    type: "Clay Tile",
     desc: "Mineral Wells profile recreated and laid over self-adhered membrane. Original tiles salvaged where possible.",
     image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=2200&auto=format&fit=crop&q=85",
+  },
+  {
+    name: "Harrington Estate",
+    loc: "Highland Park, TX",
+    tag: "Natural Slate · Full Strip",
+    type: "Slate",
+    desc: "Complete slate restoration on a 1936 English Tudor. 400 squares of Pennsylvania blue-grey slate, new copper valleys and step flashings throughout.",
+    image: "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=2200&auto=format&fit=crop&q=85",
+  },
+  {
+    name: "The Morrison Residence",
+    loc: "University Park, TX",
+    tag: "Standing Seam · Copper",
+    type: "Metal",
+    desc: "Full copper standing-seam system on a 1940s Colonial revival. All seams hand-soldered; custom copper gutters and downspouts fabricated on site.",
+    image: "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=2200&auto=format&fit=crop&q=85",
+  },
+  {
+    name: "Oak Cliff Tudor",
+    loc: "Oak Cliff, TX",
+    tag: "Clay Tile · La Escandella",
+    type: "Clay Tile",
+    desc: "Spanish mission tile replacement on a 1928 bungalow in Oak Cliff. La Escandella barrel tile blended with original salvage for a historically accurate finish.",
+    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=2200&auto=format&fit=crop&q=85",
+  },
+  {
+    name: "The Prescott House",
+    loc: "Southlake, TX",
+    tag: "Brava Synthetic Slate",
+    type: "Synthetic",
+    desc: "Brava Class 4 synthetic slate on a modern estate with historic detailing. Chosen for its hail rating, reduced structural load, and authentic profile.",
+    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=2200&auto=format&fit=crop&q=85",
+  },
+  {
+    name: "Devereaux Manor",
+    loc: "Westover Hills, TX",
+    tag: "Vermont Slate · Re-deck",
+    type: "Slate",
+    desc: "Post-hail assessment saved 94% of the original Vermont slate. Re-decked with structural plywood, self-adhered membrane, and reinstalled original field slate.",
+    image: "https://images.unsplash.com/photo-1565953554309-9e60d3edec64?w=2200&auto=format&fit=crop&q=85",
+  },
+  {
+    name: "The Whitmore Estate",
+    loc: "Fort Worth, TX",
+    tag: "Copper Standing Seam",
+    type: "Metal",
+    desc: "Historic Fort Worth estate with a full copper standing-seam replacement over a complex hip-and-valley roof. Copper fascia and crown moulding fabricated to match original profiles.",
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=2200&auto=format&fit=crop&q=85",
   },
 ];
 
@@ -245,13 +327,43 @@ const TRUST = [
 ];
 
 const NAV_ITEMS = [
-  { id: "manufacturers", label: "Credentials" },
-  { id: "discontinued",  label: "Discontinued Systems" },
-  { id: "partners",      label: "Affiliations" },
-  { id: "projects",      label: "Portfolio" },
-  { id: "about",         label: "About" },
+  { id: "about",        label: "About",                href: "about.html" },
+  { id: "portfolio",    label: "Portfolio",            href: "portfolio.html" },
+  { id: "materials",    label: "Materials",            href: "materials.html" },
+  { id: "discontinued", label: "Discontinued Systems", href: "discontinued.html" },
+  { id: "blog",         label: "Blog",                 href: "blog.html" },
+];
+
+const TESTIMONIALS = [
+  {
+    quote: "We had a discontinued Heinz tile profile on a 1930 Highland Park estate. Priority Designer sourced a reproduction through Ludowici that was invisible from the street. We've since been asked three times by neighbors who did it. Nobody knows it's new.",
+    name: "The Rothwell Family",
+    property: "Highland Park Estate",
+    material: "Ludowici Clay Tile",
+  },
+  {
+    quote: "Jack spent two hours on our roof before he gave us a number. Every other contractor handed us a quote from the driveway. That told us everything we needed to know.",
+    name: "M. & C. Caldwell",
+    property: "Preston Hollow Residence",
+    material: "Vermont Slate",
+  },
+  {
+    quote: "After a hail event our insurance adjuster called it a total loss. Jack's inspection found 94% of the original Vermont slate was recoverable. We saved the roof and re-flashed everything. It's better than it's ever been.",
+    name: "R. & A. Devereaux",
+    property: "Westover Hills Estate",
+    material: "Vermont Slate",
+  },
+];
+
+const TEAM = [
+  {
+    name: "Jack [Last Name]",
+    title: "Founder & Lead Estimator",
+    bio: "Forty years in historic exterior restoration across the DFW Metroplex. Jack founded Priority Designer in 1986 with a singular focus: do the work that mass-market contractors won't — source discontinued profiles, hand-form copper flashings, and stand behind every fastener. Bio and photo coming soon.",
+    image: "",
+  },
 ];
 
 Object.assign(window, {
-  MANUFACTURERS, PROJECTS, DISCONTINUED, ROOF_SYSTEMS, PARTNERS, PRESERVATION, TRADE_CIVIC, CERTIFICATIONS, TRUST, NAV_ITEMS, JOURNAL,
+  MANUFACTURERS, PROJECTS, DISCONTINUED, ROOF_SYSTEMS, PARTNERS, PRESERVATION, TRADE_CIVIC, CERTIFICATIONS, TRUST, NAV_ITEMS, JOURNAL, TEAM, TESTIMONIALS,
 });
