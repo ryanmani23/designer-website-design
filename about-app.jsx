@@ -1,15 +1,12 @@
-/* global React, ReactDOM, Nav, PageHero, CompanyStory, PhilosophySection, ProcessOverview, TeamSection, ServiceArea, Partners, Footer */
-const { useState } = React;
-
+/* global React, ReactDOM, Nav, PageHero, CompanyStory, PhilosophySection, ProcessOverview, TeamSection, ServiceArea, Partners, FinalCTA, Footer */
 function App() {
-  const [onLight, setOnLight] = useState(false);
   return (
     <React.Fragment>
-      <Nav onLight={onLight} />
+      <Nav />
       <PageHero
-        eyebrow="Est. 1986 · Dallas–Fort Worth"
+        eyebrow="Est. 2016 · Dallas–Fort Worth"
         title="About Priority Designer"
-        sub="Forty years of historic exterior restoration. The same people, the same standards, the same phone number."
+        sub="A decade of historic exterior restoration. The same people, the same standards, the same phone number."
         image="assets/hero/1-Nov 30 2021 08_21am-NnLB.jpg"
       />
       <CompanyStory />
@@ -18,6 +15,7 @@ function App() {
       <TeamSection />
       <ServiceArea />
       <Partners />
+      <FinalCTA />
       <Footer />
     </React.Fragment>
   );

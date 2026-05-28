@@ -177,6 +177,51 @@ const PROJECTS = [
     desc: "Historic Fort Worth estate with a full copper standing-seam replacement over a complex hip-and-valley roof. Copper fascia and crown moulding fabricated to match original profiles.",
     image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=2200&auto=format&fit=crop&q=85",
   },
+  // ── Designer Shingle work (placeholder photos — final images from Jack) ──
+  {
+    name: "Lakewood Designer Shingle Home",
+    loc: "Dallas, TX",
+    tag: "Designer Shingles",
+    type: "Designer Shingles",
+    desc: "Architectural designer shingle installation on a transitional estate — dimensional profile chosen for depth and shadow line over a modern structure.",
+    image: "https://images.unsplash.com/photo-1448630360428-65456885c650?w=2200&auto=format&fit=crop&q=85",
+  },
+  {
+    name: "Preston Hollow Modern",
+    loc: "Preston Hollow, TX",
+    tag: "Designer Shingles",
+    type: "Designer Shingles",
+    desc: "High-definition designer shingle system selected for a contemporary build requiring a Class 4 impact rating without sacrificing architectural character.",
+    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=2200&auto=format&fit=crop&q=85",
+  },
+  // ── Commercial / institutional work (placeholder photos — final images from Jack) ──
+  {
+    name: "Holy Trinity Catholic Church",
+    loc: "Dallas, TX",
+    tag: "Commercial · Slate",
+    type: "Commercial",
+    desc: "Slate restoration on a historic parish roof, coordinated around the building's worship schedule and landmark-review requirements.",
+    image: "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=2200&auto=format&fit=crop&q=85",
+  },
+  {
+    name: "Historic Art Museum",
+    loc: "St. Louis, MO",
+    tag: "Commercial · Tile",
+    type: "Commercial",
+    desc: "Commercially zoned art-museum property restored with matched tile and hand-formed flashings to preserve its original architecture.",
+    image: "https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=2200&auto=format&fit=crop&q=85",
+  },
+];
+
+// Pins for the homepage "Jobs of Distinction" map. x/y are in the 960x600 SVG space.
+// Coordinates are approximate placeholders — confirm featured projects + photos with Jack.
+const MAP_PROJECTS = [
+  { name: "Estate Slate Restoration", city: "Dallas",            state: "TX", x: 510, y: 420, image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&auto=format&fit=crop&q=80", href: "portfolio.html" },
+  { name: "Historic Train Depot",     city: "Oklahoma City",     state: "OK", x: 495, y: 358, image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&auto=format&fit=crop&q=80", href: "portfolio.html" },
+  { name: "Prairie Residence",        city: "Wichita",           state: "KS", x: 472, y: 308, image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&auto=format&fit=crop&q=80", href: "portfolio.html" },
+  { name: "Historic Art Museum",      city: "St. Louis",         state: "MO", x: 626, y: 285, image: "https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=900&auto=format&fit=crop&q=80", href: "portfolio.html" },
+  { name: "Cheyenne Mountain Zoo",    city: "Colorado Springs",  state: "CO", x: 348, y: 282, image: "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=900&auto=format&fit=crop&q=80", href: "portfolio.html" },
+  { name: "Coastal Copper Roof",      city: "Los Angeles",       state: "CA", x: 130, y: 378, image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&auto=format&fit=crop&q=80", href: "portfolio.html" },
 ];
 
 const DISCONTINUED = {
@@ -330,7 +375,7 @@ const NAV_ITEMS = [
   { id: "about",        label: "About",                href: "about.html" },
   { id: "portfolio",    label: "Portfolio",            href: "portfolio.html" },
   { id: "materials",    label: "Materials",            href: "materials.html" },
-  { id: "discontinued", label: "Discontinued Systems", href: "discontinued.html" },
+  { id: "discontinued", label: "Discontinued Products", href: "discontinued.html" },
   { id: "blog",         label: "Blog",                 href: "blog.html" },
 ];
 
@@ -359,11 +404,11 @@ const TEAM = [
   {
     name: "Jack [Last Name]",
     title: "Founder & Lead Estimator",
-    bio: "Forty years in historic exterior restoration across the DFW Metroplex. Jack founded Priority Designer in 1986 with a singular focus: do the work that mass-market contractors won't — source discontinued profiles, hand-form copper flashings, and stand behind every fastener. Bio and photo coming soon.",
+    bio: "A decade of historic exterior restoration across the DFW Metroplex. Jack founded Priority Designer in 2016 with a singular focus: do the work that mass-market contractors won't — source discontinued profiles, hand-form copper flashings, and stand behind every fastener. Bio and photo coming soon.",
     image: "",
   },
 ];
 
 Object.assign(window, {
-  MANUFACTURERS, PROJECTS, DISCONTINUED, ROOF_SYSTEMS, PARTNERS, PRESERVATION, TRADE_CIVIC, CERTIFICATIONS, TRUST, NAV_ITEMS, JOURNAL, TEAM, TESTIMONIALS,
+  MANUFACTURERS, PROJECTS, MAP_PROJECTS, DISCONTINUED, ROOF_SYSTEMS, PARTNERS, PRESERVATION, TRADE_CIVIC, CERTIFICATIONS, TRUST, NAV_ITEMS, JOURNAL, TEAM, TESTIMONIALS,
 });

@@ -1,11 +1,8 @@
-/* global React, ReactDOM, Nav, PageHero, ContactForm, WhatToExpect, Testimonials, Footer */
-const { useState } = React;
-
+/* global React, ReactDOM, Nav, PageHero, ContactForm, WhatToExpect, Testimonials, FinalCTA, Footer */
 function App() {
-  const [onLight, setOnLight] = useState(false);
   return (
     <React.Fragment>
-      <Nav onLight={onLight} />
+      <Nav />
       <PageHero
         eyebrow="Get in Touch"
         title="Schedule a Consultation"
@@ -15,6 +12,7 @@ function App() {
       <ContactForm />
       <WhatToExpect />
       <Testimonials />
+      <FinalCTA />
       <Footer />
     </React.Fragment>
   );

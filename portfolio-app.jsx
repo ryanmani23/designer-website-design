@@ -1,11 +1,8 @@
 /* global React, ReactDOM, Nav, PageHero, ProjectGrid, ProcessSection, FinalCTA, Footer */
-const { useState } = React;
-
 function App() {
-  const [onLight, setOnLight] = useState(false);
   return (
     <React.Fragment>
-      <Nav onLight={onLight} />
+      <Nav />
       <PageHero
         eyebrow="Selected Work"
         title="Projects of Distinction"

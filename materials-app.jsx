@@ -1,11 +1,8 @@
-/* global React, ReactDOM, Nav, PageHero, MaterialsPhilosophy, Manufacturers, MaterialComparison, SystemsNote, LifecycleROI, Footer */
-const { useState } = React;
-
+/* global React, ReactDOM, Nav, PageHero, MaterialsPhilosophy, Manufacturers, RequestSample, MaterialComparison, SystemsNote, LifecycleROI, FinalCTA, Footer */
 function App() {
-  const [onLight, setOnLight] = useState(false);
   return (
     <React.Fragment>
-      <Nav onLight={onLight} />
+      <Nav />
       <PageHero
         eyebrow="Manufacturer Partnerships"
         title="Materials That Can Recreate the Irreplaceable"
@@ -13,10 +10,12 @@ function App() {
         image="assets/hero/3-Jul 06 2024 09_34am-W6PV.jpg"
       />
       <MaterialsPhilosophy />
-      <Manufacturers />
+      <Manufacturers banner="none" />
+      <RequestSample />
       <MaterialComparison />
       <SystemsNote />
       <LifecycleROI />
+      <FinalCTA />
       <Footer />
     </React.Fragment>
   );

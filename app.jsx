@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Nav, Hero, TrustBar, RoofReel, Manufacturers, Projects, Discontinued, SystemsNote, Partners, Journal, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, Hero, TrustBar, RoofReel, Manufacturers, JobsMap, Discontinued, SystemsNote, Partners, Journal, FinalCTA, Footer */
 const { useState, useEffect, useRef } = React;
 
 function Intro({ leaving }) {
@@ -7,7 +7,7 @@ function Intro({ leaving }) {
       <div className="intro-bg" />
       <div className="intro-veil" />
       <div className="intro-content">
-        <span className="intro-eyebrow">DALLAS · TEXAS · EST. 1986</span>
+        <span className="intro-eyebrow">DALLAS · TEXAS · EST. 2016</span>
         <div className="intro-mark">
           <span className="word one">Priority</span>
           <span className="word two">Designer</span>
@@ -124,35 +124,15 @@ function CustomCursor() {
 }
 
 function App() {
-  const [onLight, setOnLight] = useState(false);
   const [introVisible, setIntroVisible] = useState(true);
   const [introLeaving, setIntroLeaving] = useState(false);
   const [heroRevealed, setHeroRevealed] = useState(false);
 
   useEffect(() => {
     document.body.classList.add("intro-active");
-    const t1 = setTimeout(() => { setIntroLeaving(true); setHeroRevealed(true); }, 2400);
-    const t2 = setTimeout(() => { setIntroVisible(false); document.body.classList.remove("intro-active"); }, 3600);
+    const t1 = setTimeout(() => { setIntroLeaving(true); setHeroRevealed(true); }, 3900);
+    const t2 = setTimeout(() => { setIntroVisible(false); document.body.classList.remove("intro-active"); }, 5100);
     return () => { clearTimeout(t1); clearTimeout(t2); document.body.classList.remove("intro-active"); };
-  }, []);
-
-  // observe sections to decide nav color (light vs dark bg)
-  useEffect(() => {
-    const ids = ["top", "manufacturers", "systems"];
-    const opts = { rootMargin: "-30% 0px -60% 0px", threshold: 0 };
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          const lightSections = ["manufacturers", "systems"];
-          setOnLight(lightSections.includes(e.target.id));
-        }
-      });
-    }, opts);
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) obs.observe(el);
-    });
-    return () => obs.disconnect();
   }, []);
 
   // global subtle reveal-on-scroll for content sections
@@ -179,12 +159,12 @@ function App() {
     <React.Fragment>
       <CustomCursor />
       {introVisible && <Intro leaving={introLeaving} />}
-      <Nav onLight={onLight} />
+      <Nav />
       <Hero revealed={heroRevealed} />
       <TrustBar />
       <RoofReel />
       <Manufacturers />
-      <Projects />
+      <JobsMap />
       <Discontinued onJump={(id) => window.location.href = `contact.html`} />
       <SystemsNote />
       <Partners />

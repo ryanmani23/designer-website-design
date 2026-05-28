@@ -17,8 +17,10 @@ const PhoneIcon = () =>
   </svg>;
 
 
-function Nav({ onLight }) {
+function Nav({ onLight: forcedOnLight }) {
   const [scrolled, setScrolled] = useState(false);
+  const [autoOnLight, setAutoOnLight] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
     onScroll();
@@ -26,6 +28,47 @@ function Nav({ onLight }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Self-detect light vs dark by walking the DOM for the first opaque
+  // background of the currently-intersecting section. Skipped if a page
+  // passes an explicit `onLight` prop (kept for back-compat / override).
+  useEffect(() => {
+    if (forcedOnLight !== undefined) return;
+    const sections = Array.from(document.querySelectorAll("section"));
+    if (!sections.length) return;
+    const isLightBg = (el) => {
+      // Explicit author override wins.
+      const theme = el.getAttribute("data-nav-theme");
+      if (theme === "light") return true;
+      if (theme === "dark") return false;
+      // Otherwise walk up looking for the first opaque background colour.
+      let cur = el;
+      while (cur && cur !== document.documentElement) {
+        const bg = window.getComputedStyle(cur).backgroundColor;
+        const m = bg && bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+        if (m) {
+          const alpha = m[4] !== undefined ? parseFloat(m[4]) : 1;
+          if (alpha > 0.15) {
+            const r = parseInt(m[1], 10), g = parseInt(m[2], 10), b = parseInt(m[3], 10);
+            const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+            return lum > 150;
+          }
+        }
+        cur = cur.parentElement;
+      }
+      return true;
+    };
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setAutoOnLight(isLightBg(e.target));
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px", threshold: 0 });
+    sections.forEach((s) => obs.observe(s));
+    return () => obs.disconnect();
+  }, [forcedOnLight]);
+
+  const onLight = forcedOnLight !== undefined ? forcedOnLight : autoOnLight;
   const path = window.location.pathname;
   const activePage = NAV_ITEMS.find((n) => path.endsWith(n.href));
   const activeId = activePage ? activePage.id : null;
@@ -62,8 +105,9 @@ function Hero({ revealed }) {
       if (!el) return 0;
       const rect = el.getBoundingClientRect();
       const pin = rect.height - window.innerHeight;
-      const expandDist = pin * 0.85;
-      const p = Math.max(0, Math.min(1, -rect.top / expandDist));
+      const startHold = pin * 0.12;   // brief readable pause before expansion begins
+      const expandDist = pin * 0.6;   // tighter: tracks scroll and completes sooner
+      const p = Math.max(0, Math.min(1, (-rect.top - startHold) / expandDist));
       return p * p * (3 - 2 * p);
     };
     const tick = () => {
@@ -71,7 +115,7 @@ function Hero({ revealed }) {
       if (Math.abs(diff) < 0.0008) {
         current = target;
       } else {
-        current += diff * 0.18;
+        current += diff * 0.3;
       }
       root.style.setProperty("--hero-inset", `${(1 - current) * 28}px`);
       root.style.setProperty("--hero-radius", `${(1 - current) * 10}px`);
@@ -99,7 +143,7 @@ function Hero({ revealed }) {
     };
   }, []);
   return (
-    <section ref={sectionRef} className={`hero hero-framed${revealed ? " revealed" : ""}`} id="top" data-screen-label="Hero">
+    <section ref={sectionRef} className={`hero hero-framed${revealed ? " revealed" : ""}`} id="top" data-screen-label="Hero" data-nav-theme="dark">
       <div className="hero-pin">
         <div className="hero-bg" />
         <div className="hero-img hero-video-wrap">
@@ -120,7 +164,7 @@ function Hero({ revealed }) {
           <div className="hero-sub">
             Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Metal <span className="dot">·</span> Architectural Systems
           </div>
-          <div className="hero-loc eyebrow">Historic Estate Restoration · Est. 1986</div>
+          <div className="hero-loc eyebrow">Historic Estate Restoration · Est. 2016</div>
         </div>
         <div className="scroll-tag">
           <span className="line" />
@@ -269,7 +313,7 @@ function RoofReel() {
 
 }
 
-function Manufacturers() {
+function Manufacturers({ banner = "partners" }) {
   return (
     <section className="section section-light materials" id="manufacturers" data-screen-label="Manufacturer Partnerships">
       <div className="section-head">
@@ -281,6 +325,16 @@ function Manufacturers() {
           Estate and Historic restoration requires manufacturers willing to do what no mass-market supplier will: recreate discontinued molds, manufacture bespoke profiles, and guarantee results that hold up to preservation review for the next generation. These are the partners we trust with that work.
         </div>
       </div>
+
+      {banner === "partners" &&
+      <div className="mat-banner mat-banner--head">
+        <h3>Four Partners. No Compromises.</h3>
+        <p>
+          We add a manufacturer only when a product raises our standard not when it expands our<br />
+          catalog. These four represent the entirety of what we're willing to put our name behind.
+        </p>
+      </div>
+      }
 
       <div className="mat-grid">
         {MANUFACTURERS.map((m, i) =>
@@ -307,14 +361,6 @@ function Manufacturers() {
         )}
       </div>
 
-      <div className="mat-banner">
-        <h3>Four Partners. No Compromises.</h3>
-        <p>
-          We add a manufacturer only when a product raises our standard not when it expands our<br />
-          catalog. These four represent the entirety of what we're willing to put our name behind.
-        </p>
-      </div>
-
       <div className="mat-foot">
         <p>
           Four manufacturers. Each one selected because we would install<br />
@@ -328,57 +374,79 @@ function Manufacturers() {
 
 }
 
-function Projects() {
-  const [idx, setIdx] = useState(0);
-  const total = PROJECTS.length;
-  const go = (d) => setIdx((i) => (i + d + total) % total);
-  const cur = PROJECTS[idx];
+function JobsMap() {
+  const [active, setActive] = useState(null); // clicked pin → popup
+  const [hover, setHover] = useState(null); // hovered pin → tooltip
+  const markup = (typeof window !== "undefined" && window.US_STATES_MARKUP) || "";
+  const shown = active !== null ? active : hover;
+  const toggle = (i) => setActive((a) => a === i ? null : i);
+
   return (
-    <section className="projects-band" id="projects" data-screen-label="Projects of Distinction">
-      <div className="projects-head">
+    <section className="jobsmap" id="projects" data-screen-label="Jobs of Distinction">
+      <div className="jobsmap-head">
         <div>
           <span className="eyebrow" style={{ color: "var(--copper-300)", display: "block", marginBottom: 18 }}>Selected Work</span>
-          <h2>Projects of <em>Distinction</em></h2>
+          <h2>Jobs of <em>Distinction</em></h2>
         </div>
-        <div className="projects-actions">
-          <button className="btn-ghost-light">View Portfolio <span className="arrow"><ArrowRight size={16} /></span></button>
+        <div className="jobsmap-intro">
+          Licensed across the lower 48 — a selection of projects we're proud of, from local estates to landmarks across the country.
         </div>
       </div>
 
-      <div className="project-stage">
-        {PROJECTS.map((p, i) =>
-        <div key={p.name} className={`project-slide${i === idx ? " active" : ""}`}>
-            <div className="img" style={{ backgroundImage: `url(${p.image})` }} />
-            <div className="scrim" />
-            <div className="tag">{p.tag}</div>
-            <div className="meta">
-              <div>
-                <span className="loc">{p.loc}</span>
-                <div className="name">{p.name}</div>
-                <div className="desc">{p.desc}</div>
+      <div className="jobsmap-stage">
+        <svg
+          className="jobsmap-base"
+          viewBox="0 0 960 600"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+          dangerouslySetInnerHTML={{ __html: markup }} />
+
+        <svg className="jobsmap-pins" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Project locations">
+          {MAP_PROJECTS.map((p, i) =>
+          <g
+            key={p.name}
+            className={`jobsmap-pin${active === i ? " is-active" : ""}`}
+            onMouseEnter={() => setHover(i)}
+            onMouseLeave={() => setHover(null)}
+            onClick={() => toggle(i)}
+            tabIndex={0}
+            role="button"
+            aria-label={`${p.name} — ${p.city}, ${p.state}`}
+            onKeyDown={(e) => {if (e.key === "Enter" || e.key === " ") {e.preventDefault();toggle(i);}}}>
+
+              <circle className="jobsmap-pin-halo" cx={p.x} cy={p.y} r="13" />
+              <circle className="jobsmap-pin-dot" cx={p.x} cy={p.y} r="5" />
+            </g>
+          )}
+        </svg>
+
+        {shown !== null && (() => {
+          const p = MAP_PROJECTS[shown];
+          const isPopup = active === shown;
+          return (
+            <div
+              className={`jobsmap-card${isPopup ? " is-popup" : ""}`}
+              style={{ left: `${p.x / 960 * 100}%`, top: `${p.y / 600 * 100}%` }}>
+
+              {isPopup &&
+              <button className="jobsmap-card-close" onClick={() => setActive(null)} aria-label="Close">×</button>
+              }
+              <div className="jobsmap-card-img" style={{ backgroundImage: `url("${p.image}")` }} />
+              <div className="jobsmap-card-body">
+                <div className="jobsmap-card-loc">{p.city}, {p.state}</div>
+                <div className="jobsmap-card-name">{p.name}</div>
+                {isPopup &&
+                <a className="jobsmap-card-link" href={p.href}>View project <ArrowRight size={12} /></a>
+                }
               </div>
-            </div>
-          </div>
-        )}
-        <button className="carousel-arrow prev" onClick={() => go(-1)} aria-label="Previous project">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
-        </button>
-        <button className="carousel-arrow next" onClick={() => go(1)} aria-label="Next project">
-          <ArrowRight size={20} />
-        </button>
+            </div>);
+
+        })()}
       </div>
 
-      <div className="project-pager">
-        <div>{String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")} · {cur.name}</div>
-        <div className="progress"><span style={{ width: `${(idx + 1) / total * 100}%` }} /></div>
-        <div className="pager-arrows">
-          <button onClick={() => go(-1)} aria-label="Previous" style={{ opacity: "0" }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
-          </button>
-          <button onClick={() => go(1)} aria-label="Next" style={{ opacity: "0" }}>
-            <ArrowRight size={14} />
-          </button>
-        </div>
+      <div className="jobsmap-foot">
+        <span className="jobsmap-note">Licensed in all 48 contiguous states · selected projects shown</span>
+        <a className="btn-ghost-light jobsmap-viewall" href="portfolio.html">View Full Portfolio <span className="arrow"><ArrowRight size={16} /></span></a>
       </div>
     </section>);
 
@@ -389,11 +457,11 @@ function Discontinued({ onJump }) {
   const [tab, setTab] = useState(tabs[0]);
   const data = DISCONTINUED[tab];
   return (
-    <section className="discontinued" id="discontinued" data-screen-label="Discontinued Systems">
+    <section className="discontinued" id="discontinued" data-screen-label="Discontinued Products">
       <div className="disc-head">
         <span className="eyebrow">Industry Knowledge · Trade Standards</span>
-        <h2>We've Seen These <em>Fail in the Field</em></h2>
-        <p>Nearly every product on this list was discontinued because it failed — not because something better replaced it. We have documented failure data on when, why, and how each system breaks down. If your home has one of these roofs, you need a contractor who understands exactly what went wrong.</p>
+        <h2>Discontinued Products We <em>Know in the Field</em></h2>
+        <p>Some of these products failed; others were simply discontinued and are no longer made. We keep documented history on each — how it performs, why it left the market, and whether your roof can be matched, repaired, or saved rather than torn off.</p>
       </div>
       <div className="disc-tabs">
         {tabs.map((t) =>
@@ -404,8 +472,12 @@ function Discontinued({ onJump }) {
         <div className="label">{data.label.split(" ").slice(0, -1).join(" ")} <em>{data.label.split(" ").slice(-1)}</em></div>
         <div className="disc-products">
           {data.items.map((p, i) =>
-          <div className="disc-prod" key={p.title}>
-              <div className="ix">{String(i + 1).padStart(2, "0")}</div>
+          <div className={`disc-prod${p.image ? " has-thumb" : ""}`} key={p.title}>
+              <div className="ix">
+                {p.image ?
+                <span className="disc-prod-thumb" style={{ backgroundImage: `url("${p.image}")` }} aria-hidden="true" /> :
+                String(i + 1).padStart(2, "0")}
+              </div>
               <div className="title">{p.title}<small>{p.sub}</small></div>
               <div className="desc">{p.desc}</div>
             </div>
@@ -425,24 +497,18 @@ function Discontinued({ onJump }) {
 
 function SystemsNote() {
   return (
-    <section className="systems-note" id="systems" data-screen-label="How Roofs Actually Work">
-      <div className="systems-head">
-        <div>
-          <span className="eyebrow" style={{ color: "var(--copper-600)", display: "block", marginBottom: 16 }}>A Note On How Roofs Actually Work</span>
-          <h2>Roofs often leak for three reasons: <em>fasteners, flashings, and flawed installation.</em></h2>
-        </div>
-        <div className="lead">What goes on the roof is important — but roofs are systems. The decking, underlayment, fasteners, flashings, ventilation, and installation method are all paramount. Not just what you decide to put on top.</div>
+    <section className="systems-note systems-segue" id="systems" data-screen-label="How Roofs Actually Work">
+      <div className="systems-segue-lead">
+        <span className="eyebrow">A Note on How Roofs Actually Work</span>
+        <h2>Roofs leak for three reasons: <em>fasteners, flashings, and flawed installation.</em></h2>
+        <p>What goes on top matters — but a roof is a system. The decking, underlayment, fasteners, flashings, and installation method are what decide whether it holds.</p>
       </div>
-      <div className="systems-grid">
+      <div className="systems-segue-row">
         {ROOF_SYSTEMS.map((s) =>
-        <div className="system-card" key={s.title}>
-            <div className="img" style={{ backgroundImage: `url(${s.image})` }} />
-            <div className="scrim" />
-            <div className="body">
-              <span className="num">{s.num}</span>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-            </div>
+        <div className="systems-segue-item" key={s.title}>
+            <span className="systems-segue-num">{s.num}</span>
+            <h3>{s.title}</h3>
+            <p>{s.body}</p>
           </div>
         )}
       </div>
@@ -586,25 +652,16 @@ function PartnerMark({ kind }) {
   }
 }
 
-function PartnersGroup({ label, items, columns }) {
-  const ref = useRef(null);
-  const [seen, setSeen] = useState(false);
-  useEffect(() => {
-    if (!ref.current || seen) return;
-    const io = new IntersectionObserver(
-      ([e]) => {if (e.isIntersecting) {setSeen(true);io.disconnect();}},
-      { threshold: 0.15 });
-    io.observe(ref.current);
-    return () => io.disconnect();
-  }, [seen]);
+function PartnersMarquee({ items, showCategory }) {
+  const loop = [...items, ...items];
   return (
-    <div className={`pgroup${seen ? " is-in" : ""}`} ref={ref}>
-      <div className="pgroup-label"><span className="caret">▸</span> {label}</div>
-      <div className={`pgroup-grid cols-${columns}`}>
-        {items.map((p, i) =>
-        <div className="pitem" key={p.name} style={{ "--i": i }}>
-            <div className="pitem-mark"><PartnerMark kind={p.mark} /></div>
-            <div className="pitem-text">
+    <div className="pmarquee" aria-label="Partner and certification logos">
+      <div className="pmarquee-track">
+        {loop.map((p, i) =>
+        <div className="pmarquee-card" key={`${p.name}-${i}`}>
+            <div className="pmarquee-mark"><PartnerMark kind={p.mark} /></div>
+            <div className="pmarquee-text">
+              {showCategory && <span className="pmarquee-chip">{p.category}</span>}
               <h4>{p.name}</h4>
               <span className="role">{p.role}</span>
             </div>
@@ -616,6 +673,11 @@ function PartnersGroup({ label, items, columns }) {
 }
 
 function Partners() {
+  const all = [
+  ...PRESERVATION.map((p) => ({ ...p, category: "Preservation" })),
+  ...TRADE_CIVIC.map((p) => ({ ...p, category: "Trade & Civic" })),
+  ...CERTIFICATIONS.map((p) => ({ ...p, category: "Certification" }))];
+
   return (
     <section className="partners" id="partners" data-screen-label="Preservation Partners">
       <div className="partners-hero">
@@ -623,14 +685,10 @@ function Partners() {
           <h2>Rooted in the Communities Whose History We Protect</h2>
           <p className="lead">Historic restoration work is inseparable from the communities it serves. Our affiliations connect us to the preservation organizations, trade bodies, and civic networks that set the standard for how this work should be done and who it should benefit.</p>
         </div>
-        <div className="partners-hero-img" aria-hidden="true">
-          <img src="assets/partners-hero.jpg" alt="Historic Texas estate restoration" />
-        </div>
       </div>
 
-      <PartnersGroup label="Preservation Partners" items={PRESERVATION} columns={4} />
-      <PartnersGroup label="Trade & Civic Memberships" items={TRADE_CIVIC} columns={4} />
-      <PartnersGroup label="Certifications" items={CERTIFICATIONS} columns={5} />
+      <div className="partners-marquee-head">Our Affiliations</div>
+      <PartnersMarquee items={all} showCategory={true} />
     </section>);
 
 }
@@ -739,8 +797,20 @@ function Footer() {
 }
 
 function PageHero({ title, eyebrow, sub, image }) {
+  // Subpages never mount the home Hero, but :root sets --hero-inset to 28px
+  // (used by Hero's framed-edge animation). On subpages we need it at 0 so
+  // the nav doesn't render with a 28px gap above it.
+  useEffect(() => {
+    const root = document.documentElement;
+    const prev = root.style.getPropertyValue("--hero-inset");
+    root.style.setProperty("--hero-inset", "0px");
+    return () => {
+      if (prev) root.style.setProperty("--hero-inset", prev);
+      else root.style.removeProperty("--hero-inset");
+    };
+  }, []);
   return (
-    <section className="page-hero" style={image ? { backgroundImage: `url("${image}")` } : {}}>
+    <section className="page-hero" data-nav-theme="dark" style={image ? { backgroundImage: `url("${image}")` } : {}}>
       {image && <div className="page-hero-img-scrim" />}
       <div className="page-hero-inner">
         {eyebrow && <span className="page-hero-eyebrow eyebrow">{eyebrow}</span>}
@@ -756,17 +826,18 @@ function DiscontinuedTeaser() {
       <div className="disc-teaser-inner">
         <div className="disc-teaser-text">
           <span className="eyebrow">Industry Knowledge</span>
-          <h2>We've Seen These <em>Fail in the Field</em></h2>
-          <p>Nearly every product on our discontinued list was phased out because it failed — not because something better replaced it. We carry documented failure data on when, why, and how each system breaks down.</p>
+          <h2>Discontinued Products We <em>Know in the Field</em></h2>
+          <p>Some products on our discontinued list failed in the field; others were simply phased out and are no longer manufactured. We carry documented history on each — and know how to match, repair, or replace them.</p>
         </div>
         <a className="btn-copper disc-teaser-link" href="discontinued.html">
-          See Discontinued Systems <ArrowRight size={14} />
+          See Discontinued Products <ArrowRight size={14} />
         </a>
       </div>
     </section>);
 }
 
 function TeamSection() {
+  const groupPhoto = ""; // single group photo — to be supplied by Jack
   return (
     <section className="team" id="team" data-screen-label="Team">
       <div className="section-head">
@@ -775,26 +846,16 @@ function TeamSection() {
           <h2>Meet the <em>Team</em></h2>
         </div>
         <div className="right">
-          Every estimate, every installation, every call-back is handled by the same people. No subcontractor carousel — just tradesmen who have been doing this for decades and know the difference between a roof that holds and one that doesn't.
+          Every estimate, every installation, every call-back is handled by the same people. No subcontractor carousel — just tradesmen who have been doing this for years and know the difference between a roof that holds and one that doesn't.
         </div>
       </div>
-      <div className="team-grid">
-        {TEAM.map((member) =>
-        <div className="team-card" key={member.name}>
-            <div className="team-card-photo">
-              {member.image
-              ? <img src={member.image} alt={member.name} />
-              : <div className="team-card-placeholder"><span>{member.name.charAt(0)}</span></div>
-              }
-            </div>
-            <div className="team-card-body">
-              <h3 className="team-card-name">{member.name}</h3>
-              <span className="team-card-title">{member.title}</span>
-              <p className="team-card-bio">{member.bio}</p>
-            </div>
-          </div>
-        )}
-      </div>
+      <figure className="team-photo">
+        {groupPhoto ?
+        <img src={groupPhoto} alt="The Priority Designer team" /> :
+        <div className="team-photo-placeholder"><span>Team photo coming soon</span></div>
+        }
+        <figcaption>The Priority Designer crew — Dallas–Fort Worth.</figcaption>
+      </figure>
     </section>);
 }
 
@@ -875,7 +936,7 @@ function ContactForm() {
 
 // ─── Portfolio page ───────────────────────────────────────────
 
-const FILTER_TYPES = ["All", "Slate", "Clay Tile", "Metal", "Synthetic"];
+const FILTER_TYPES = ["All", "Slate", "Clay Tile", "Metal", "Synthetic", "Designer Shingles", "Commercial"];
 
 function ProjectGrid() {
   const [filter, setFilter] = useState("All");
@@ -913,6 +974,13 @@ const PROCESS_STEPS = [
   { num: "04", title: "Final Review", body: "We walk the roof with the owner before we close out any project. Every penetration is tested, every valley inspected from the attic. You receive a written summary of what was done and any conditions to monitor." },
 ];
 
+const PORTFOLIO_STEP_PHOTOS = [
+  "https://images.unsplash.com/photo-1448630360428-65456885c650?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=400&auto=format&fit=crop&q=80",
+];
+
 function ProcessSection() {
   return (
     <section className="process-section">
@@ -920,16 +988,13 @@ function ProcessSection() {
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>How We Work</span>
         <h2>Every Project, <em>The Same Standard</em></h2>
       </div>
-      <div className="process-steps">
-        {PROCESS_STEPS.map((s, i) =>
-        <div className="process-step" key={s.num}>
-            <div className="process-step-num">{s.num}</div>
-            {i < PROCESS_STEPS.length - 1 && <div className="process-connector" />}
-            <h3 className="process-step-title">{s.title}</h3>
-            <p className="process-step-body">{s.body}</p>
-          </div>
-        )}
-      </div>
+      <StepsRail
+        steps={PROCESS_STEPS}
+        dark={true}
+        accentKind="thumb"
+        accent={(s, i) =>
+          <img src={PORTFOLIO_STEP_PHOTOS[i]} alt="" loading="lazy" />
+        } />
     </section>);
 }
 
@@ -945,7 +1010,7 @@ function MaterialsPhilosophy() {
         </div>
         <div className="mat-philosophy-right">
           <p>Most roofing contractors carry whatever their distributor stocks. We don't work that way. Before a manufacturer earns a place on our approved list, we install their product on a real project, inspect it after two full weather cycles, and evaluate it against the alternatives we already trust.</p>
-          <p>That process has taken us forty years to complete. It's why we have four manufacturers and not forty. It's also why we can stand behind every material we install — not because we read a spec sheet, but because we've seen what happens when these products encounter the Texas climate, a century of thermal movement, and a contractor who cuts corners on the underlayment.</p>
+          <p>That process has taken us the better part of a decade to complete. It's why we have four manufacturers and not forty. It's also why we can stand behind every material we install — not because we read a spec sheet, but because we've seen what happens when these products encounter the Texas climate, a century of thermal movement, and a contractor who cuts corners on the underlayment.</p>
           <p>If a product can't survive that evaluation, we don't install it. If a manufacturer discontinues a product we believe in, we find out why before we recommend the replacement.</p>
         </div>
       </div>
@@ -998,31 +1063,154 @@ function MaterialComparison() {
 }
 
 function LifecycleROI() {
+  const ref = useRef(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    if (!ref.current || seen) return;
+    const io = new IntersectionObserver(
+      ([e]) => {if (e.isIntersecting) {setSeen(true);io.disconnect();}},
+      { threshold: 0.2 });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, [seen]);
+  // 150 yr timeline. Asphalt = 4 installs (initial + 3 replacements) of ~37.5 yr each.
+  const asphaltSegments = [
+    { years: 38, label: "Initial install" },
+    { years: 37, label: "Replacement 1" },
+    { years: 38, label: "Replacement 2" },
+    { years: 37, label: "Replacement 3" },
+  ];
   return (
-    <section className="lifecycle-roi">
+    <section className="lifecycle-roi" ref={ref}>
       <div className="lifecycle-head">
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>The Math on Premium Materials</span>
         <h2>A slate roof installed today <em>outlasts three asphalt replacements.</em></h2>
       </div>
-      <div className="lifecycle-stats">
-        <div className="lifecycle-stat">
-          <span className="stat-num">150</span>
-          <span className="stat-unit">years</span>
-          <span className="stat-label">Maximum lifespan of natural Vermont slate under proper installation and maintenance</span>
+
+      <div className={`lifecycle-compare${seen ? " is-in" : ""}`}>
+        <div className="lifecycle-col">
+          <div className="lifecycle-col-head">
+            <span className="lifecycle-col-tag">If you choose slate today</span>
+            <span className="lifecycle-col-sub">Vermont slate · one installation</span>
+          </div>
+          <div className="lifecycle-bar lifecycle-bar--slate">
+            <div className="lifecycle-bar-fill" />
+            <span className="lifecycle-bar-text">150 years · one install</span>
+          </div>
+          <div className="lifecycle-axis">
+            <span>0</span><span>50</span><span>100</span><span>150 yrs</span>
+          </div>
         </div>
-        <div className="lifecycle-stat">
-          <span className="stat-num">3×</span>
-          <span className="stat-unit">replacements</span>
-          <span className="stat-label">Number of asphalt shingle replacements in the same period — each with full tear-off cost</span>
-        </div>
-        <div className="lifecycle-stat">
-          <span className="stat-num">40%</span>
-          <span className="stat-unit">reduction</span>
-          <span className="stat-label">Typical insurance premium reduction available to FORTIFIED-certified roof installations</span>
+
+        <div className="lifecycle-col">
+          <div className="lifecycle-col-head">
+            <span className="lifecycle-col-tag">If you choose asphalt today</span>
+            <span className="lifecycle-col-sub">Architectural shingle · 3 full replacements</span>
+          </div>
+          <div className="lifecycle-bar lifecycle-bar--asphalt">
+            {asphaltSegments.map((s, i) =>
+              <React.Fragment key={i}>
+                <div className="lifecycle-seg" style={{ flex: s.years, "--i": i }}>
+                  <span className="lifecycle-seg-label">{s.label}</span>
+                </div>
+                {i < asphaltSegments.length - 1 &&
+                  <div className="lifecycle-tear" aria-hidden="true" style={{ "--i": i }}>
+                    <span className="lifecycle-tear-mark">TEAR-OFF</span>
+                  </div>
+                }
+              </React.Fragment>
+            )}
+          </div>
+          <div className="lifecycle-axis">
+            <span>0</span><span>38</span><span>75</span><span>113</span><span>150 yrs</span>
+          </div>
         </div>
       </div>
+
+      <div className={`lifecycle-callout${seen ? " is-in" : ""}`}>
+        <div className="lifecycle-callout-num">40%</div>
+        <div className="lifecycle-callout-text">
+          <span className="lifecycle-callout-eyebrow">Insurance premium reduction</span>
+          <p>Typical reduction available to FORTIFIED-certified roof installations — applicable to slate, clay, and qualifying metal systems.</p>
+        </div>
+      </div>
+
       <p className="lifecycle-note">Figures based on manufacturer ratings, industry actuarial data, and IBHS FORTIFIED program documentation. Individual results vary by climate, installation quality, and maintenance schedule.</p>
     </section>);
+}
+
+function RequestSample() {
+  const [sent, setSent] = useState(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    fetch("https://formspree.io/f/placeholder", { method: "POST", body: data, headers: { Accept: "application/json" } }).
+    then(() => setSent(true)).
+    catch(() => setSent(true));
+  };
+  return (
+    <section className="req-sample" id="request-sample" data-screen-label="Request a Sample">
+      <div className="req-sample-card">
+        {sent ?
+        <div className="req-sample-sent">
+            <h3>Request received.</h3>
+            <p>We'll reach out to confirm the product and get a sample on its way.</p>
+          </div> :
+
+        <React.Fragment>
+            <div className="req-sample-head">
+              <span className="eyebrow">See It in Person</span>
+              <h3>Request a <em>Sample</em></h3>
+              <p>Tell us what you're considering and we'll get a sample into your hands — or invite you to the showroom to see the full range in person.</p>
+            </div>
+            <form className="req-sample-form" onSubmit={handleSubmit}>
+              <div className="req-row">
+                <label>
+                  <span>Material</span>
+                  <select name="material" required defaultValue="">
+                    <option value="" disabled>Select a material</option>
+                    <option>Natural Slate</option>
+                    <option>Clay Tile</option>
+                    <option>Synthetic (Brava)</option>
+                    <option>Metal / Copper</option>
+                    <option>Not sure yet</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Product / Color</span>
+                  <input type="text" name="product" placeholder="e.g. Brava Slate · Vermont black" />
+                </label>
+              </div>
+              <div className="req-row">
+                <label>
+                  <span>Name</span>
+                  <input type="text" name="name" required placeholder="Full name" />
+                </label>
+                <label>
+                  <span>Email</span>
+                  <input type="email" name="email" required placeholder="your@email.com" />
+                </label>
+              </div>
+              <div className="req-row">
+                <label>
+                  <span>Phone</span>
+                  <input type="tel" name="phone" placeholder="(214) 555-0000" />
+                </label>
+                <label>
+                  <span>Property Address</span>
+                  <input type="text" name="address" placeholder="City or ZIP" />
+                </label>
+              </div>
+              <button type="submit" className="btn-copper-solid req-sample-submit">
+                Request a Sample <ArrowRight size={14} />
+              </button>
+              <p className="req-sample-note">Brava and Slate Valley samples are coordinated directly through us. For Ludowici and La Escandella profiles, we'll confirm availability and follow up with options.</p>
+            </form>
+          </React.Fragment>
+        }
+      </div>
+    </section>);
+
 }
 
 // ─── About page ──────────────────────────────────────────────
@@ -1032,12 +1220,12 @@ function CompanyStory() {
     <section className="company-story section-light">
       <div className="company-story-inner">
         <div className="company-story-left">
-          <span className="eyebrow">Est. 1986</span>
+          <span className="eyebrow">Est. 2016</span>
           <h2>Built on the Belief That <em>Some Roofs Are Worth Saving</em></h2>
         </div>
         <div className="company-story-right">
-          <p>Priority Designer was founded in Dallas in 1986 with a straightforward premise: the historic homes of the DFW Metroplex deserved a contractor who understood them. Not a generalist who could put on an asphalt shingle and walk away, but a tradesman who knew the difference between a Vermont slate and a Pennsylvania blue-grey, who could source a discontinued clay tile profile, and who understood that a flashing installed incorrectly on a 1928 Tudor would cost the homeowner ten times more in twenty years than doing it right the first time.</p>
-          <p>Forty years later, the company is still built around that idea. We haven't grown into a franchise. We haven't diversified into gutters and siding to chase volume. Every project we take is a historic or estate-class exterior — the kind of work that requires a contractor who has seen the same roof fail twice and knows exactly why. That's the only kind of contractor we've ever tried to be.</p>
+          <p>Priority Designer was founded in Dallas in 2016 with a straightforward premise: the historic homes of the DFW Metroplex deserved a contractor who understood them. Not a generalist who could put on an asphalt shingle and walk away, but a tradesman who knew the difference between a Vermont slate and a Pennsylvania blue-grey, who could source a discontinued clay tile profile, and who understood that a flashing installed incorrectly on a 1928 Tudor would cost the homeowner ten times more in twenty years than doing it right the first time.</p>
+          <p>A decade later, the company is still built around that idea. We haven't grown into a franchise. We haven't diversified into gutters and siding to chase volume. Every project we take is a historic or estate-class exterior — the kind of work that requires a contractor who has seen the same roof fail twice and knows exactly why. That's the only kind of contractor we've ever tried to be.</p>
         </div>
       </div>
     </section>);
@@ -1045,26 +1233,51 @@ function CompanyStory() {
 
 const PRINCIPLES = [
   { title: "We don't subcontract installation.", body: "The crew that assessed your roof installs it. There are no day-laborers, no staffing agencies, no handoffs. We know who is on your roof at every stage because we've worked with them for years." },
-  { title: "We don't recommend what we wouldn't install ourselves.", body: "Every material on our approved list has been installed on a real project and inspected over multiple weather cycles. If we haven't vetted it firsthand, we don't sell it." },
+  { title: "We don't install less-than-quality materials.", body: "Natural slate, authentic clay, and the one synthetic we trust — that's the list. We won't put a cheaper material on your roof to win a bid, because we're the ones who have to stand behind it." },
+  { title: "We don't call a roof sound just because it has no hail damage.", body: "A roof can pass a hail inspection and still be failing — at the flashings, the underlayment, the fasteners. We assess the whole system, not just the surface an adjuster photographs." },
+  { title: "We don't file insurance claims without legitimate cause.", body: "We pursue a claim only when there is genuine, documented cause an insurer owes. We won't manufacture damage or file a claim that wastes your time and raises your premium." },
   { title: "We don't chase volume.", body: "We take fewer projects than we could. That's a deliberate choice. It means the principals are involved in every estimate, every installation decision, and every final walkthrough — not managing from a distance." },
   { title: "We don't cut corners on what you can't see.", body: "Underlayment, fasteners, deck preparation — these are the components no inspector photographs and no homeowner sees. They are also the components that determine whether your roof holds for fifty years or fifteen." },
 ];
 
+function PhilosophyCard({ title, body, index }) {
+  const ref = useRef(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    if (!ref.current || seen) return;
+    const io = new IntersectionObserver(
+      ([e]) => {if (e.isIntersecting) {setSeen(true);io.disconnect();}},
+      { threshold: 0.25 });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, [seen]);
+  // Strip leading "We don't " so the sticky anchor isn't repeated
+  const stripped = title.replace(/^we don['']?t\s+/i, "");
+  return (
+    <article className={`philosophy-card${seen ? " is-in" : ""}`} ref={ref} style={{ "--i": index }}>
+      <span className="philosophy-card-num">{String(index + 1).padStart(2, "0")}</span>
+      <h3>{stripped}</h3>
+      <p>{body}</p>
+    </article>);
+}
+
 function PhilosophySection() {
   return (
     <section className="philosophy-section">
-      <div className="philosophy-head">
-        <span className="eyebrow" style={{ color: "var(--copper-300)" }}>How We Operate</span>
-        <h2>What We <em>Refuse to Do</em></h2>
-      </div>
-      <div className="philosophy-grid">
-        {PRINCIPLES.map((p) =>
-        <div className="philosophy-card" key={p.title}>
-            <div className="philosophy-rule" />
-            <h3>{p.title}</h3>
-            <p>{p.body}</p>
-          </div>
-        )}
+      <div className="philosophy-inner">
+        <aside className="philosophy-anchor">
+          <span className="eyebrow" style={{ color: "var(--copper-300)" }}>How We Operate</span>
+          <h2 className="philosophy-anchor-h">
+            <span>We</span>
+            <span className="don">Don't.</span>
+          </h2>
+          <p className="philosophy-anchor-sub">Six lines we won't cross, regardless of the project.</p>
+        </aside>
+        <div className="philosophy-list">
+          {PRINCIPLES.map((p, i) =>
+            <PhilosophyCard title={p.title} body={p.body} index={i} key={p.title} />
+          )}
+        </div>
       </div>
     </section>);
 }
@@ -1077,6 +1290,58 @@ const OVERVIEW_STEPS = [
   { num: "05", title: "Final Walkthrough", body: "We walk the completed roof with you. Every penetration verified, every valley signed off, written documentation of all work performed and any future conditions to monitor." },
 ];
 
+// ── Shared step pattern: horizontal rail with active focus on scroll ──
+function StepsRail({ steps, dark, accent, accentKind }) {
+  const ref = useRef(null);
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      if (!ref.current) return;
+      const r = ref.current.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh * 0.75;
+      const total = start - vh * 0.25 + r.height;
+      const p = Math.max(0, Math.min(1, (start - r.top) / total));
+      setActive(Math.min(steps.length - 1, Math.floor(p * steps.length)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [steps.length]);
+  const railCls = ["steps-rail",
+    dark && "is-dark",
+    accentKind && `accent-${accentKind}`].
+    filter(Boolean).join(" ");
+  return (
+    <div className={railCls} ref={ref} style={{ "--col-count": steps.length }}>
+      <div className="steps-rail-track" />
+      <ol className="steps-rail-list">
+        {steps.map((s, i) => {
+          const cls = i === active ? "is-active" : i < active ? "is-past" : "";
+          return (
+            <li className={`steps-rail-item ${cls}`} key={s.num}>
+              {accent && <div className="steps-rail-accent">{accent(s, i)}</div>}
+              <div className="steps-rail-num">{s.num}</div>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </li>);
+        })}
+      </ol>
+    </div>);
+}
+
+const ABOUT_STEP_PHOTOS = [
+  "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&auto=format&fit=crop&q=80",
+];
+
 function ProcessOverview() {
   return (
     <section className="process-overview section-light">
@@ -1084,17 +1349,12 @@ function ProcessOverview() {
         <span className="eyebrow">How a Project Runs</span>
         <h2>No Surprises. <em>No Handoffs.</em></h2>
       </div>
-      <div className="process-ov-steps">
-        {OVERVIEW_STEPS.map((s) =>
-        <div className="process-ov-step" key={s.num}>
-            <div className="process-ov-num">{s.num}</div>
-            <div className="process-ov-content">
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-            </div>
-          </div>
-        )}
-      </div>
+      <StepsRail
+        steps={OVERVIEW_STEPS}
+        accentKind="photo"
+        accent={(s, i) =>
+          <img src={ABOUT_STEP_PHOTOS[i]} alt="" loading="lazy" />
+        } />
     </section>);
 }
 
@@ -1134,10 +1394,9 @@ function DiscontinuedIntro() {
       <div className="disc-intro-inner">
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>A Note From the Field</span>
         <blockquote className="disc-intro-quote">
-          <p>"I've been tracking discontinued roofing products since 1990. Not because anyone asked me to. Because I kept seeing the same roofs fail — and the homeowners had no idea why. The contractor who installed the product was gone. The manufacturer had folded or rebranded. The warranty was worthless. And the homeowner was left holding the bill for a product that never should have been installed in the first place.</p>
-          <p>That's why we maintain this list. Not to scare anyone. To give you the information you need to make a decision — and to make sure the contractor standing in front of you knows the difference between a product that aged out and one that failed."</p>
+          <p>"We keep this list so you don't get caught the way too many homeowners do — holding the bill for a product that's no longer made, with the contractor long gone and the warranty worthless. Some of these aged out. Some failed. We know the difference — and what to do about it."</p>
         </blockquote>
-        <div className="disc-intro-sig">— Jack, Founder · Priority Designer · Est. 1986</div>
+        <div className="disc-intro-sig">— Jack, Founder · Priority Designer · Est. 2016</div>
       </div>
     </section>);
 }
@@ -1145,40 +1404,114 @@ function DiscontinuedIntro() {
 const HISTORICAL_ERAS = [
   {
     period: "1950s – 1970s",
+    primaryYear: 1965,
     title: "The Asbestos Transition",
     body: "Asbestos-containing roofing products were standard through the early 1970s. When the material was regulated out of residential use, the industry rushed replacements to market without adequate long-term testing. Fiber cement, early organic-mat asphalt, and transitional synthetics from this era all carry documented failure profiles.",
+    image: "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=2200&auto=format&fit=crop&q=85",
   },
   {
     period: "1978 – 1998",
+    primaryYear: 1988,
     title: "The Cost-Cutting Era",
     body: "Deregulation and import competition drove manufacturers to reduce material weights, lower felting standards, and substitute lower-grade mineral granules. Products that passed the test standards of the era routinely underperformed their rated lifespans by 30–40%. Many are still on roofs across the DFW Metroplex today.",
+    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=2200&auto=format&fit=crop&q=85",
   },
   {
     period: "1995 – 2010",
+    primaryYear: 2002,
     title: "The Fast-Growth Suburb Surge",
     body: "Volume home building across North Texas drove demand for products that could be installed at scale, quickly. Underlayment standards were relaxed. Proprietary clip systems and snap-lock products entered the market without the installation tradecraft to back them up. The failure data on products from this era is substantial — and ongoing.",
+    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=2200&auto=format&fit=crop&q=85",
   },
 ];
 
+function EraFrame({ era, index }) {
+  const ref = useRef(null);
+  const [seen, setSeen] = useState(false);
+  const [display, setDisplay] = useState(era.primaryYear - 90);
+  useEffect(() => {
+    if (!ref.current || seen) return;
+    const io = new IntersectionObserver(
+      ([e]) => {if (e.isIntersecting) {setSeen(true);io.disconnect();}},
+      { threshold: 0.35 });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, [seen]);
+  useEffect(() => {
+    if (!seen) return;
+    const start = era.primaryYear - 90;
+    const end = era.primaryYear;
+    const duration = 1100;
+    const t0 = performance.now();
+    let raf;
+    const tick = (now) => {
+      const t = Math.min(1, (now - t0) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setDisplay(Math.round(start + (end - start) * eased));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [seen, era.primaryYear]);
+  return (
+    <article
+      className={`era-frame${seen ? " is-in" : ""}${index % 2 ? " is-right" : ""}`}
+      ref={ref}
+      style={{ backgroundImage: `url("${era.image}")` }}>
+      <div className="era-frame-scrim" />
+      <div className="era-frame-inner">
+        <div className="era-frame-year" aria-hidden="true">{display}</div>
+        <div className="era-frame-body">
+          <span className="era-frame-period">{era.period}</span>
+          <h3>{era.title}</h3>
+          <p>{era.body}</p>
+        </div>
+      </div>
+    </article>);
+}
+
 function HistoricalContext() {
   return (
-    <section className="historical-context section-light">
+    <section className="historical-context">
       <div className="hist-head">
         <span className="eyebrow">Why This Happened</span>
         <h2>Three Eras That Produced <em>Bad Roofs</em></h2>
         <p className="hist-sub">Understanding the industry conditions behind these products helps explain why so many appear on our list — and why the failure patterns are so consistent.</p>
       </div>
-      <div className="hist-grid">
-        {HISTORICAL_ERAS.map((e) =>
-        <div className="hist-card" key={e.title}>
-            <span className="hist-period eyebrow">{e.period}</span>
-            <h3>{e.title}</h3>
-            <p>{e.body}</p>
-          </div>
+      <div className="era-frames">
+        {HISTORICAL_ERAS.map((e, i) =>
+          <EraFrame era={e} index={i} key={e.title} />
         )}
       </div>
     </section>);
 }
+
+const WTD_STEPS = [
+  { num: "01", title: "Don't panic — and don't replace immediately.", body: "A product being on this list doesn't mean your roof is failing today. Many of these products have documented failure modes that are gradual and detectable early. An inspection will tell you where you stand." },
+  { num: "02", title: "Get a documented inspection from someone who knows the product.", body: "The failure modes for organic-mat asphalt are different from those for a proprietary slate clip system. Make sure your inspector understands what they're looking at — and can document what they find in writing." },
+  { num: "03", title: "Know your options before accepting a full replacement.", body: "In many cases — particularly with historic clay tile and natural slate — the roof material is salvageable even when the product has \"failed.\" The system around it failed. The tile or slate itself may have decades of life left. We'll tell you the difference." },
+  { num: "04", title: "Contact us before you sign anything.", body: "We review discontinued product situations at no charge. If your home has a product on this list, we'll give you an honest assessment — including whether another contractor is the better choice for your project." },
+];
+
+const WTD_ICONS = [
+  // 01 Don't panic — pause / time
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i1">
+    <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
+  </svg>,
+  // 02 Get inspection — magnifier
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i2">
+    <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.35-4.35" />
+  </svg>,
+  // 03 Know your options — compare columns
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i3">
+    <rect x="3.5" y="5" width="6.5" height="14" rx="1" /><rect x="14" y="5" width="6.5" height="14" rx="1" /><path d="M3.5 11h6.5M14 11h6.5" />
+  </svg>,
+  // 04 Contact us — speech / arrow
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i4">
+    <path d="M21 12a8 8 0 1 1-3.2-6.4" /><path d="M16 4h5v5" /><path d="M21 4l-9 9" />
+  </svg>,
+];
+const WTD_TAGS = ["Hold off", "Inspect", "Evaluate", "Reach out"];
 
 function WhatToDo() {
   return (
@@ -1187,28 +1520,16 @@ function WhatToDo() {
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>Your Next Steps</span>
         <h2>If Your Home Has <em>One of These Products</em></h2>
       </div>
-      <div className="wtd-steps">
-        <div className="wtd-step">
-          <span className="wtd-num">01</span>
-          <h3>Don't panic — and don't replace immediately.</h3>
-          <p>A product being on this list doesn't mean your roof is failing today. Many of these products have documented failure modes that are gradual and detectable early. An inspection will tell you where you stand.</p>
-        </div>
-        <div className="wtd-step">
-          <span className="wtd-num">02</span>
-          <h3>Get a documented inspection from someone who knows the product.</h3>
-          <p>The failure modes for organic-mat asphalt are different from those for a proprietary slate clip system. Make sure your inspector understands what they're looking at — and can document what they find in writing.</p>
-        </div>
-        <div className="wtd-step">
-          <span className="wtd-num">03</span>
-          <h3>Know your options before accepting a full replacement.</h3>
-          <p>In many cases — particularly with historic clay tile and natural slate — the roof material is salvageable even when the product has "failed." The system around it failed. The tile or slate itself may have decades of life left. We'll tell you the difference.</p>
-        </div>
-        <div className="wtd-step">
-          <span className="wtd-num">04</span>
-          <h3>Contact us before you sign anything.</h3>
-          <p>We review discontinued product situations at no charge. If your home has a product on this list, we'll give you an honest assessment — including whether another contractor is the better choice for your project.</p>
-        </div>
-      </div>
+      <StepsRail
+        steps={WTD_STEPS}
+        dark={true}
+        accentKind="badge"
+        accent={(s, i) =>
+          <div className="step-badge">
+            <span className="step-badge-icon">{WTD_ICONS[i]}</span>
+            <span className="step-badge-label">{WTD_TAGS[i]}</span>
+          </div>
+        } />
       <div className="wtd-cta">
         <a className="btn-copper" href="contact.html">Request a System Assessment <ArrowRight size={14} /></a>
       </div>
@@ -1280,31 +1601,72 @@ function FeaturedArticle() {
 }
 
 function ArticleGrid() {
+  const [q, setQ] = useState("");
+  const [cat, setCat] = useState("All");
+  const cats = ["All", ...Array.from(new Set(JOURNAL.map((a) => a.tag)))];
+  const ql = q.trim().toLowerCase();
+  const items = JOURNAL.filter((a) => {
+    const okCat = cat === "All" || a.tag === cat;
+    const okQ = !ql || a.title.toLowerCase().includes(ql) || a.tag.toLowerCase().includes(ql);
+    return okCat && okQ;
+  });
   return (
-    <section className="article-grid-section section-light">
+    <section className="article-grid-section section-light" id="resource-library">
       <div className="article-grid-head">
-        <span className="eyebrow">All Articles</span>
-        <h2>From the <em>Field Journal</em></h2>
+        <span className="eyebrow">Resource Library</span>
+        <h2>Find What You <em>Need to Know</em></h2>
+        <p className="reslib-sub">Search the full library — material guides, warranty and insurance notes, and field research on how historic roofs actually perform.</p>
       </div>
+      <div className="reslib-controls">
+        <label className="reslib-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+            <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
+          </svg>
+          <input
+            type="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search articles, materials, topics…"
+            aria-label="Search the resource library" />
+
+        </label>
+        <div className="reslib-chips">
+          {cats.map((c) =>
+          <button key={c} className={`reslib-chip${cat === c ? " active" : ""}`} onClick={() => setCat(c)}>{c}</button>
+          )}
+        </div>
+      </div>
+      {items.length === 0 ?
+      <p className="reslib-empty">No resources match your search yet. Try a different term or category.</p> :
+
       <div className="article-grid">
-        {JOURNAL.slice(1).map((a) =>
+          {items.map((a) =>
         <article className="article-card" key={a.title}>
-            <div className="article-card-img" style={{ backgroundImage: `url("${a.image}")` }} />
-            <div className="article-card-body">
-              <div className="article-card-meta">
-                <span className="article-card-tag">{a.tag}</span>
-                <span className="article-card-date">{a.date}</span>
+              <div className="article-card-img" style={{ backgroundImage: `url("${a.image}")` }} />
+              <div className="article-card-body">
+                <div className="article-card-meta">
+                  <span className="article-card-tag">{a.tag}</span>
+                  <span className="article-card-date">{a.date}</span>
+                </div>
+                <h3 className="article-card-title">{a.title}</h3>
+                <a className="article-card-link" href="#">Read <ArrowRight size={12} /></a>
               </div>
-              <h3 className="article-card-title">{a.title}</h3>
-              <a className="article-card-link" href="#">Read <ArrowRight size={12} /></a>
-            </div>
-          </article>
+            </article>
         )}
-      </div>
+        </div>
+      }
     </section>);
 }
 
 // ─── Contact page ─────────────────────────────────────────────
+
+const WTE_STEPS = [
+  { num: "01", title: "We review your inquiry the same day.", body: "Every submission is read by a principal — not a call center. If the project is a fit, you'll hear from us within one business day." },
+  { num: "02", title: "We schedule a site visit at your convenience.", body: "We come to the property and spend time on the roof — not the driveway. The site visit is at no charge and carries no obligation." },
+  { num: "03", title: "You receive a written proposal.", body: "A specific scope, a specific material recommendation with sourcing timeline, and a fixed price. No allowances, no change order surprises." },
+];
+
+const WTE_TIMINGS = ["Same day", "≤ 1 business day", "Written proposal"];
 
 function WhatToExpect() {
   return (
@@ -1313,23 +1675,12 @@ function WhatToExpect() {
         <span className="eyebrow">After You Submit</span>
         <h2>What Happens <em>Next</em></h2>
       </div>
-      <div className="wte-steps">
-        <div className="wte-step">
-          <span className="wte-num">01</span>
-          <h3>We review your inquiry the same day.</h3>
-          <p>Every submission is read by a principal — not a call center. If the project is a fit, you'll hear from us within one business day.</p>
-        </div>
-        <div className="wte-step">
-          <span className="wte-num">02</span>
-          <h3>We schedule a site visit at your convenience.</h3>
-          <p>We come to the property and spend time on the roof — not the driveway. The site visit is at no charge and carries no obligation.</p>
-        </div>
-        <div className="wte-step">
-          <span className="wte-num">03</span>
-          <h3>You receive a written proposal.</h3>
-          <p>A specific scope, a specific material recommendation with sourcing timeline, and a fixed price. No allowances, no change order surprises.</p>
-        </div>
-      </div>
+      <StepsRail
+        steps={WTE_STEPS}
+        accentKind="timing"
+        accent={(s, i) =>
+          <span className="step-timing">{WTE_TIMINGS[i]}</span>
+        } />
     </section>);
 }
 
@@ -1356,10 +1707,10 @@ function Testimonials() {
 }
 
 Object.assign(window, {
-  Nav, Hero, TrustBar, Manufacturers, Projects, Discontinued, SystemsNote, Partners, FinalCTA, Footer,
+  Nav, Hero, TrustBar, Manufacturers, JobsMap, Discontinued, SystemsNote, Partners, FinalCTA, Footer,
   PageHero, DiscontinuedTeaser, TeamSection, ContactForm,
   ProjectGrid, ProcessSection,
-  MaterialsPhilosophy, MaterialComparison, LifecycleROI,
+  MaterialsPhilosophy, MaterialComparison, LifecycleROI, RequestSample,
   CompanyStory, PhilosophySection, ProcessOverview, ServiceArea,
   DiscontinuedIntro, HistoricalContext, WhatToDo, DiscontinuedFAQ,
   FeaturedArticle, ArticleGrid,
