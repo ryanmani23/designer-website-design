@@ -9,11 +9,11 @@ function App() {
         sub="A decade of historic exterior restoration. The same people, the same standards, the same phone number."
         image="assets/hero/1-Nov 30 2021 08_21am-NnLB.jpg"
       />
+      <ServiceArea />
       <CompanyStory />
       <PhilosophySection />
       <ProcessOverview />
       <TeamSection />
-      <ServiceArea />
       <Partners />
       <FinalCTA />
       <Footer />

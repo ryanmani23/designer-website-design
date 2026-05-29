@@ -377,9 +377,28 @@ function Manufacturers({ banner = "partners" }) {
 function JobsMap() {
   const [active, setActive] = useState(null); // clicked pin → popup
   const [hover, setHover] = useState(null); // hovered pin → tooltip
+  const cardRef = useRef(null);
   const markup = (typeof window !== "undefined" && window.US_STATES_MARKUP) || "";
   const shown = active !== null ? active : hover;
   const toggle = (i) => setActive((a) => a === i ? null : i);
+
+  useEffect(() => {
+    if (active === null) return;
+    const handlePointerDown = (e) => {
+      if (cardRef.current && cardRef.current.contains(e.target)) return;
+      if (e.target.closest && e.target.closest(".jobsmap-pin")) return;
+      setActive(null);
+    };
+    const handleKey = (e) => { if (e.key === "Escape") setActive(null); };
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [active]);
 
   return (
     <section className="jobsmap" id="projects" data-screen-label="Jobs of Distinction">
@@ -423,10 +442,23 @@ function JobsMap() {
         {shown !== null && (() => {
           const p = MAP_PROJECTS[shown];
           const isPopup = active === shown;
+          const xPct = p.x / 960 * 100;
+          const yPct = p.y / 600 * 100;
+          let xAnchor = "-50%";
+          if (isPopup) {
+            if (xPct < 22) xAnchor = "-4%";
+            else if (xPct > 78) xAnchor = "-96%";
+          }
+          const yAnchor = isPopup && yPct < 32 ? "24px" : "calc(-100% - 18px)";
           return (
             <div
+              ref={isPopup ? cardRef : null}
               className={`jobsmap-card${isPopup ? " is-popup" : ""}`}
-              style={{ left: `${p.x / 960 * 100}%`, top: `${p.y / 600 * 100}%` }}>
+              style={{
+                left: `${xPct}%`,
+                top: `${yPct}%`,
+                transform: `translate(${xAnchor}, ${yAnchor})`,
+              }}>
 
               {isPopup &&
               <button className="jobsmap-card-close" onClick={() => setActive(null)} aria-label="Close">×</button>
@@ -436,7 +468,15 @@ function JobsMap() {
                 <div className="jobsmap-card-loc">{p.city}, {p.state}</div>
                 <div className="jobsmap-card-name">{p.name}</div>
                 {isPopup &&
-                <a className="jobsmap-card-link" href={p.href}>View project <ArrowRight size={12} /></a>
+                <React.Fragment>
+                  <p className="jobsmap-card-blurb">{p.blurb}</p>
+                  <dl className="jobsmap-card-specs">
+                    <div><dt>Year</dt><dd>{p.year}</dd></div>
+                    <div><dt>System</dt><dd>{p.system}</dd></div>
+                    <div><dt>Scope</dt><dd>{p.scope}</dd></div>
+                  </dl>
+                  <a className="jobsmap-card-link" href={p.href}>View project <ArrowRight size={12} /></a>
+                </React.Fragment>
                 }
               </div>
             </div>);
@@ -1299,8 +1339,8 @@ function StepsRail({ steps, dark, accent, accentKind }) {
       if (!ref.current) return;
       const r = ref.current.getBoundingClientRect();
       const vh = window.innerHeight;
-      const start = vh * 0.75;
-      const total = start - vh * 0.25 + r.height;
+      const start = vh * 0.7;
+      const total = vh * 0.15 + r.height * 0.45;
       const p = Math.max(0, Math.min(1, (start - r.top) / total));
       setActive(Math.min(steps.length - 1, Math.floor(p * steps.length)));
     };
@@ -1318,7 +1358,6 @@ function StepsRail({ steps, dark, accent, accentKind }) {
     filter(Boolean).join(" ");
   return (
     <div className={railCls} ref={ref} style={{ "--col-count": steps.length }}>
-      <div className="steps-rail-track" />
       <ol className="steps-rail-list">
         {steps.map((s, i) => {
           const cls = i === active ? "is-active" : i < active ? "is-past" : "";
