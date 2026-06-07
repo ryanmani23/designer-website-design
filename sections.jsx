@@ -20,6 +20,7 @@ const PhoneIcon = () =>
 function Nav({ onLight: forcedOnLight }) {
   const [scrolled, setScrolled] = useState(false);
   const [autoOnLight, setAutoOnLight] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -27,6 +28,20 @@ function Nav({ onLight: forcedOnLight }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Body scroll lock + Esc-to-close while the mobile menu is open. We restore
+  // the prior overflow value to play nicely with ProjectDetail's own lock.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => { if (e.key === "Escape") setMenuOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   // Self-detect light vs dark by walking the DOM for the first opaque
   // background of the currently-intersecting section. Skipped if a page
@@ -73,6 +88,18 @@ function Nav({ onLight: forcedOnLight }) {
   const activePage = NAV_ITEMS.find((n) => path.endsWith(n.href));
   const activeId = activePage ? activePage.id : null;
 
+  // TEMP (2026-06-06): hero variant switcher on home page only. Remove once a
+  // hero variant is picked. The buttons reload with ?hero=<variant>.
+  const isHome = path === "/" || path.endsWith("/index.html") || path === "" || path.endsWith("/Designer/");
+  const currentVariant = (() => {
+    try { const v = new URLSearchParams(window.location.search).get("hero"); return v === "mosaic" || v === "slides" ? v : "reel"; } catch (e) { return "reel"; }
+  })();
+  const VARIANTS = [
+    { key: "reel",   label: "Reel" },
+    { key: "mosaic", label: "Mosaic" },
+    { key: "slides", label: "Slides" },
+  ];
+
   return (
     <nav className={`nav${scrolled ? " scrolled" : ""}${onLight ? " on-light" : ""}`}>
       <a className="logo" href="index.html">
@@ -85,10 +112,57 @@ function Nav({ onLight: forcedOnLight }) {
           </a>
         )}
       </div>
+      {isHome &&
+      <div className="nav-hero-switch" role="group" aria-label="Hero variant (preview)">
+        <span className="nav-hero-switch-label">Hero</span>
+        {VARIANTS.map((v) =>
+          <a
+            key={v.key}
+            href={v.key === "reel" ? "index.html" : `index.html?hero=${v.key}`}
+            className={`nav-hero-switch-btn${currentVariant === v.key ? " is-active" : ""}`}>
+            {v.label}
+          </a>
+        )}
+      </div>
+      }
       <a className="cta-pill" href="contact.html">
         Schedule a Consultation
         <span className="icon"><ArrowRight size={14} /></span>
       </a>
+      <button
+        className={`nav-hamburger${menuOpen ? " is-open" : ""}`}
+        type="button"
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        aria-expanded={menuOpen}
+        aria-controls="nav-overlay"
+        onClick={() => setMenuOpen((o) => !o)}>
+        <span /><span /><span />
+      </button>
+      <div
+        id="nav-overlay"
+        className={`nav-overlay${menuOpen ? " is-open" : ""}${onLight ? " on-light" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!menuOpen}
+        onClick={(e) => { if (e.target === e.currentTarget) setMenuOpen(false); }}>
+        <div className="nav-overlay-inner">
+          <div className="nav-overlay-links">
+            {NAV_ITEMS.map((n) =>
+              <a
+                key={n.id}
+                href={n.href}
+                className={activeId === n.id ? "active" : ""}
+                onClick={() => setMenuOpen(false)}>
+                {n.label}
+              </a>
+            )}
+          </div>
+          <a className="cta-pill nav-overlay-cta" href="contact.html" onClick={() => setMenuOpen(false)}>
+            Schedule a Consultation
+            <span className="icon"><ArrowRight size={14} /></span>
+          </a>
+        </div>
+      </div>
     </nav>);
 
 }
@@ -96,6 +170,15 @@ function Nav({ onLight: forcedOnLight }) {
 function Hero({ revealed }) {
   const sectionRef = useRef(null);
   useEffect(() => {
+    // Honor reduced motion: skip the scroll-driven hero expansion entirely.
+    if (typeof window !== "undefined" && window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const root = document.documentElement;
+      root.style.setProperty("--hero-inset", "0px");
+      root.style.setProperty("--hero-radius", "0px");
+      root.style.setProperty("--hero-progress", "1");
+      return;
+    }
     const root = document.documentElement;
     let target = 0;
     let current = 0;
@@ -164,7 +247,7 @@ function Hero({ revealed }) {
           <div className="hero-sub">
             Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Metal <span className="dot">·</span> Architectural Systems
           </div>
-          <div className="hero-loc eyebrow">Historic Estate Restoration · Est. 2016</div>
+          <div className="hero-loc eyebrow">The Good, the True, and the Beautiful — Set in Stone · Est. 2016</div>
         </div>
         <div className="scroll-tag">
           <span className="line" />
@@ -175,18 +258,130 @@ function Hero({ revealed }) {
 
 }
 
+// ── Hero Variant B: tile mosaic ───────────────────────────────
+// 4×3 grid of project photos that cross-fade-swap on a slow interval.
+// Pinned title/subtitle sit center over a scrim. The page-down arrow lives
+// below so the user knows to keep scrolling.
+function HeroMosaic({ revealed }) {
+  // Build a pool of images from PROJECTS + HERO_TOP_FIVE for tile fill.
+  const pool = React.useMemo(() => {
+    const all = [...HERO_TOP_FIVE.map((h) => h.image), ...PROJECTS.map((p) => p.image)];
+    // dedupe but keep order
+    const seenSet = new Set();
+    return all.filter((u) => { if (seenSet.has(u)) return false; seenSet.add(u); return true; });
+  }, []);
+
+  const TILE_COUNT = 12;
+  const [tiles, setTiles] = useState(() =>
+    Array.from({ length: TILE_COUNT }, (_, i) => pool[i % pool.length])
+  );
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTiles((current) => {
+        const next = current.slice();
+        const slot = Math.floor(Math.random() * TILE_COUNT);
+        // pick an image not currently in `next`
+        let candidate = pool[Math.floor(Math.random() * pool.length)];
+        let safety = 8;
+        while (next.includes(candidate) && safety-- > 0) {
+          candidate = pool[Math.floor(Math.random() * pool.length)];
+        }
+        next[slot] = candidate;
+        return next;
+      });
+    }, 950);
+    return () => clearInterval(id);
+  }, [pool]);
+
+  return (
+    <section className={`hero hero-mosaic${revealed ? " revealed" : ""}`} id="top" data-screen-label="Hero" data-nav-theme="dark">
+      <div className="hero-mosaic-grid" aria-hidden="true">
+        {tiles.map((src, i) =>
+          <div className="hero-mosaic-tile" key={i} style={{ backgroundImage: `url("${src}")`, "--i": i }} />
+        )}
+      </div>
+      <div className="hero-mosaic-scrim" aria-hidden="true" />
+      <div className="hero-inner hero-mosaic-inner">
+        <h1 className="hero-title">Priority <em>Designer</em></h1>
+        <div className="hero-sub">
+          Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Metal <span className="dot">·</span> Architectural Systems
+        </div>
+        <div className="hero-loc eyebrow">The Good, the True, and the Beautiful — Set in Stone · Est. 2016</div>
+      </div>
+      <div className="scroll-tag">
+        <span className="line" />
+        <span className="eyebrow">Scroll</span>
+      </div>
+    </section>);
+}
+
+// ── Hero Variant C: cross-fading slideshow ────────────────────
+// Single full-bleed image cross-fades through HERO_TOP_FIVE on a slow timer
+// with a soft Ken Burns scale on the active layer.
+function HeroSlides({ revealed }) {
+  const slides = HERO_TOP_FIVE;
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setActive((a) => (a + 1) % slides.length), 5000);
+    return () => clearInterval(id);
+  }, [slides.length]);
+  return (
+    <section className={`hero hero-slides${revealed ? " revealed" : ""}`} id="top" data-screen-label="Hero" data-nav-theme="dark">
+      <div className="hero-slides-stage" aria-hidden="true">
+        {slides.map((s, i) =>
+          <div
+            className={`hero-slides-layer${i === active ? " is-active" : ""}`}
+            key={s.slug}
+            style={{ backgroundImage: `url("${s.image}")` }} />
+        )}
+      </div>
+      <div className="hero-slides-scrim" aria-hidden="true" />
+      <div className="hero-inner hero-slides-inner">
+        <h1 className="hero-title">Priority <em>Designer</em></h1>
+        <div className="hero-sub">
+          Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Metal <span className="dot">·</span> Architectural Systems
+        </div>
+        <div className="hero-loc eyebrow">The Good, the True, and the Beautiful — Set in Stone · Est. 2016</div>
+        <div className="hero-slides-caption" aria-live="polite">{slides[active].name}</div>
+      </div>
+      <div className="scroll-tag">
+        <span className="line" />
+        <span className="eyebrow">Scroll</span>
+      </div>
+    </section>);
+}
+
+// Per 2026-05-29 meeting: TrustBar should render actual affiliation logos when
+// the asset is supplied. Until Jack drops logos at TRUST[i].logo, we fall back
+// to the initials badge + text so nothing breaks.
 function TrustBar() {
+  // Each item renders the logo if the file loads, otherwise the initials badge.
+  // We use a per-item state so a missing file silently downgrades that cell.
+  const Item = ({ t }) => {
+    const [hasLogo, setHasLogo] = useState(Boolean(t.logo));
+    return (
+      <div className={`trust-item${hasLogo ? " has-logo" : ""}`}>
+        {hasLogo ?
+          <img
+            className="trust-logo"
+            src={t.logo}
+            alt={t.name}
+            loading="lazy"
+            onError={() => setHasLogo(false)} /> :
+          <div className="trust-badge">{t.initials}</div>
+        }
+        <div className="trust-text">
+          <div className="name">{t.name}</div>
+          <div className="role">{t.role}</div>
+        </div>
+      </div>);
+  };
   const renderGroup = (k) =>
   <div className="trust-group" key={k}>
       {TRUST.map((t, i) =>
     <React.Fragment key={`${k}-${t.name}`}>
-          <div className="trust-item">
-            <div className="trust-badge">{t.initials}</div>
-            <div className="trust-text">
-              <div className="name">{t.name}</div>
-              <div className="role">{t.role}</div>
-            </div>
-          </div>
+          <Item t={t} />
           {i < TRUST.length - 1 && <div className="trust-divider" />}
         </React.Fragment>
     )}
@@ -210,9 +405,29 @@ function RoofReel() {
   const imagesRef = useRef([]);
   const [loaded, setLoaded] = useState(0);
   const [progress, setProgress] = useState(0);
-
-  // preload all frames
+  // On phones (≤768px) and for users who request reduced motion, skip the
+  // scroll-scrubbed canvas entirely and render a single static frame.
+  // Avoids the 46-image preload, the per-scroll canvas redraw, and the
+  // iOS scroll-momentum jank the animation causes on low-end devices.
+  const [useStatic, setUseStatic] = useState(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return false;
+    return window.matchMedia("(max-width: 768px)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
   useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mqSmall = window.matchMedia("(max-width: 768px)");
+    const mqMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setUseStatic(mqSmall.matches || mqMotion.matches);
+    const sub = (mq) => mq.addEventListener ? mq.addEventListener("change", apply) : mq.addListener(apply);
+    const unsub = (mq) => mq.removeEventListener ? mq.removeEventListener("change", apply) : mq.removeListener(apply);
+    sub(mqSmall); sub(mqMotion);
+    return () => { unsub(mqSmall); unsub(mqMotion); };
+  }, []);
+
+  // preload all frames (skipped on phones / reduced motion)
+  useEffect(() => {
+    if (useStatic) return;
     let cancelled = false;
     let count = 0;
     imagesRef.current = Array.from({ length: N }, (_, i) => {
@@ -224,10 +439,11 @@ function RoofReel() {
       return img;
     });
     return () => {cancelled = true;};
-  }, []);
+  }, [useStatic]);
 
   // scroll-driven frame painter
   useEffect(() => {
+    if (useStatic) return;
     const draw = (p) => {
       const idx = Math.max(0, Math.min(N - 1, Math.floor(p * (N - 0.0001))));
       const img = imagesRef.current[idx];
@@ -270,18 +486,31 @@ function RoofReel() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [loaded]);
+  }, [loaded, useStatic]);
 
   const ready = loaded >= 6;
 
   // text fades in early and stays visible through the entire reel
-  const titleVis = Math.max(0, Math.min(1, (progress - 0.05) / 0.10));
-  const subVis = Math.max(0, Math.min(1, (progress - 0.12) / 0.10));
+  const titleVis = useStatic ? 1 : Math.max(0, Math.min(1, (progress - 0.05) / 0.10));
+  const subVis = useStatic ? 1 : Math.max(0, Math.min(1, (progress - 0.12) / 0.10));
 
   return (
-    <section className="reel" id="reel" ref={sectionRef} data-screen-label="Reel" aria-label="Field reel">
+    <section
+      className={`reel${useStatic ? " reel-static" : ""}`}
+      id="reel"
+      ref={sectionRef}
+      data-screen-label="Reel"
+      aria-label="Field reel">
       <div className="reel-stage">
-        <canvas className={`reel-canvas${ready ? " ready" : ""}`} ref={canvasRef} aria-hidden="true" />
+        {useStatic ?
+          <img
+            className="reel-static-img"
+            src="assets/frames/f023.jpg"
+            alt=""
+            aria-hidden="true"
+            loading="lazy" /> :
+          <canvas className={`reel-canvas${ready ? " ready" : ""}`} ref={canvasRef} aria-hidden="true" />
+        }
         <div className="reel-veil" />
         <div className="reel-overlay">
           <div className="reel-center">
@@ -291,7 +520,7 @@ function RoofReel() {
                 opacity: titleVis,
                 transform: `translateY(${(1 - titleVis) * 24}px)`
               }}>
-              
+
               <span className="line">A century of weather,</span>
               <span className="line">met by hand.</span>
             </h2>
@@ -301,16 +530,51 @@ function RoofReel() {
                 opacity: subVis,
                 transform: `translateY(${(1 - subVis) * 18}px)`
               }}>
-              
-              Forty-six frames from a single re-roof — underlayment to ridge,
-              copper bent on site, every fastener placed by a tradesman who
-              knows what failed before.
+
+              The great mistake is thinking that things being interesting
+              and things being useful are mutually exclusive. We refuse the
+              tradeoff — and build every roof to prove it.
             </p>
           </div>
         </div>
       </div>
     </section>);
 
+}
+
+// Per 2026-05-29: manufacturer cells should show the actual brand logo when
+// supplied. Falls back to the "01 / 04" numeric stamp if the image fails to load.
+function ManufacturerCell({ m, index }) {
+  const [hasLogo, setHasLogo] = useState(Boolean(m.logo));
+  const stamp = `${String(index + 1).padStart(2, "0")} / 04`;
+  return (
+    <article className={`mat-cell${hasLogo ? " has-logo" : ""}`}>
+      <div
+        className="mat-cell-grain"
+        style={{ backgroundImage: `url("${m.image}")` }}
+        aria-hidden="true" />
+      <div className="mat-cell-scrim" aria-hidden="true" />
+      <div className="mat-cell-grit" aria-hidden="true" />
+      <div className="mat-cell-rest">
+        {hasLogo ?
+          <img
+            className="mat-cell-logo"
+            src={m.logo}
+            alt={`${m.name} logo`}
+            loading="lazy"
+            onError={() => setHasLogo(false)} /> :
+          <span className="mat-cell-num">{stamp}</span>
+        }
+        <h3 className="mat-cell-name">{m.name}</h3>
+        <span className="mat-cell-role">{m.role}</span>
+      </div>
+      <div className="mat-cell-hover">
+        <span className="mat-cell-num is-light">{stamp}</span>
+        <h3 className="mat-cell-name is-light">{m.name}</h3>
+        <span className="mat-cell-role is-light">{m.role}</span>
+        <p className="mat-cell-desc">{m.body}</p>
+      </div>
+    </article>);
 }
 
 function Manufacturers({ banner = "partners" }) {
@@ -328,9 +592,9 @@ function Manufacturers({ banner = "partners" }) {
 
       {banner === "partners" &&
       <div className="mat-banner mat-banner--head">
-        <h3>Four Partners. No Compromises.</h3>
+        <h3>Four Partners. <em>Craftsmanship Over Compromise.</em></h3>
         <p>
-          We add a manufacturer only when a product raises our standard not when it expands our<br />
+          We add a manufacturer only when a product raises our standard — not when it expands our<br />
           catalog. These four represent the entirety of what we're willing to put our name behind.
         </p>
       </div>
@@ -338,26 +602,7 @@ function Manufacturers({ banner = "partners" }) {
 
       <div className="mat-grid">
         {MANUFACTURERS.map((m, i) =>
-        <article className="mat-cell" key={m.name}>
-            <div
-            className="mat-cell-grain"
-            style={{ backgroundImage: `url("${m.image}")` }}
-            aria-hidden="true" />
-          
-            <div className="mat-cell-scrim" aria-hidden="true" />
-            <div className="mat-cell-grit" aria-hidden="true" />
-            <div className="mat-cell-rest">
-              <span className="mat-cell-num">{String(i + 1).padStart(2, "0")} / 04</span>
-              <h3 className="mat-cell-name">{m.name}</h3>
-              <span className="mat-cell-role">{m.role}</span>
-            </div>
-            <div className="mat-cell-hover">
-              <span className="mat-cell-num is-light">{String(i + 1).padStart(2, "0")} / 04</span>
-              <h3 className="mat-cell-name is-light">{m.name}</h3>
-              <span className="mat-cell-role is-light">{m.role}</span>
-              <p className="mat-cell-desc">{m.body}</p>
-            </div>
-          </article>
+          <ManufacturerCell m={m} index={i} key={m.name} />
         )}
       </div>
 
@@ -377,16 +622,33 @@ function Manufacturers({ banner = "partners" }) {
 function JobsMap() {
   const [active, setActive] = useState(null); // clicked pin → popup
   const [hover, setHover] = useState(null); // hovered pin → tooltip
+  const [viewMode, setViewMode] = useState("map"); // 'map' | 'list'
   const cardRef = useRef(null);
   const markup = (typeof window !== "undefined" && window.US_STATES_MARKUP) || "";
   const shown = active !== null ? active : hover;
   const toggle = (i) => setActive((a) => a === i ? null : i);
+
+  // Auto-pick list view on small screens. Listens to viewport changes so
+  // rotation / resize re-applies the right default.
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(max-width: 640px)");
+    const apply = () => setViewMode(mq.matches ? "list" : "map");
+    apply();
+    if (mq.addEventListener) mq.addEventListener("change", apply);
+    else mq.addListener(apply);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", apply);
+      else mq.removeListener(apply);
+    };
+  }, []);
 
   useEffect(() => {
     if (active === null) return;
     const handlePointerDown = (e) => {
       if (cardRef.current && cardRef.current.contains(e.target)) return;
       if (e.target.closest && e.target.closest(".jobsmap-pin")) return;
+      if (e.target.closest && e.target.closest(".jobsmap-list-item")) return;
       setActive(null);
     };
     const handleKey = (e) => { if (e.key === "Escape") setActive(null); };
@@ -412,6 +674,26 @@ function JobsMap() {
         </div>
       </div>
 
+      <div className="jobsmap-view-toggle" role="tablist" aria-label="Map or list view">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={viewMode === "map"}
+          className={`jobsmap-view-btn${viewMode === "map" ? " is-active" : ""}`}
+          onClick={() => setViewMode("map")}>
+          Map
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={viewMode === "list"}
+          className={`jobsmap-view-btn${viewMode === "list" ? " is-active" : ""}`}
+          onClick={() => setViewMode("list")}>
+          List
+        </button>
+      </div>
+
+      {viewMode === "map" &&
       <div className="jobsmap-stage">
         <svg
           className="jobsmap-base"
@@ -424,15 +706,19 @@ function JobsMap() {
           {MAP_PROJECTS.map((p, i) =>
           <g
             key={p.name}
-            className={`jobsmap-pin${active === i ? " is-active" : ""}`}
+            className={`jobsmap-pin${active === i ? " is-active" : ""}${p.coming ? " is-coming" : ""}`}
             onMouseEnter={() => setHover(i)}
             onMouseLeave={() => setHover(null)}
             onClick={() => toggle(i)}
             tabIndex={0}
             role="button"
-            aria-label={`${p.name} — ${p.city}, ${p.state}`}
+            aria-label={`${p.coming ? "Project coming — " : ""}${p.city}, ${p.state}`}
             onKeyDown={(e) => {if (e.key === "Enter" || e.key === " ") {e.preventDefault();toggle(i);}}}>
 
+              {/* Transparent hit target — keeps the pin visually small while
+                  giving touch users a 44px-equivalent tap area at typical
+                  stage widths (≈22 SVG units ≈ 36–48 device pixels). */}
+              <circle className="jobsmap-pin-hit" cx={p.x} cy={p.y} r="22" fill="transparent" />
               <circle className="jobsmap-pin-halo" cx={p.x} cy={p.y} r="13" />
               <circle className="jobsmap-pin-dot" cx={p.x} cy={p.y} r="5" />
             </g>
@@ -444,10 +730,12 @@ function JobsMap() {
           const isPopup = active === shown;
           const xPct = p.x / 960 * 100;
           const yPct = p.y / 600 * 100;
+          // Keep popup card within the stage horizontally. Anchor by edge
+          // when near a side so the card doesn't bleed off-screen.
           let xAnchor = "-50%";
           if (isPopup) {
-            if (xPct < 22) xAnchor = "-4%";
-            else if (xPct > 78) xAnchor = "-96%";
+            if (xPct < 28) xAnchor = "0%";
+            else if (xPct > 72) xAnchor = "-100%";
           }
           const yAnchor = isPopup && yPct < 32 ? "24px" : "calc(-100% - 18px)";
           return (
@@ -463,7 +751,9 @@ function JobsMap() {
               {isPopup &&
               <button className="jobsmap-card-close" onClick={() => setActive(null)} aria-label="Close">×</button>
               }
-              <div className="jobsmap-card-img" style={{ backgroundImage: `url("${p.image}")` }} />
+              <div className="jobsmap-card-img" style={{ backgroundImage: `url("${p.image}")` }}>
+                {p.coming && <span className="jobsmap-card-coming">Project Coming</span>}
+              </div>
               <div className="jobsmap-card-body">
                 <div className="jobsmap-card-loc">{p.city}, {p.state}</div>
                 <div className="jobsmap-card-name">{p.name}</div>
@@ -471,11 +761,10 @@ function JobsMap() {
                 <React.Fragment>
                   <p className="jobsmap-card-blurb">{p.blurb}</p>
                   <dl className="jobsmap-card-specs">
-                    <div><dt>Year</dt><dd>{p.year}</dd></div>
                     <div><dt>System</dt><dd>{p.system}</dd></div>
                     <div><dt>Scope</dt><dd>{p.scope}</dd></div>
                   </dl>
-                  <a className="jobsmap-card-link" href={p.href}>View project <ArrowRight size={12} /></a>
+                  <a className="jobsmap-card-link" href={p.slug ? `portfolio.html?p=${p.slug}` : "portfolio.html"}>{p.coming ? "Read more" : "View project"} <ArrowRight size={12} /></a>
                 </React.Fragment>
                 }
               </div>
@@ -483,6 +772,42 @@ function JobsMap() {
 
         })()}
       </div>
+      }
+
+      {viewMode === "list" &&
+      <ul className="jobsmap-list" aria-label="Project locations list">
+        {MAP_PROJECTS.map((p, i) =>
+          <li
+            key={p.name}
+            className={`jobsmap-list-item${active === i ? " is-active" : ""}${p.coming ? " is-coming" : ""}`}>
+            <button
+              type="button"
+              className="jobsmap-list-button"
+              aria-expanded={active === i}
+              onClick={() => toggle(i)}>
+              <span
+                className="jobsmap-list-thumb"
+                style={{ backgroundImage: `url("${p.image}")` }}
+                aria-hidden="true" />
+              <span className="jobsmap-list-text">
+                <span className="jobsmap-list-loc">{p.city}, {p.state}{p.coming ? " · Project Coming" : ""}</span>
+                <span className="jobsmap-list-name">{p.name}</span>
+              </span>
+            </button>
+            {active === i &&
+            <div className="jobsmap-list-detail">
+              <p className="jobsmap-card-blurb">{p.blurb}</p>
+              <dl className="jobsmap-card-specs">
+                <div><dt>System</dt><dd>{p.system}</dd></div>
+                <div><dt>Scope</dt><dd>{p.scope}</dd></div>
+              </dl>
+              <a className="jobsmap-card-link" href={p.slug ? `portfolio.html?p=${p.slug}` : "portfolio.html"}>{p.coming ? "Read more" : "View project"} <ArrowRight size={12} /></a>
+            </div>
+            }
+          </li>
+        )}
+      </ul>
+      }
 
       <div className="jobsmap-foot">
         <span className="jobsmap-note">Licensed in all 48 contiguous states · selected projects shown</span>
@@ -755,7 +1080,7 @@ function Journal() {
       <div className="journal-track-wrap">
         <div
           className="journal-track"
-          style={{ transform: `translateX(calc(${idx * -100 / visible}% - ${idx * 16}px))` }}>
+          style={{ transform: `translateX(calc(${idx * -100 / visible}% - ${idx} * var(--carousel-gap, 16px)))` }}>
           
           {JOURNAL.map((a) =>
           <article className="journal-card" key={a.title}>
@@ -795,7 +1120,8 @@ function Journal() {
 
 }
 
-function FinalCTA() {
+function FinalCTA({ variant }) {
+  const isContact = variant === "contact";
   return (
     <section className="final-cta" id="contact" data-screen-label="Contact CTA">
       <div className="final-cta-brand">
@@ -810,16 +1136,32 @@ function FinalCTA() {
         <div className="final-cta-img" />
         <div className="final-cta-scrim" />
         <div className="final-cta-inner">
-          <span className="final-cta-eyebrow">A Note on How Roofs Actually Work</span>
-          <h2>
-            Roofs often leak for three reasons:
-            <br />
-            <em>Fasteners, Flashings, <span className="amp">and</span> Flawed installation.</em>
-          </h2>
-          <div className="final-cta-actions">
-            <button className="btn-copper-solid">Request a System Assessment</button>
-            <button className="btn-navy-solid">See Our Portfolio</button>
-          </div>
+          {isContact
+          ? <React.Fragment>
+                <span className="final-cta-eyebrow">While You Wait to Hear From Us</span>
+                <h2>
+                  Spend a few minutes with the work itself.
+                  <br />
+                  <em>Slate, copper, clay <span className="amp">&</span> the houses they cover.</em>
+                </h2>
+                <div className="final-cta-actions">
+                  <a className="btn-copper-solid" href="portfolio.html">View Our Portfolio</a>
+                  <a className="btn-navy-solid" href="materials.html">Explore Materials</a>
+                </div>
+              </React.Fragment>
+          : <React.Fragment>
+                <span className="final-cta-eyebrow">A Note on How Roofs Actually Work</span>
+                <h2>
+                  Roofs often leak for three reasons:
+                  <br />
+                  <em>Fasteners, Flashings, <span className="amp">and</span> Flawed installation.</em>
+                </h2>
+                <div className="final-cta-actions">
+                  <a className="btn-copper-solid" href="contact.html">Request a System Assessment</a>
+                  <a className="btn-navy-solid" href="portfolio.html">See Our Portfolio</a>
+                </div>
+              </React.Fragment>
+          }
         </div>
       </div>
     </section>);
@@ -827,10 +1169,41 @@ function FinalCTA() {
 }
 
 function Footer() {
+  const affiliations = (typeof TRUST !== "undefined" ? TRUST : []).slice(0, 6);
   return (
     <footer className="footer">
-      <div className="footer-line">
-        © 2026 PRIORITY DESIGNER · HISTORIC EXTERIORS · LICENSED · BONDED · INSURED
+      <div className="footer-grid">
+        <div className="footer-col">
+          <span className="footer-head">Contact</span>
+          <a className="footer-link" href="tel:+12145550100">(214) 555-0100</a>
+          <a className="footer-link" href="mailto:hello@prioritydesigner.com">hello@prioritydesigner.com</a>
+          <a className="footer-link footer-cta" href="contact.html">Schedule a Consultation →</a>
+        </div>
+        <div className="footer-col">
+          <span className="footer-head">Visit</span>
+          <span className="footer-line-soft">Dallas–Fort Worth Metroplex</span>
+          <span className="footer-line-soft">Showroom by appointment</span>
+        </div>
+        <div className="footer-col">
+          <span className="footer-head">Explore</span>
+          <a className="footer-link" href="about.html">About</a>
+          <a className="footer-link" href="portfolio.html">Portfolio</a>
+          <a className="footer-link" href="materials.html">Materials</a>
+          <a className="footer-link" href="discontinued.html">Discontinued Products</a>
+          <a className="footer-link" href="blog.html">Blog</a>
+        </div>
+        <div className="footer-col">
+          <span className="footer-head">Affiliations</span>
+          {affiliations.map((a) =>
+          <span key={a.initials} className="footer-line-soft" title={a.role}>{a.name}</span>
+          )}
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <div className="footer-line">
+          © 2026 PRIORITY DESIGNER · HISTORIC EXTERIORS · LICENSED · BONDED · INSURED
+        </div>
+        <a className="footer-privacy" href="privacy.html">Privacy</a>
       </div>
     </footer>);
 
@@ -976,11 +1349,14 @@ function ContactForm() {
 
 // ─── Portfolio page ───────────────────────────────────────────
 
-const FILTER_TYPES = ["All", "Slate", "Clay Tile", "Metal", "Synthetic", "Designer Shingles", "Commercial"];
+const FILTER_TYPES = ["All", "Slate", "Clay Tile", "Metal", "Designer Shingles", "Commercial"];
 
-function ProjectGrid() {
+function ProjectGrid({ onOpen }) {
   const [filter, setFilter] = useState("All");
   const visible = filter === "All" ? PROJECTS : PROJECTS.filter((p) => p.type === filter);
+  // 2026-05-29: client names no longer surface on the public-facing card. We
+  // show the tag, location, and a one-line descriptor. The internal `name`
+  // field is preserved for slug routing into the detail modal.
   return (
     <section className="proj-grid-section section-light" id="proj-grid">
       <div className="proj-filter">
@@ -992,14 +1368,22 @@ function ProjectGrid() {
       </div>
       <div className="proj-grid">
         {visible.map((p) =>
-        <article className="proj-card" key={p.name}>
+        <article
+          className="proj-card"
+          key={p.slug || p.name}
+          onClick={() => onOpen && onOpen(p.slug)}
+          onKeyDown={(e) => { if ((e.key === "Enter" || e.key === " ") && onOpen) { e.preventDefault(); onOpen(p.slug); } }}
+          tabIndex={onOpen ? 0 : -1}
+          role={onOpen ? "button" : undefined}
+          aria-label={onOpen ? `View ${p.tag} project in ${p.loc}` : undefined}>
+
             <div className="proj-card-img" style={{ backgroundImage: `url(${p.image})` }} />
             <div className="proj-card-scrim" />
             <div className="proj-card-body">
               <span className="proj-card-tag">{p.tag}</span>
               <div className="proj-card-loc">{p.loc}</div>
-              <h3 className="proj-card-name">{p.name}</h3>
               <p className="proj-card-desc">{p.desc}</p>
+              {onOpen && <span className="proj-card-cta">View project <ArrowRight size={12} /></span>}
             </div>
           </article>
         )}
@@ -1007,18 +1391,80 @@ function ProjectGrid() {
     </section>);
 }
 
+// ── ProjectDetail modal ───────────────────────────────────────
+// Opened from ProjectGrid card click or from a deep link (?p=<slug>) sent by
+// the homepage JobsMap. Renders a gallery + the longDesc, with no client name.
+function ProjectDetail({ slug, onClose }) {
+  const project = React.useMemo(() => PROJECTS.find((p) => p.slug === slug) || null, [slug]);
+  useEffect(() => {
+    if (!project) return;
+    const onKey = (e) => { if (e.key === "Escape") onClose && onClose(); };
+    document.addEventListener("keydown", onKey);
+    // iOS-safe scroll lock: pin <body> in place and restore the scroll
+    // position on close. Plain overflow:hidden can shift the page on iOS.
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const prevOverflow = document.body.style.overflow;
+    const prevPosition = document.body.style.position;
+    const prevTop = document.body.style.top;
+    const prevWidth = document.body.style.width;
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      document.body.style.position = prevPosition;
+      document.body.style.top = prevTop;
+      document.body.style.width = prevWidth;
+      window.scrollTo(0, scrollY);
+    };
+  }, [project, onClose]);
+  if (!project) return null;
+  const gallery = project.gallery && project.gallery.length ? project.gallery : [project.image];
+  // Derive a public-facing title that does not expose the client name.
+  const displayTitle = `${project.tag} · ${project.loc}`;
+  return (
+    <div className="project-detail-overlay" onClick={(e) => { if (e.target.classList.contains("project-detail-overlay")) onClose && onClose(); }}>
+      <article className="project-detail" role="dialog" aria-modal="true" aria-label={displayTitle}>
+        <button className="project-detail-close" onClick={onClose} aria-label="Close">×</button>
+        <div className="project-detail-gallery">
+          {gallery.map((src, i) =>
+            <div className="project-detail-img" key={i} style={{ backgroundImage: `url("${src}")` }} />
+          )}
+        </div>
+        <div className="project-detail-body">
+          <span className="eyebrow" style={{ color: "var(--copper-300)" }}>{project.tag}</span>
+          <h2 className="project-detail-title">{displayTitle}</h2>
+          <dl className="project-detail-specs">
+            <div><dt>Location</dt><dd>{project.loc}</dd></div>
+            <div><dt>System</dt><dd>{project.tag}</dd></div>
+            <div><dt>Category</dt><dd>{project.type}</dd></div>
+            {project.coming && <div><dt>Status</dt><dd className="is-coming">Project coming</dd></div>}
+          </dl>
+          <p className="project-detail-long">{project.longDesc || project.desc}</p>
+          <a className="btn-copper project-detail-cta" href="contact.html">Discuss a Similar Project <ArrowRight size={14} /></a>
+        </div>
+      </article>
+    </div>);
+}
+
+// Portfolio = A-to-Z customer process (Jack, 2026-05-29). Replaces the old
+// inspection→sourcing→install→review framing with the actual customer journey.
 const PROCESS_STEPS = [
-  { num: "01", title: "Assessment", body: "We spend time on the roof — not the driveway. Every estimate begins with a documented inspection: substrate condition, flashing integrity, fastener type, and an honest evaluation of what's salvageable." },
-  { num: "02", title: "Material Sourcing", body: "We identify the right material for the structure, the climate, and the preservation standard. For discontinued profiles, we coordinate reproduction with our manufacturer partners before committing to a scope." },
-  { num: "03", title: "Installation", body: "Our crews are not subcontracted. The same tradesmen who assessed the roof install it. Copper flashings are hand-formed on site. Fasteners are stainless or copper only. Every course is checked before the next begins." },
-  { num: "04", title: "Final Review", body: "We walk the roof with the owner before we close out any project. Every penetration is tested, every valley inspected from the attic. You receive a written summary of what was done and any conditions to monitor." },
+  { num: "01", title: "First Call", body: "We talk through the project before scheduling anything. Address, structure, what you're seeing, and what your timeline looks like. If we're not the right fit, we'll tell you and point you toward someone who is." },
+  { num: "02", title: "Site Assessment", body: "We come to the property and spend time on the roof — not the driveway. Substrate condition, flashing integrity, fastener type, and a documented evaluation of what's salvageable. You receive a written assessment before any number is discussed." },
+  { num: "03", title: "File the Claim", body: "If insurance is involved, we document the damage on your behalf, compile the photo package, and submit the claim through your carrier. We coordinate the adjuster visit and walk the roof with them." },
+  { num: "04", title: "Work With Your Insurance", body: "Adjuster negotiation, scope alignment, supplement requests where the original estimate falls short. You don't manage the back-and-forth with your carrier — we do." },
+  { num: "05", title: "Schedule & Walkthrough", body: "Install scheduled around your calendar. Our crew, our quality control, our final walkthrough with you on the completed roof. Written documentation of all work performed and any conditions to monitor going forward." },
 ];
 
 const PORTFOLIO_STEP_PHOTOS = [
-  "https://images.unsplash.com/photo-1448630360428-65456885c650?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=400&auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&auto=format&fit=crop&q=80",
   "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1448630360428-65456885c650?w=400&auto=format&fit=crop&q=80",
 ];
 
 function ProcessSection() {
@@ -1102,6 +1548,24 @@ function MaterialComparison() {
     </section>);
 }
 
+function InstallProcess() {
+  return (
+    <section className="install-process">
+      <div className="install-head">
+        <span className="eyebrow" style={{ color: "var(--copper-300)" }}>From Truck to Ridge</span>
+        <h2>How <em>The Install Runs</em></h2>
+        <p className="install-sub">Same crew, same sequence, every project. The order matters as much as the material.</p>
+      </div>
+      <StepsRail
+        steps={INSTALL_STEPS}
+        dark={true}
+        accentKind="thumb"
+        accent={(s, i) =>
+          <img src={INSTALL_STEP_PHOTOS[i]} alt="" loading="lazy" />
+        } />
+    </section>);
+}
+
 function LifecycleROI() {
   const ref = useRef(null);
   const [seen, setSeen] = useState(false);
@@ -1113,57 +1577,53 @@ function LifecycleROI() {
     io.observe(ref.current);
     return () => io.disconnect();
   }, [seen]);
-  // 150 yr timeline. Asphalt = 4 installs (initial + 3 replacements) of ~37.5 yr each.
-  const asphaltSegments = [
-    { years: 38, label: "Initial install" },
-    { years: 37, label: "Replacement 1" },
-    { years: 38, label: "Replacement 2" },
-    { years: 37, label: "Replacement 3" },
-  ];
+  // 150 yr shared axis. Each material renders as a single horizontal bar; ones
+  // that don't reach 150 yrs show tear-off markers at each replacement boundary.
+  const HORIZON = 150;
   return (
     <section className="lifecycle-roi" ref={ref}>
       <div className="lifecycle-head">
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>The Math on Premium Materials</span>
-        <h2>A slate roof installed today <em>outlasts three asphalt replacements.</em></h2>
+        <h2>One slate installation <em>outlasts five asphalt roofs.</em></h2>
+        <p className="lifecycle-sub">A 150-year window, set against the rated lifespan of every material we install. The story isn't subtle — and it isn't about cost per square. It's about how many times the same house gets re-roofed in your lifetime.</p>
       </div>
 
-      <div className={`lifecycle-compare${seen ? " is-in" : ""}`}>
-        <div className="lifecycle-col">
-          <div className="lifecycle-col-head">
-            <span className="lifecycle-col-tag">If you choose slate today</span>
-            <span className="lifecycle-col-sub">Vermont slate · one installation</span>
-          </div>
-          <div className="lifecycle-bar lifecycle-bar--slate">
-            <div className="lifecycle-bar-fill" />
-            <span className="lifecycle-bar-text">150 years · one install</span>
-          </div>
-          <div className="lifecycle-axis">
-            <span>0</span><span>50</span><span>100</span><span>150 yrs</span>
-          </div>
-        </div>
-
-        <div className="lifecycle-col">
-          <div className="lifecycle-col-head">
-            <span className="lifecycle-col-tag">If you choose asphalt today</span>
-            <span className="lifecycle-col-sub">Architectural shingle · 3 full replacements</span>
-          </div>
-          <div className="lifecycle-bar lifecycle-bar--asphalt">
-            {asphaltSegments.map((s, i) =>
-              <React.Fragment key={i}>
-                <div className="lifecycle-seg" style={{ flex: s.years, "--i": i }}>
-                  <span className="lifecycle-seg-label">{s.label}</span>
-                </div>
-                {i < asphaltSegments.length - 1 &&
-                  <div className="lifecycle-tear" aria-hidden="true" style={{ "--i": i }}>
-                    <span className="lifecycle-tear-mark">TEAR-OFF</span>
-                  </div>
-                }
-              </React.Fragment>
-            )}
-          </div>
-          <div className="lifecycle-axis">
-            <span>0</span><span>38</span><span>75</span><span>113</span><span>150 yrs</span>
-          </div>
+      <div className={`lifecycle-rows${seen ? " is-in" : ""}`}>
+        {LIFECYCLE_MATERIALS.map((m, idx) => {
+          const segments = Array.from({ length: m.segments }, (_, i) => ({
+            years: m.years,
+            isLast: i === m.segments - 1,
+          }));
+          // The last segment may extend past 150 — clamp by reducing flex on overflow.
+          const totalRaw = m.segments * m.years;
+          const overflow = Math.max(0, totalRaw - HORIZON);
+          return (
+            <div className={`lifecycle-row lifecycle-row--${m.tone}`} key={m.key} style={{ "--row-i": idx }}>
+              <div className="lifecycle-row-label">
+                <span className="lifecycle-row-name">{m.name}</span>
+                <span className="lifecycle-row-meta">{m.years} yr rated · {m.note}</span>
+              </div>
+              <div className="lifecycle-row-bar">
+                {segments.map((s, i) => {
+                  const isFinal = i === segments.length - 1;
+                  const yrs = isFinal && overflow > 0 ? Math.max(1, s.years - overflow) : s.years;
+                  return (
+                    <React.Fragment key={i}>
+                      <div className="lifecycle-seg" style={{ flex: yrs, "--i": i }}>
+                        <span className="lifecycle-seg-label">{i === 0 ? "Install" : `Replace ${i}`}</span>
+                      </div>
+                      {!isFinal &&
+                        <div className="lifecycle-tear" aria-hidden="true">
+                          <span className="lifecycle-tear-mark">TEAR-OFF</span>
+                        </div>
+                      }
+                    </React.Fragment>);
+                })}
+              </div>
+            </div>);
+        })}
+        <div className="lifecycle-axis lifecycle-axis--shared">
+          <span>0</span><span>30</span><span>50</span><span>75</span><span>100</span><span>150 yrs</span>
         </div>
       </div>
 
@@ -1198,6 +1658,15 @@ function RequestSample() {
           </div> :
 
         <React.Fragment>
+            {/* TODO(jack): supply a real showroom photo — replace the placeholder
+                background-image when the photo arrives. Per 2026-05-29. */}
+            <div
+              className="req-sample-showroom"
+              role="img"
+              aria-label="Priority Designer showroom — photo coming soon"
+              style={{ backgroundImage: "url(\"https://images.unsplash.com/photo-1556909114-44e3e9399a2f?w=1600&auto=format&fit=crop&q=85\")" }}>
+              <span className="req-sample-showroom-tag">See It In Person — Visit the Showroom</span>
+            </div>
             <div className="req-sample-head">
               <span className="eyebrow">See It in Person</span>
               <h3>Request a <em>Sample</em></h3>
@@ -1440,34 +1909,14 @@ function DiscontinuedIntro() {
     </section>);
 }
 
-const HISTORICAL_ERAS = [
-  {
-    period: "1950s – 1970s",
-    primaryYear: 1965,
-    title: "The Asbestos Transition",
-    body: "Asbestos-containing roofing products were standard through the early 1970s. When the material was regulated out of residential use, the industry rushed replacements to market without adequate long-term testing. Fiber cement, early organic-mat asphalt, and transitional synthetics from this era all carry documented failure profiles.",
-    image: "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=2200&auto=format&fit=crop&q=85",
-  },
-  {
-    period: "1978 – 1998",
-    primaryYear: 1988,
-    title: "The Cost-Cutting Era",
-    body: "Deregulation and import competition drove manufacturers to reduce material weights, lower felting standards, and substitute lower-grade mineral granules. Products that passed the test standards of the era routinely underperformed their rated lifespans by 30–40%. Many are still on roofs across the DFW Metroplex today.",
-    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=2200&auto=format&fit=crop&q=85",
-  },
-  {
-    period: "1995 – 2010",
-    primaryYear: 2002,
-    title: "The Fast-Growth Suburb Surge",
-    body: "Volume home building across North Texas drove demand for products that could be installed at scale, quickly. Underlayment standards were relaxed. Proprietary clip systems and snap-lock products entered the market without the installation tradecraft to back them up. The failure data on products from this era is substantial — and ongoing.",
-    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=2200&auto=format&fit=crop&q=85",
-  },
-];
+// 2026-05-29: HistoricalContext + EraFrame + HISTORICAL_ERAS removed.
+// Jack asked us to drop the era framing and replace it with "three reasons we
+// see roofs fail" — see ThreeReasonsSection below, which uses THREE_REASONS
+// from data.jsx.
 
-function EraFrame({ era, index }) {
+function ReasonFrame({ r, index }) {
   const ref = useRef(null);
   const [seen, setSeen] = useState(false);
-  const [display, setDisplay] = useState(era.primaryYear - 90);
   useEffect(() => {
     if (!ref.current || seen) return;
     const io = new IntersectionObserver(
@@ -1476,81 +1925,71 @@ function EraFrame({ era, index }) {
     io.observe(ref.current);
     return () => io.disconnect();
   }, [seen]);
-  useEffect(() => {
-    if (!seen) return;
-    const start = era.primaryYear - 90;
-    const end = era.primaryYear;
-    const duration = 1100;
-    const t0 = performance.now();
-    let raf;
-    const tick = (now) => {
-      const t = Math.min(1, (now - t0) / duration);
-      const eased = 1 - Math.pow(1 - t, 3);
-      setDisplay(Math.round(start + (end - start) * eased));
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [seen, era.primaryYear]);
   return (
     <article
-      className={`era-frame${seen ? " is-in" : ""}${index % 2 ? " is-right" : ""}`}
+      className={`reason-frame${seen ? " is-in" : ""}${index % 2 ? " is-right" : ""}`}
       ref={ref}
-      style={{ backgroundImage: `url("${era.image}")` }}>
-      <div className="era-frame-scrim" />
-      <div className="era-frame-inner">
-        <div className="era-frame-year" aria-hidden="true">{display}</div>
-        <div className="era-frame-body">
-          <span className="era-frame-period">{era.period}</span>
-          <h3>{era.title}</h3>
-          <p>{era.body}</p>
+      style={{ backgroundImage: `url("${r.image}")` }}>
+      <div className="reason-frame-scrim" />
+      <div className="reason-frame-inner">
+        <div className="reason-frame-num" aria-hidden="true">{r.num}</div>
+        <div className="reason-frame-body">
+          <span className="reason-frame-eyebrow">{r.subtitle}</span>
+          <h3>{r.title}</h3>
+          <p>{r.body}</p>
+          <ul className="reason-frame-examples">
+            {r.examples.map((ex) => <li key={ex}>{ex}</li>)}
+          </ul>
         </div>
       </div>
     </article>);
 }
 
-function HistoricalContext() {
+function ThreeReasonsSection() {
   return (
-    <section className="historical-context">
-      <div className="hist-head">
-        <span className="eyebrow">Why This Happened</span>
-        <h2>Three Eras That Produced <em>Bad Roofs</em></h2>
-        <p className="hist-sub">Understanding the industry conditions behind these products helps explain why so many appear on our list — and why the failure patterns are so consistent.</p>
+    <section className="three-reasons">
+      <div className="three-reasons-head">
+        <span className="eyebrow">Why Roofs Fail</span>
+        <h2>The Three Reasons We <em>See Roofs Fail</em></h2>
+        <p className="three-reasons-sub">It is rarely the visible field material. It is almost always one of three things below it — decking, flashings, or fasteners — done quickly the first time and discovered slowly twenty years later.</p>
       </div>
-      <div className="era-frames">
-        {HISTORICAL_ERAS.map((e, i) =>
-          <EraFrame era={e} index={i} key={e.title} />
+      <div className="reason-frames">
+        {THREE_REASONS.map((r, i) =>
+          <ReasonFrame r={r} index={i} key={r.num} />
         )}
       </div>
     </section>);
 }
 
+// Discontinued = manufacturer-warranty process (Jack, 2026-05-29). Reframes
+// the previous "what to do" advice as the warranty workflow homeowners actually
+// run when their roof has a Da Vinci / Tamko / etc. discontinued product on it.
 const WTD_STEPS = [
-  { num: "01", title: "Don't panic — and don't replace immediately.", body: "A product being on this list doesn't mean your roof is failing today. Many of these products have documented failure modes that are gradual and detectable early. An inspection will tell you where you stand." },
-  { num: "02", title: "Get a documented inspection from someone who knows the product.", body: "The failure modes for organic-mat asphalt are different from those for a proprietary slate clip system. Make sure your inspector understands what they're looking at — and can document what they find in writing." },
-  { num: "03", title: "Know your options before accepting a full replacement.", body: "In many cases — particularly with historic clay tile and natural slate — the roof material is salvageable even when the product has \"failed.\" The system around it failed. The tile or slate itself may have decades of life left. We'll tell you the difference." },
-  { num: "04", title: "Contact us before you sign anything.", body: "We review discontinued product situations at no charge. If your home has a product on this list, we'll give you an honest assessment — including whether another contractor is the better choice for your project." },
+  { num: "01", title: "Identify the product on your roof.", body: "Most homeowners don't know exactly what is on their roof. We document the tile profile, manufacturer marks, lot numbers where they exist, and the installation generation. That documentation is what every warranty claim and insurance file starts from." },
+  { num: "02", title: "Document the failure.", body: "Photographs, attic moisture readings, fastener pulls, and a written condition report. We compile the failure documentation the manufacturer and your insurer will require — not generic adjuster notes." },
+  { num: "03", title: "File the manufacturer warranty claim.", body: "We coordinate the claim with Da Vinci, Tamko, Ludowici, or whichever successor company holds the warranty record. Many products discontinued 15–20 years ago still carry actionable warranty paths and class-action settlements." },
+  { num: "04", title: "Replace with the correct system.", body: "Once the warranty path is closed, we install the replacement — matching profile and color where the home requires it, or upgrading to a current system where the original product is no longer defensible. Either way, we install it once." },
 ];
 
 const WTD_ICONS = [
-  // 01 Don't panic — pause / time
+  // 01 Identify — magnifier / tag
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i1">
-    <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
-  </svg>,
-  // 02 Get inspection — magnifier
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i2">
     <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.35-4.35" />
   </svg>,
-  // 03 Know your options — compare columns
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i3">
-    <rect x="3.5" y="5" width="6.5" height="14" rx="1" /><rect x="14" y="5" width="6.5" height="14" rx="1" /><path d="M3.5 11h6.5M14 11h6.5" />
+  // 02 Document — clipboard / paper
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i2">
+    <rect x="5" y="4" width="14" height="17" rx="1.5" /><path d="M9 4h6v3H9z" /><path d="M9 12h6M9 16h4" />
   </svg>,
-  // 04 Contact us — speech / arrow
+  // 03 File claim — shield / check
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i3">
+    <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" /><path d="M9 12l2.2 2.2L15 10.5" />
+  </svg>,
+  // 04 Replace — arrows / refresh
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i4">
-    <path d="M21 12a8 8 0 1 1-3.2-6.4" /><path d="M16 4h5v5" /><path d="M21 4l-9 9" />
+    <path d="M4 12a8 8 0 0 1 14-5.3" /><path d="M18 3v4h-4" /><path d="M20 12a8 8 0 0 1-14 5.3" /><path d="M6 21v-4h4" />
   </svg>,
 ];
-const WTD_TAGS = ["Hold off", "Inspect", "Evaluate", "Reach out"];
+const WTD_TAGS = ["Identify", "Document", "Warranty", "Replace"];
 
 function WhatToDo() {
   return (
@@ -1748,10 +2187,11 @@ function Testimonials() {
 Object.assign(window, {
   Nav, Hero, TrustBar, Manufacturers, JobsMap, Discontinued, SystemsNote, Partners, FinalCTA, Footer,
   PageHero, DiscontinuedTeaser, TeamSection, ContactForm,
-  ProjectGrid, ProcessSection,
-  MaterialsPhilosophy, MaterialComparison, LifecycleROI, RequestSample,
+  ProjectGrid, ProcessSection, ProjectDetail,
+  MaterialsPhilosophy, MaterialComparison, InstallProcess, LifecycleROI, RequestSample,
   CompanyStory, PhilosophySection, ProcessOverview, ServiceArea,
-  DiscontinuedIntro, HistoricalContext, WhatToDo, DiscontinuedFAQ,
+  DiscontinuedIntro, ThreeReasonsSection, WhatToDo, DiscontinuedFAQ,
   FeaturedArticle, ArticleGrid,
   WhatToExpect, Testimonials,
+  HeroMosaic, HeroSlides,
 });

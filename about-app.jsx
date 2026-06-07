@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Nav, PageHero, CompanyStory, PhilosophySection, ProcessOverview, TeamSection, ServiceArea, Partners, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, PageHero, CompanyStory, PhilosophySection, TeamSection, ServiceArea, Partners, FinalCTA, Footer */
 function App() {
   return (
     <React.Fragment>
@@ -12,7 +12,6 @@ function App() {
       <ServiceArea />
       <CompanyStory />
       <PhilosophySection />
-      <ProcessOverview />
       <TeamSection />
       <Partners />
       <FinalCTA />

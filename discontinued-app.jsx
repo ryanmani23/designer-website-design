@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Nav, PageHero, DiscontinuedIntro, HistoricalContext, Discontinued, WhatToDo, DiscontinuedFAQ, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, PageHero, DiscontinuedIntro, ThreeReasonsSection, Discontinued, WhatToDo, DiscontinuedFAQ, FinalCTA, Footer */
 function App() {
   return (
     <React.Fragment>
@@ -11,7 +11,7 @@ function App() {
       />
       <DiscontinuedIntro />
       <Discontinued onJump={() => { window.location.href = "contact.html"; }} />
-      <HistoricalContext />
+      <ThreeReasonsSection />
       <WhatToDo />
       <DiscontinuedFAQ />
       <FinalCTA />

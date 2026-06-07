@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Nav, PageHero, MaterialsPhilosophy, Manufacturers, RequestSample, MaterialComparison, SystemsNote, LifecycleROI, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, PageHero, MaterialsPhilosophy, Manufacturers, RequestSample, MaterialComparison, InstallProcess, LifecycleROI, FinalCTA, Footer */
 function App() {
   return (
     <React.Fragment>
@@ -13,7 +13,7 @@ function App() {
       <Manufacturers banner="none" />
       <RequestSample />
       <MaterialComparison />
-      <SystemsNote />
+      <InstallProcess />
       <LifecycleROI />
       <FinalCTA />
       <Footer />

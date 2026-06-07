@@ -12,7 +12,7 @@ function App() {
       <ContactForm />
       <WhatToExpect />
       <Testimonials />
-      <FinalCTA />
+      <FinalCTA variant="contact" />
       <Footer />
     </React.Fragment>
   );
