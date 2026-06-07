@@ -90,7 +90,12 @@ function Nav({ onLight: forcedOnLight }) {
 
   // TEMP (2026-06-06): hero variant switcher on home page only. Remove once a
   // hero variant is picked. The buttons reload with ?hero=<variant>.
-  const isHome = path === "/" || path.endsWith("/index.html") || path === "" || path.endsWith("/Designer/");
+  // Detect home by trailing filename so it works under any base path
+  // (e.g. GitHub Pages `/designer-website-design/`).
+  const isHome = (() => {
+    const file = path.split("/").pop();
+    return file === "" || file === "index.html";
+  })();
   const currentVariant = (() => {
     try { const v = new URLSearchParams(window.location.search).get("hero"); return v === "mosaic" || v === "slides" ? v : "reel"; } catch (e) { return "reel"; }
   })();
