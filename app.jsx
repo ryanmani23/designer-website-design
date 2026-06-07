@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Nav, Hero, HeroMosaic, HeroSlides, TrustBar, RoofReel, Manufacturers, JobsMap, Discontinued, SystemsNote, Partners, Journal, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, Hero, HeroMosaic, HeroSlides, TrustBar, RoofReel, Manufacturers, JobsMap, Discontinued, SystemsNote, EthosEcho, Partners, Journal, FinalCTA, Footer */
 const { useState, useEffect, useRef } = React;
 
 function Intro({ leaving }) {
@@ -47,7 +47,7 @@ function App() {
 
   // global subtle reveal-on-scroll for content sections
   useEffect(() => {
-    const targets = ["manufacturers", "projects", "discontinued", "systems", "partners", "journal"];
+    const targets = ["manufacturers", "projects", "discontinued", "systems", "ethos-echo", "partners", "journal"];
     const els = targets.map((id) => document.getElementById(id)).filter(Boolean);
     els.forEach((el) => el.classList.add("scroll-reveal"));
     const io = new IntersectionObserver(
@@ -83,6 +83,7 @@ function App() {
       <JobsMap />
       <Discontinued onJump={(id) => window.location.href = `contact.html`} />
       <SystemsNote />
+      <EthosEcho />
       <Partners />
       <Journal />
       <FinalCTA />

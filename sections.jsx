@@ -617,7 +617,7 @@ function Manufacturers({ banner = "partners" }) {
           their products on our own homes and have.
         </p>
         <button className="mat-foot-link">
-          See these Material in Our Work <ArrowRight size={14} />
+          See These Materials in Our Work <ArrowRight size={14} />
         </button>
       </div>
     </section>);
@@ -1792,6 +1792,107 @@ function PhilosophySection() {
             <PhilosophyCard title={p.title} body={p.body} index={i} key={p.title} />
           )}
         </div>
+      </div>
+    </section>);
+}
+
+// ── The Good, the True, and the Beautiful ──────────────────────
+// Develops the hero tagline into a real values triad on the About page,
+// with a condensed echo (EthosEcho) on the Home page. Inspired by the
+// Cultural Tutor / William Morris idea Jack shared: the "useful vs.
+// beautiful" tradeoff is a false one. Three-column layout (Ryan picked
+// it over the editorial variant on 2026-06-07).
+const MORRIS_QUOTE = {
+  text: "To give people pleasure in the things they must perforce use, that is one great office of decoration; to give people pleasure in the things they must perforce make, that is the other use of it.",
+  cite: "William Morris",
+};
+// A real copper detail from our own work carries the quote — proof that the
+// working parts of a roof are worth looking at. Easily swappable.
+// (Ryan picked the three-column layout 2026-06-07; the editorial variant was dropped.)
+// Hand-formed copper gutter, downspout, and valley work — the literal "beautiful
+// drainpipe" idea (Ryan supplied this photo 2026-06-07).
+const ETHOS_IMAGE = "assets/ethos-copper.webp";
+const TRIAD = [
+  {
+    word: "Good",
+    sub: "Built honestly, built to last.",
+    body: "The integrity of a roof lives where no one looks — the underlayment, the fasteners, the deck beneath the field. We build those hidden layers to outlast the slate above them, because a roof is only as good as the work you'll never see. We build for the next fifty years, not the next warranty cycle.",
+  },
+  {
+    word: "True",
+    sub: "True to the building, the material, the period.",
+    body: "Restoration means honoring what the architect intended — real slate, not an imitation of it; a discontinued profile sourced rather than swapped; courses laid so the repair disappears into the original field. We work true to the building's age, down to the last flashing detail.",
+  },
+  {
+    word: "Beautiful",
+    sub: "The useful and the beautiful were never enemies.",
+    body: "Somewhere we taught ourselves that a thing can be useful or beautiful, but not both. A roof proves otherwise. The copper valley that carries water is also the copper that catches light; the leader head that drains a wall is still worth looking at. We detail the working parts as carefully as the ones meant to be seen.",
+  },
+];
+
+function EthosPillar({ t, index }) {
+  const ref = useRef(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    if (!ref.current || seen) return;
+    const io = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setSeen(true); io.disconnect(); } },
+      { threshold: 0.25 });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, [seen]);
+  return (
+    <article className={`ethos-pillar${seen ? " is-in" : ""}`} ref={ref} style={{ "--i": index }}>
+      <div className="ethos-pillar-head">
+        <span className="ethos-pillar-num">{String(index + 1).padStart(2, "0")}</span>
+        <h3 className="ethos-pillar-word">{t.word}</h3>
+      </div>
+      <div className="ethos-pillar-text">
+        <p className="ethos-pillar-sub">{t.sub}</p>
+        <p className="ethos-pillar-body">{t.body}</p>
+      </div>
+    </article>);
+}
+
+function Ethos() {
+  return (
+    <section className="ethos section-light ethos-columns" id="ethos">
+      <div className="ethos-inner">
+        <header className="ethos-head">
+          <span className="eyebrow">What We Build For</span>
+          <h2>The Good, the True,<br />and the <em>Beautiful</em></h2>
+          <p className="ethos-lede">Three words, borrowed from a very old idea about what makes a thing worth building. They're the closest thing we have to a creed — and the test every roof we touch has to pass.</p>
+        </header>
+        <div className="ethos-grid">
+          {TRIAD.map((t, i) => <EthosPillar key={t.word} t={t} index={i} />)}
+        </div>
+        <figure className="ethos-quote">
+          <div className="ethos-quote-img">
+            <img src={ETHOS_IMAGE} alt="Hand-formed copper gutters, downspout, and valley flashing on one of our restorations" loading="lazy" />
+          </div>
+          <div className="ethos-quote-body">
+            <blockquote>{MORRIS_QUOTE.text}</blockquote>
+            <figcaption>— {MORRIS_QUOTE.cite}</figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>);
+}
+
+// Condensed Home-page echo — the three words large, linking to the full
+// section on the About page.
+function EthosEcho() {
+  return (
+    <section className="ethos-echo" id="ethos-echo">
+      <div className="ethos-echo-inner">
+        <span className="eyebrow">Our Ethos</span>
+        <h2 className="ethos-echo-words">
+          <span>Good.</span>
+          <span>True.</span>
+          <span><em>Beautiful.</em></span>
+        </h2>
+        <p className="ethos-echo-sub">Three words we build every roof against — honest where no one looks, true to the building's age, and beautiful down to the working copper.</p>
+        <a className="ethos-echo-link" href="about.html#ethos">Read our ethos <ArrowRight /></a>
       </div>
     </section>);
 }
