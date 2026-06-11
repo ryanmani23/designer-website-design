@@ -855,7 +855,14 @@ function DiscLightbox({ images, title, start = 0, onClose }) {
       document.body.style.position = prev.position;
       document.body.style.top = prev.top;
       document.body.style.width = prev.width;
+      // Restore scroll instantly. The global `html { scroll-behavior: smooth }`
+      // would otherwise animate this jump (page flashes to top, then glides
+      // back down) when the position:fixed lock releases.
+      const html = document.documentElement;
+      const prevBehavior = html.style.scrollBehavior;
+      html.style.scrollBehavior = "auto";
       window.scrollTo(0, scrollY);
+      html.style.scrollBehavior = prevBehavior;
     };
   }, [n, onClose]);
   // Portal to <body>: the Discontinued section lives inside a .scroll-reveal
@@ -1497,7 +1504,13 @@ function ProjectDetail({ slug, onClose }) {
       document.body.style.position = prevPosition;
       document.body.style.top = prevTop;
       document.body.style.width = prevWidth;
+      // Restore scroll instantly — the global `html { scroll-behavior: smooth }`
+      // would otherwise animate the jump when the position:fixed lock releases.
+      const html = document.documentElement;
+      const prevBehavior = html.style.scrollBehavior;
+      html.style.scrollBehavior = "auto";
       window.scrollTo(0, scrollY);
+      html.style.scrollBehavior = prevBehavior;
     };
   }, [project, onClose]);
   if (!project) return null;
