@@ -1,4 +1,4 @@
-/* global React, MANUFACTURERS, PROJECTS, DISCONTINUED, ROOF_SYSTEMS, PARTNERS, PRESERVATION, TRADE_CIVIC, CERTIFICATIONS, TRUST, NAV_ITEMS */
+/* global React, ReactDOM, MANUFACTURERS, PROJECTS, DISCONTINUED, ROOF_SYSTEMS, PARTNERS, PRESERVATION, TRADE_CIVIC, CERTIFICATIONS, TRUST, NAV_ITEMS */
 const { useState, useEffect, useRef } = React;
 
 const ArrowRight = ({ size = 16 }) =>
@@ -822,9 +822,74 @@ function JobsMap() {
 
 }
 
+// ── Discontinued product image lightbox ───────────────────────
+// Opened from a product thumbnail. Scrollable gallery overlay with
+// arrows / swipe / keyboard nav and an iOS-safe scroll lock (mirrors
+// the ProjectDetail modal pattern).
+function DiscLightbox({ images, title, start = 0, onClose }) {
+  const [i, setI] = useState(start);
+  const touch = useRef(null);
+  const n = images.length;
+  const go = (d) => setI((p) => (p + d + n) % n);
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose && onClose();
+      else if (e.key === "ArrowRight") setI((p) => (p + 1) % n);
+      else if (e.key === "ArrowLeft") setI((p) => (p - 1 + n) % n);
+    };
+    document.addEventListener("keydown", onKey);
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+    const prev = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+    };
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev.overflow;
+      document.body.style.position = prev.position;
+      document.body.style.top = prev.top;
+      document.body.style.width = prev.width;
+      window.scrollTo(0, scrollY);
+    };
+  }, [n, onClose]);
+  // Portal to <body>: the Discontinued section lives inside a .scroll-reveal
+  // wrapper whose transform/opacity would otherwise become the containing
+  // block (breaking position:fixed) and hide the overlay.
+  return ReactDOM.createPortal(
+    <div className="disc-lightbox" onClick={(e) => { if (e.target.classList.contains("disc-lightbox")) onClose && onClose(); }}>
+      <button className="disc-lb-close" onClick={onClose} aria-label="Close">×</button>
+      {n > 1 && <button className="disc-lb-nav disc-lb-prev" onClick={() => go(-1)} aria-label="Previous image">‹</button>}
+      <figure
+        className="disc-lb-stage"
+        onTouchStart={(e) => { touch.current = e.changedTouches[0].clientX; }}
+        onTouchEnd={(e) => {
+          if (touch.current == null) return;
+          const dx = e.changedTouches[0].clientX - touch.current;
+          if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+          touch.current = null;
+        }}>
+        <img src={images[i]} alt={`${title} — image ${i + 1} of ${n}`} />
+        <figcaption className="disc-lb-cap">
+          <span>{title}</span>
+          {n > 1 && <span className="disc-lb-count">{i + 1} / {n}</span>}
+        </figcaption>
+      </figure>
+      {n > 1 && <button className="disc-lb-nav disc-lb-next" onClick={() => go(1)} aria-label="Next image">›</button>}
+    </div>,
+    document.body);
+
+}
+
 function Discontinued({ onJump }) {
   const tabs = Object.keys(DISCONTINUED);
   const [tab, setTab] = useState(tabs[0]);
+  const [lb, setLb] = useState(null);
   const data = DISCONTINUED[tab];
   return (
     <section className="discontinued" id="discontinued" data-screen-label="Discontinued Products">
@@ -841,19 +906,29 @@ function Discontinued({ onJump }) {
       <div className="disc-content">
         <div className="label">{data.label.split(" ").slice(0, -1).join(" ")} <em>{data.label.split(" ").slice(-1)}</em></div>
         <div className="disc-products">
-          {data.items.map((p, i) =>
-          <div className={`disc-prod${p.image ? " has-thumb" : ""}`} key={p.title}>
-              <div className="ix">
-                {p.image ?
-                <span className="disc-prod-thumb" style={{ backgroundImage: `url("${p.image}")` }} aria-hidden="true" /> :
-                String(i + 1).padStart(2, "0")}
-              </div>
-              <div className="title">{p.title}<small>{p.sub}</small></div>
-              <div className="desc">{p.desc}</div>
-            </div>
-          )}
+          {data.items.map((p, i) => {
+            const imgs = p.images && p.images.length ? p.images : null;
+            return (
+              <div className={`disc-prod${imgs ? " has-thumb" : ""}`} key={p.title}>
+                <div className="ix">
+                  {imgs ?
+                  <button
+                    type="button"
+                    className="disc-prod-thumb"
+                    style={{ backgroundImage: `url("${imgs[0]}")` }}
+                    onClick={() => setLb({ images: imgs, title: p.title })}
+                    aria-label={`View ${imgs.length} photo${imgs.length > 1 ? "s" : ""} of ${p.title}`}>
+                    {imgs.length > 1 && <span className="disc-prod-thumb-count">{imgs.length}</span>}
+                  </button> :
+                  String(i + 1).padStart(2, "0")}
+                </div>
+                <div className="title">{p.title}<small>{p.sub}</small></div>
+                <div className="desc">{p.desc}</div>
+              </div>);
+          })}
         </div>
       </div>
+      {lb && <DiscLightbox images={lb.images} title={lb.title} onClose={() => setLb(null)} />}
       <div className="disc-cta">
         <div className="disc-cta-text">
           <div className="label">Before you accept a full replacement</div>
@@ -1816,17 +1891,17 @@ const TRIAD = [
   {
     word: "Good",
     sub: "Built honestly, built to last.",
-    body: "The integrity of a roof lives where no one looks — the underlayment, the fasteners, the deck beneath the field. We build those hidden layers to outlast the slate above them, because a roof is only as good as the work you'll never see. We build for the next fifty years, not the next warranty cycle.",
+    body: "The good means that we treat our work with diligence and dignity. We believe in building roofs that last for centuries as an act of civic virtue — providing sanctuary for families and the generations to come.",
   },
   {
     word: "True",
     sub: "True to the building, the material, the period.",
-    body: "Restoration means honoring what the architect intended — real slate, not an imitation of it; a discontinued profile sourced rather than swapped; courses laid so the repair disappears into the original field. We work true to the building's age, down to the last flashing detail.",
+    body: "Honesty is everything. The roofing industry has a less than honest reputation, to say the least. We want to cultivate honesty in the industry by communicating clearly, never installing subpar materials, and never masking installation flaws. The roof stands as a shield, built with the conviction that integrity must exist even where the human eye cannot see.",
   },
   {
     word: "Beautiful",
     sub: "The useful and the beautiful were never enemies.",
-    body: "Somewhere we taught ourselves that a thing can be useful or beautiful, but not both. A roof proves otherwise. The copper valley that carries water is also the copper that catches light; the leader head that drains a wall is still worth looking at. We detail the working parts as carefully as the ones meant to be seen.",
+    body: "Somewhere we taught ourselves that a thing can be useful or beautiful but not both. Much of modern work has traded beauty for cost, efficiency, or ease. Our roofs are an attempt to return to beautifying the world around us. Historically, architecture and roofs served as a visual theology — inspiring a sense of awe embedded in the grain, shadow lines, textures, and colors of slate, clay, and copper.",
   },
 ];
 
@@ -1891,7 +1966,7 @@ function EthosEcho() {
           <span>True.</span>
           <span><em>Beautiful.</em></span>
         </h2>
-        <p className="ethos-echo-sub">Three words we build every roof against — honest where no one looks, true to the building's age, and beautiful down to the working copper.</p>
+        <p className="ethos-echo-sub">Three words that we believe underpin our lives, including the roofs we sell and install.</p>
         <a className="ethos-echo-link" href="about.html#ethos">Read our ethos <ArrowRight /></a>
       </div>
     </section>);
