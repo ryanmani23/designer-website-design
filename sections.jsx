@@ -88,23 +88,6 @@ function Nav({ onLight: forcedOnLight }) {
   const activePage = NAV_ITEMS.find((n) => path.endsWith(n.href));
   const activeId = activePage ? activePage.id : null;
 
-  // TEMP (2026-06-06): hero variant switcher on home page only. Remove once a
-  // hero variant is picked. The buttons reload with ?hero=<variant>.
-  // Detect home by trailing filename so it works under any base path
-  // (e.g. GitHub Pages `/designer-website-design/`).
-  const isHome = (() => {
-    const file = path.split("/").pop();
-    return file === "" || file === "index.html";
-  })();
-  const currentVariant = (() => {
-    try { const v = new URLSearchParams(window.location.search).get("hero"); return v === "mosaic" || v === "slides" ? v : "reel"; } catch (e) { return "reel"; }
-  })();
-  const VARIANTS = [
-    { key: "reel",   label: "Reel" },
-    { key: "mosaic", label: "Mosaic" },
-    { key: "slides", label: "Slides" },
-  ];
-
   return (
     <nav className={`nav${scrolled ? " scrolled" : ""}${onLight ? " on-light" : ""}`}>
       <a className="logo" href="index.html">
@@ -117,19 +100,6 @@ function Nav({ onLight: forcedOnLight }) {
           </a>
         )}
       </div>
-      {isHome &&
-      <div className="nav-hero-switch" role="group" aria-label="Hero variant (preview)">
-        <span className="nav-hero-switch-label">Hero</span>
-        {VARIANTS.map((v) =>
-          <a
-            key={v.key}
-            href={v.key === "reel" ? "index.html" : `index.html?hero=${v.key}`}
-            className={`nav-hero-switch-btn${currentVariant === v.key ? " is-active" : ""}`}>
-            {v.label}
-          </a>
-        )}
-      </div>
-      }
       <a className="cta-pill" href="contact.html">
         Schedule a Consultation
         <span className="icon"><ArrowRight size={14} /></span>
@@ -250,9 +220,8 @@ function Hero({ revealed }) {
         <div className="hero-inner">
           <h1 className="hero-title">Priority <em>Designer</em></h1>
           <div className="hero-sub">
-            Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Metal <span className="dot">·</span> Architectural Systems
+            Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Copper
           </div>
-          <div className="hero-loc eyebrow">The Good, the True, and the Beautiful — Set in Stone · Est. 2016</div>
         </div>
         <div className="scroll-tag">
           <span className="line" />
@@ -280,6 +249,13 @@ function HeroMosaic({ revealed }) {
   const [tiles, setTiles] = useState(() =>
     Array.from({ length: TILE_COUNT }, (_, i) => pool[i % pool.length])
   );
+
+  // Mosaic hero is not framed — reset the framed-reel inset so the nav sits flush.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty("--hero-inset", "0px");
+    root.style.setProperty("--hero-radius", "0px");
+  }, []);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -310,9 +286,8 @@ function HeroMosaic({ revealed }) {
       <div className="hero-inner hero-mosaic-inner">
         <h1 className="hero-title">Priority <em>Designer</em></h1>
         <div className="hero-sub">
-          Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Metal <span className="dot">·</span> Architectural Systems
+          Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Copper
         </div>
-        <div className="hero-loc eyebrow">The Good, the True, and the Beautiful — Set in Stone · Est. 2016</div>
       </div>
       <div className="scroll-tag">
         <span className="line" />
@@ -327,6 +302,13 @@ function HeroMosaic({ revealed }) {
 function HeroSlides({ revealed }) {
   const slides = HERO_TOP_FIVE;
   const [active, setActive] = useState(0);
+  // Slides hero is not framed — reset the framed-reel inset so the fixed nav
+  // sits flush at the top (fixes the small gap Jack flagged on 2026-06-11).
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty("--hero-inset", "0px");
+    root.style.setProperty("--hero-radius", "0px");
+  }, []);
   useEffect(() => {
     const id = setInterval(() => setActive((a) => (a + 1) % slides.length), 5000);
     return () => clearInterval(id);
@@ -345,9 +327,8 @@ function HeroSlides({ revealed }) {
       <div className="hero-inner hero-slides-inner">
         <h1 className="hero-title">Priority <em>Designer</em></h1>
         <div className="hero-sub">
-          Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Metal <span className="dot">·</span> Architectural Systems
+          Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Copper
         </div>
-        <div className="hero-loc eyebrow">The Good, the True, and the Beautiful — Set in Stone · Est. 2016</div>
         <div className="hero-slides-caption" aria-live="polite">{slides[active].name}</div>
       </div>
       <div className="scroll-tag">
@@ -600,7 +581,7 @@ function Manufacturers({ banner = "partners" }) {
         <h3>Four Partners. <em>Craftsmanship Over Compromise.</em></h3>
         <p>
           We add a manufacturer only when a product raises our standard — not when it expands our<br />
-          catalog. These four represent the entirety of what we're willing to put our name behind.
+          catalog.
         </p>
       </div>
       }
@@ -938,8 +919,8 @@ function Discontinued({ onJump }) {
       {lb && <DiscLightbox images={lb.images} title={lb.title} onClose={() => setLb(null)} />}
       <div className="disc-cta">
         <div className="disc-cta-text">
-          <div className="label">Before you accept a full replacement</div>
-          <div className="small">Contact us first. In many cases — particularly with historic clay tile — the roof itself is salvageable. The product failed; the installation may not have. We'll help you understand the difference.</div>
+          <div className="label">Think you have one of these systems?</div>
+          <div className="small">Request a system assessment and we can source it for you. In many cases — particularly with historic clay tile — the roof itself is salvageable: the product failed, the installation may not have. We'll help you understand the difference.</div>
         </div>
         <button className="btn-copper" onClick={() => onJump("contact")}>Request a System Assessment <ArrowRight size={14} /></button>
       </div>
@@ -952,8 +933,8 @@ function SystemsNote() {
     <section className="systems-note systems-segue" id="systems" data-screen-label="How Roofs Actually Work">
       <div className="systems-segue-lead">
         <span className="eyebrow">A Note on How Roofs Actually Work</span>
-        <h2>Roofs leak for three reasons: <em>fasteners, flashings, and flawed installation.</em></h2>
-        <p>What goes on top matters — but a roof is a system. The decking, underlayment, fasteners, flashings, and installation method are what decide whether it holds.</p>
+        <h2>Roofs leak for three reasons: <em>felt, fasteners, and flashings.</em></h2>
+        <p>What goes on top matters — but a roof is a system. The felt beneath it, the fasteners holding it, and the flashings at every transition are what decide whether it holds.</p>
       </div>
       <div className="systems-segue-row">
         {ROOF_SYSTEMS.map((s) =>
@@ -1376,9 +1357,8 @@ function ContactForm() {
           <h2>Schedule a <em>Consultation</em></h2>
           <p>We review every inquiry personally. Expect a response within one business day. For urgent matters call us directly.</p>
           <div className="contact-details">
-            <div className="contact-detail"><PhoneIcon /><span>(214) 555-0100</span></div>
-            <div className="contact-detail"><span className="contact-label">Email</span><span>hello@prioritydesigner.com</span></div>
-            <div className="contact-detail"><span className="contact-label">Location</span><span>Dallas–Fort Worth Metroplex</span></div>
+            <div className="contact-detail"><PhoneIcon /><span>(609) 668-1419</span></div>
+            <div className="contact-detail"><span className="contact-label">Email</span><span>designer@priorityroofs.com</span></div>
           </div>
         </div>
         <div className="contact-form-wrap">
@@ -1401,11 +1381,11 @@ function ContactForm() {
                 <div className="form-row">
                   <label>
                     <span>Phone</span>
-                    <input type="tel" name="phone" placeholder="(214) 555-0000" />
+                    <input type="tel" name="phone" required placeholder="(214) 555-0000" />
                   </label>
                   <label>
                     <span>Roof Type</span>
-                    <select name="roof_type">
+                    <select name="roof_type" required>
                       <option value="">Select a type</option>
                       <option>Natural Slate</option>
                       <option>Clay Tile</option>
@@ -1418,7 +1398,7 @@ function ContactForm() {
                 </div>
                 <label className="form-full">
                   <span>Property Address</span>
-                  <input type="text" name="address" placeholder="123 Estate Dr, Dallas, TX" />
+                  <input type="text" name="address" required placeholder="123 Estate Dr, Dallas, TX" />
                 </label>
                 <label className="form-full">
                   <span>Message</span>
@@ -1833,13 +1813,13 @@ function CompanyStory() {
     </section>);
 }
 
+// 2026-06-11 (Jack): trimmed to the three he named on the call, headline only.
+// (He floated a fourth — "We don't tell you what you want to hear because it
+// creates income for us" — but the recorded decision was three; add if wanted.)
 const PRINCIPLES = [
-  { title: "We don't subcontract installation.", body: "The crew that assessed your roof installs it. There are no day-laborers, no staffing agencies, no handoffs. We know who is on your roof at every stage because we've worked with them for years." },
-  { title: "We don't install less-than-quality materials.", body: "Natural slate, authentic clay, and the one synthetic we trust — that's the list. We won't put a cheaper material on your roof to win a bid, because we're the ones who have to stand behind it." },
-  { title: "We don't call a roof sound just because it has no hail damage.", body: "A roof can pass a hail inspection and still be failing — at the flashings, the underlayment, the fasteners. We assess the whole system, not just the surface an adjuster photographs." },
-  { title: "We don't file insurance claims without legitimate cause.", body: "We pursue a claim only when there is genuine, documented cause an insurer owes. We won't manufacture damage or file a claim that wastes your time and raises your premium." },
-  { title: "We don't chase volume.", body: "We take fewer projects than we could. That's a deliberate choice. It means the principals are involved in every estimate, every installation decision, and every final walkthrough — not managing from a distance." },
-  { title: "We don't cut corners on what you can't see.", body: "Underlayment, fasteners, deck preparation — these are the components no inspector photographs and no homeowner sees. They are also the components that determine whether your roof holds for fifty years or fifteen." },
+  { title: "We don't install less-than-quality materials.", body: "" },
+  { title: "We don't play insurance games without legitimate cause.", body: "" },
+  { title: "We don't call a roof sound just because it has no hail damage.", body: "" },
 ];
 
 function PhilosophyCard({ title, body, index }) {
@@ -1859,7 +1839,7 @@ function PhilosophyCard({ title, body, index }) {
     <article className={`philosophy-card${seen ? " is-in" : ""}`} ref={ref} style={{ "--i": index }}>
       <span className="philosophy-card-num">{String(index + 1).padStart(2, "0")}</span>
       <h3>{stripped}</h3>
-      <p>{body}</p>
+      {body && <p>{body}</p>}
     </article>);
 }
 
@@ -1873,7 +1853,7 @@ function PhilosophySection() {
             <span>We</span>
             <span className="don">Don't.</span>
           </h2>
-          <p className="philosophy-anchor-sub">Six lines we won't cross, regardless of the project.</p>
+          <p className="philosophy-anchor-sub">A few lines we won't cross, regardless of the project.</p>
         </aside>
         <div className="philosophy-list">
           {PRINCIPLES.map((p, i) =>
@@ -1890,9 +1870,11 @@ function PhilosophySection() {
 // Cultural Tutor / William Morris idea Jack shared: the "useful vs.
 // beautiful" tradeoff is a false one. Three-column layout (Ryan picked
 // it over the editorial variant on 2026-06-07).
+// 2026-06-11 (Jack): swapped the William Morris "perforce" quote — Jack and Ryan
+// both found it too hard to parse — for this Roger Scruton line.
 const MORRIS_QUOTE = {
-  text: "To give people pleasure in the things they must perforce use, that is one great office of decoration; to give people pleasure in the things they must perforce make, that is the other use of it.",
-  cite: "William Morris",
+  text: "To preserve what is beautiful is to keep faith with the past and to build a bridge of excellence to the future.",
+  cite: "Roger Scruton",
 };
 // A real copper detail from our own work carries the quote — proof that the
 // working parts of a roof are worth looking at. Easily swappable.
@@ -1936,7 +1918,6 @@ function EthosPillar({ t, index }) {
         <h3 className="ethos-pillar-word">{t.word}</h3>
       </div>
       <div className="ethos-pillar-text">
-        <p className="ethos-pillar-sub">{t.sub}</p>
         <p className="ethos-pillar-body">{t.body}</p>
       </div>
     </article>);
@@ -2096,7 +2077,7 @@ function DiscontinuedIntro() {
       <div className="disc-intro-inner">
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>A Note From the Field</span>
         <blockquote className="disc-intro-quote">
-          <p>"We keep this list so you don't get caught the way too many homeowners do — holding the bill for a product that's no longer made, with the contractor long gone and the warranty worthless. Some of these aged out. Some failed. We know the difference — and what to do about it."</p>
+          <p>"Please notice, we do not wish to hoard information from any competition that might see it; rather, we wish to educate and inform homeowners so that they can better protect their homes and finances."</p>
         </blockquote>
         <div className="disc-intro-sig">— Jack, Founder · Priority Designer · Est. 2016</div>
       </div>
@@ -2145,7 +2126,7 @@ function ThreeReasonsSection() {
       <div className="three-reasons-head">
         <span className="eyebrow">Why Roofs Fail</span>
         <h2>The Three Reasons We <em>See Roofs Fail</em></h2>
-        <p className="three-reasons-sub">It is rarely the visible field material. It is almost always one of three things below it — decking, flashings, or fasteners — done quickly the first time and discovered slowly twenty years later.</p>
+        <p className="three-reasons-sub">It is rarely the visible field material. It is almost always one of three things — the felt beneath it, the fasteners holding it, or the flashings at every transition — done quickly the first time and discovered slowly twenty years later.</p>
       </div>
       <div className="reason-frames">
         {THREE_REASONS.map((r, i) =>
@@ -2356,24 +2337,21 @@ function WhatToExpect() {
     </section>);
 }
 
+// 2026-06-11 (Jack): reviews are linked to Google rather than reprinted on-site,
+// to keep clients' business private and the reviews verifiably authentic.
+// TODO(jack): replace GOOGLE_REVIEWS_URL with the real Google Business profile link.
+const GOOGLE_REVIEWS_URL = "https://www.google.com/search?q=Priority+Designer+Historic+Exteriors+reviews";
+
 function Testimonials() {
   return (
     <section className="testimonials-section">
       <div className="testimonials-head">
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>From Our Clients</span>
-        <h2>What They <em>Noticed</em></h2>
-      </div>
-      <div className="testimonials-grid">
-        {TESTIMONIALS.map((t) =>
-        <div className="testimonial-card" key={t.name}>
-            <div className="testimonial-mark">"</div>
-            <p className="testimonial-quote">{t.quote}</p>
-            <div className="testimonial-foot">
-              <span className="testimonial-name">{t.name}</span>
-              <span className="testimonial-prop">{t.property} · {t.material}</span>
-            </div>
-          </div>
-        )}
+        <h2>Reviewed by the People <em>We Work For</em></h2>
+        <p className="testimonials-sub">We keep our clients' business private — so our reviews live where they can't be edited or invented. Read them in full on Google.</p>
+        <a className="btn-copper" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
+          Read Our Google Reviews <ArrowRight size={14} />
+        </a>
       </div>
     </section>);
 }

@@ -14,10 +14,10 @@ function App() {
   return (
     <React.Fragment>
       <Nav />
+      {/* Jack 2026-06-11: subheading removed — "leave it at Projects of Distinction." */}
       <PageHero
         eyebrow="Selected Work"
         title="Projects of Distinction"
-        sub="Estate and historic restorations across the DFW Metroplex — each one documented from strip to ridge."
         image="assets/hero/2-Oct 03 2023 09_56am-6LHU.jpg"
       />
       <ProjectGrid onOpen={(slug) => setActiveSlug(slug)} />

@@ -77,17 +77,17 @@ const MANUFACTURERS = [
     name: "Ludowici",
     role: "America's Oldest Clay Roof Tile Manufacturer · Est. 1888",
     body: "Ludowici is the oldest and most renowned clay roof tile manufacturer in America. They can remake any mold dating back to their conception as well as match discontinued tile molds such as Heinz tile or Mineral Wells tile to keep the exact historic charm the home previously had.",
-    image: "assets/materials/clay.jpg",
+    image: "assets/projects/estate-clay-tile/01.webp",
     stamp: "01 / 04",
     logo: "assets/logos/manufacturers/ludowici.png", // placeholder path
   },
   {
-    name: "La Escandella",
-    role: "Spain's Leading Clay Tile Manufacturer · European Certified",
-    body: "La Escandella is the leading clay tile manufacturer in Spain and highly sought after throughout Europe. Their tiles have the highest ratings clay can earn and give the property a truly authentic European style.",
-    image: "assets/materials/slate.jpg",
+    name: "Slate Valley Supply / Be Natural",
+    role: "Natural S1 Slate from Vermont & Spain",
+    body: "Slate isn't manufactured, it's farmed. The selection process of that slate is almost as important as its rating. Our partners were born and live right where the quarries are and have a depth of knowledge that give us and our customers full confidence in the quality of the product installed and some of the shortest lead times in the industry.",
+    image: "assets/materials/metal.jpg",
     stamp: "02 / 04",
-    logo: "assets/logos/manufacturers/la-escandella.png",
+    logo: "assets/logos/manufacturers/slate-valley.png",
   },
   {
     name: "Brava",
@@ -98,12 +98,12 @@ const MANUFACTURERS = [
     logo: "assets/logos/manufacturers/brava.png",
   },
   {
-    name: "Slate Valley Supply",
-    role: "Natural Quarried Slate · Vermont and Beyond",
-    body: "Slate isn't manufactured, it's farmed. We purchase from Slate Valley Supply because the owner and operator was born working the quarries in Vermont and has the best relationships and knowledge you can have. This gets us lead times of 2–8 weeks on any slate size and color. Something we've seen firsthand other companies cannot offer.",
-    image: "assets/materials/metal.jpg",
+    name: "La Escandella",
+    role: "Spain's Leading Clay Tile Manufacturer · European Certified",
+    body: "La Escandella is the leading clay tile manufacturer in Spain and highly sought after throughout Europe. Their tiles have the highest ratings clay can earn and give the property a truly authentic European style.",
+    image: "assets/materials/slate.jpg",
     stamp: "04 / 04",
-    logo: "assets/logos/manufacturers/slate-valley.png",
+    logo: "assets/logos/manufacturers/la-escandella.png",
   },
 ];
 
@@ -419,19 +419,24 @@ const MAP_PROJECTS = [
   { name: "Westlake Estate · Designer Shingle + Copper", city: "Westlake",  state: "TX", x: 464, y: 444, slug: "westlake-designer-shingle",   system: "Designer Shingle · Copper", scope: "Estate New Construction",       blurb: "Designer shingle field with hand-formed copper turrets — Class 4 impact rating and the depth of a custom estate.", image: "assets/projects/westlake-designer-shingle/01.webp" },
   { name: "Central Texas Estate · Natural Slate",      city: "Waco",        state: "TX", x: 470, y: 478, slug: "waco-natural-slate",          system: "Natural Slate",             scope: "Full Slate Restoration",        blurb: "Central Texas estate finished in quarried natural slate — every fastener and flashing engineered for a roof you'll own for a century.", image: "assets/projects/waco-natural-slate/01.webp" },
   { name: "Coastal California Estate · Pacific Slate", city: "Carmel",      state: "CA", x: 105, y: 298, slug: "carmel-coastal-slate",        system: "Natural Slate · Coastal",   scope: "Coastal Slate Restoration",     blurb: "Pacific-coast slate restoration — salt-air exposure governed every fastener and flashing decision on the project.", image: "assets/projects/carmel-coastal-slate/01.webp" },
-  { name: "St. Louis Estate · Slate Restoration",      city: "St. Louis",   state: "MO", x: 590, y: 308, slug: "st-louis-estate-slate",       system: "Natural Slate · Estate",    scope: "Out-of-Region Restoration",     blurb: "Out-of-region slate restoration coordinated through quarried supply and detailed for Midwest freeze-thaw.", image: "assets/projects/st-louis-estate-slate/01.webp" },
-  { name: "St. Joseph's Catholic Church",              city: "Cheyenne",    state: "WY", x: 478, y: 252, slug: "st-josephs-cheyenne",         system: "Natural Slate",             scope: "Parish Slate Restoration",      blurb: "Upcoming parish slate restoration coordinated with the diocese — landmark-review documentation and phased install scheduled to keep the building in service.", image: "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1600&auto=format&fit=crop&q=85", coming: true },
+  { name: "St. Louis Estate · Slate Restoration",      city: "St. Louis",   state: "MO", x: 575, y: 285, slug: "st-louis-estate-slate",       system: "Natural Slate · Estate",    scope: "Out-of-Region Restoration",     blurb: "Out-of-region slate restoration coordinated through quarried supply and detailed for Midwest freeze-thaw.", image: "assets/projects/st-louis-estate-slate/01.webp" },
+  { name: "St. Joseph's Catholic Church",              city: "Cheyenne",    state: "WY", x: 345, y: 166, slug: "st-josephs-cheyenne",         system: "Natural Slate",             scope: "Parish Slate Restoration",      blurb: "Upcoming parish slate restoration coordinated with the diocese — landmark-review documentation and phased install scheduled to keep the building in service.", image: "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=1600&auto=format&fit=crop&q=85", coming: true },
 ];
 
 // Hero variants A/C — featured projects with real photos.
 // Variant A (RoofReel) and Variant C (HeroSlides) both pull from this list;
 // Variant B (HeroMosaic) reuses the full PROJECTS gallery for its tile fill.
+// 2026-06-13 (Jack): lead the slides with the new Tobin slate + Andrew Arnold clay
+// jobs; dropped the Colleyville copper turret ("looks weird from the angle").
+// TODO(jack): add the Holy Trinity Catholic boom-lift/skyline shot when supplied
+// (uncomment below + drop the photo at assets/projects/holy-trinity-clay/01.webp).
 const HERO_TOP_FIVE = [
+  { slug: "estate-slate-copper",        name: "Historic Estate · Natural Slate & Copper",  image: "assets/projects/estate-slate-copper/01.webp" },
+  { slug: "estate-clay-tile",           name: "Historic Estate · Clay Tile",               image: "assets/projects/estate-clay-tile/01.webp" },
+  // { slug: "holy-trinity-clay",       name: "Holy Trinity Catholic · Clay Tile",         image: "assets/projects/holy-trinity-clay/01.webp" },
   { slug: "waco-natural-slate",         name: "Central Texas Estate · Natural Slate",      image: "assets/projects/waco-natural-slate/01.webp" },
-  { slug: "dallas-tudor-slate",         name: "Dallas Tudor · Natural Slate",              image: "assets/projects/dallas-tudor-slate/01.webp" },
   { slug: "westlake-designer-shingle",  name: "Westlake Estate · Designer Shingle + Copper", image: "assets/projects/westlake-designer-shingle/01.webp" },
   { slug: "carmel-coastal-slate",       name: "Coastal California Estate · Pacific Slate", image: "assets/projects/carmel-coastal-slate/01.webp" },
-  { slug: "copper-standing-seam-turret",name: "Hand-Formed Copper · Slate Turret",         image: "assets/projects/copper-standing-seam-turret/01.webp" },
 ];
 
 // Three reasons we see roofs fail — replaces the era-based HistoricalContext per
@@ -440,39 +445,39 @@ const HERO_TOP_FIVE = [
 const THREE_REASONS = [
   {
     num: "01",
-    title: "Decking & Underlayment",
-    subtitle: "What you don't see decides whether it leaks.",
-    body: "Most roofs fail from the deck up — not the surface down. Original 1×6 skip sheathing, undersized plywood, and pre-2000 felt-15 underlayment routinely outlive their service window while the field material above remains sound. When that happens, the visible roof looks fine while the system below is already gone.",
+    title: "Felt",
+    subtitle: "What you don't see is what determines whether a roof leaks.",
+    body: "We replace many roofs because they have an old #30 lb felt underneath or a failed ice and water shield. We cover all specialty roofs we install in a high-temperature ice and water shield. This is above industry standard — it is our own standard.",
     examples: [
-      "Felt-15 beneath natural slate or tile",
-      "Skip sheathing with no over-deck",
-      "Plywood that took on moisture and never dried",
+      "Old #30 lb felt beneath natural slate or tile",
+      "A failed or melted ice and water shield",
+      "Underlayment that aged out while the field above held",
     ],
     image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=2200&auto=format&fit=crop&q=85",
   },
   {
     num: "02",
-    title: "Flashings & Penetrations",
+    title: "Fasteners",
+    subtitle: "The wrong fastener fails long before the roof does.",
+    body: "Failures come from not using the proper material — copper or steel that will corrode long after the slate or tile ever would — or from over- and under-driven nails that let wind-driven rain in. The fastener holding the roof determines whether the system reaches its rated life.",
+    examples: [
+      "Galvanized fasteners under copper or stainless details",
+      "Over-driven nails that crush the slate or tile",
+      "Under-driven nails that let wind-driven rain in",
+    ],
+    image: "https://images.unsplash.com/photo-1565953554309-9e60d3edec64?w=2200&auto=format&fit=crop&q=85",
+  },
+  {
+    num: "03",
+    title: "Flashings",
     subtitle: "Flashings are the single largest source of failure.",
-    body: "Step flashings, valley pans, chimney crickets, and pipe boots are where water finds the path. Painted galvanized rusts. Caulked terminations split. Plumbing boots crack at the boot collar inside a decade. The roof above can be flawless and still leak because the detail at the wall, chimney, or valley was built for the bid sheet — not the structure.",
+    body: "We hand-form copper, lead, and stainless step- and pan-flashings to match the original details and outlast the roof material above. The field can be flawless and still leak when the detail at the wall, chimney, or valley was built for the bid sheet instead of the building.",
     examples: [
       "Reused galvanized step flashing in copper-era systems",
       "Caulked chimney saddles with no cricket",
       "Plastic plumbing boots over hot decks",
     ],
     image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=2200&auto=format&fit=crop&q=85",
-  },
-  {
-    num: "03",
-    title: "Fasteners & Installation",
-    subtitle: "Installation method matters more than material.",
-    body: "Stainless versus galvanized. Copper versus electroplated steel. Hand-driven versus pneumatic. The fasteners holding the roof in place determine whether the system meets its rated life — not the wrapper on the bundle. Most premature failures we open up are not material defects. They are installation shortcuts compounded by twenty years of thermal movement.",
-    examples: [
-      "Galvanized fasteners under copper or stainless flashings",
-      "Pneumatic over-driving that crushes the slate or tile",
-      "Fastener spec ignored at the eave, ridge, and valley",
-    ],
-    image: "https://images.unsplash.com/photo-1565953554309-9e60d3edec64?w=2200&auto=format&fit=crop&q=85",
   },
 ];
 
@@ -505,12 +510,12 @@ const INSTALL_STEP_PHOTOS = [
 
 const DISCONTINUED = {
   Slate: {
-    label: "Natural & Synthetic Slate",
+    label: "Natural Slate",
     items: [
       {
         title: "GAF TruSlate",
         sub: "Natural Slate · Proprietary Install System",
-        desc: "GAF's TruSlate system used a proprietary clip and batten installation method with a documented failure mode when thermal movement stresses the clips over time. GAF has discontinued the product. Roofs installed with TruSlate require full system removal — the clips cannot be selectively replaced.",
+        desc: "GAF's TruSlate system used a proprietary clip and batten installation method with a documented failure mode when thermal movement stresses the clips over time. Not only that, but their ice and water shield has melted frequently, multiplying the issues and causing failure. GAF has discontinued the product. Roofs installed with TruSlate require full system removal.",
         images: [
           "assets/discontinued/gaf-truslate/01.webp",
           "assets/discontinued/gaf-truslate/02.webp",
@@ -521,9 +526,9 @@ const DISCONTINUED = {
         ],
       },
       {
-        title: "Imported Natural Slate",
-        sub: "Quality Inconsistent · Country of Origin Risk",
-        desc: "Some imported natural slates from the early 2000s carried inconsistent mineral composition and freeze-thaw resistance. We inspect for delamination, edge crumbling, and tell-tale rust staining at fastener points before recommending repair vs. replacement.",
+        title: "Chinese Slate",
+        sub: "Discontinued · No Quality Standards",
+        desc: "Chinese slate was commonly installed in the 90s – mid 2000s. We mentioned above that slate selection is extremely important, and this was the problem with Chinese slate. There were and are no standards or quality control which led to slates being very poor quality, delaminating frequently, extreme brittleness, and especially prone to efflorescence. We have found these in DFW, Colorado, St. Louis, and Wisconsin to name a few.",
         images: [
           "assets/discontinued/imported-slate/01.webp",
           "assets/discontinued/imported-slate/02.webp",
@@ -535,9 +540,9 @@ const DISCONTINUED = {
         ],
       },
       {
-        title: "Fiber Cement Asbestos Slate",
+        title: "Fiber Cement / Asbestos",
         sub: "Asbestos-Containing Material · Regulated",
-        desc: "Manufactured through the mid-20th century, asbestos-containing fiber cement slate tiles are now a regulated material. Replacement requires abatement protocols in many states. The material itself becomes brittle and loses fastener hold over time.",
+        desc: "Fiber Cement doesn't have to contain asbestos, but most did. These roof tiles have been discontinued due to the health hazards (mesothelioma & lung cancer) that come from the particles that can be breathed in. Removal of these roofs is required and delicate in relation to following the necessary safety protocols.",
       },
     ],
   },
@@ -557,12 +562,12 @@ const DISCONTINUED = {
     ],
   },
   Synthetic: {
-    label: "Composite & Synthetic Systems",
+    label: "Synthetics — Rubber and Plastic",
     items: [
       {
-        title: "DaVinci Single-Width",
-        sub: "Discontinued SKU · Color-Matched Replacement",
-        desc: "Earlier single-width DaVinci composite shake has been retired in favor of multi-width profiles. We stock retired colorways for blending and replacement on roofs that should not be fully redone.",
+        title: "DaVinci BellaForte",
+        sub: "Discontinued · Color-Matched Replacement",
+        desc: "DaVinci's BellaForte composite slate has been retired from the line. We stock retired colorways for blending and replacement on roofs that should not be fully redone.",
         images: [
           "assets/discontinued/davinci-bellaforte/01.webp",
           "assets/discontinued/davinci-bellaforte/02.webp",
@@ -603,18 +608,8 @@ const DISCONTINUED = {
     ],
   },
   Underlayment: {
-    label: "Underlayment & Decking",
+    label: "Underlayment",
     items: [
-      {
-        title: "Felt-15 Beneath Tile",
-        sub: "Insufficient for 50-Year Material",
-        desc: "Many tile and slate roofs were installed over felt-15 underlayment that has now reached end-of-life while the tile above remains serviceable. We strip, re-underlay with self-adhered membrane, and reinstall — saving 70%+ of the original tile.",
-      },
-      {
-        title: "Original 1×6 Skip Sheathing",
-        sub: "Common in Pre-1960 Estates",
-        desc: "Skip sheathing is fine for slate and tile but won't accept modern underlayments without remediation. We over-deck with structural plywood or solid 1× nailing surface, preserving the original framing.",
-      },
       {
         title: "TAMKO TW Underlayment",
         sub: "Discontinued Synthetic · Tile & Slate Substrate",
@@ -636,21 +631,21 @@ const DISCONTINUED = {
 const ROOF_SYSTEMS = [
   {
     num: "01 / 03",
-    title: "Decking & Underlayment",
-    body: "What you don't see is what determines whether a roof leaks. We re-deck where original sheathing has lost integrity and over-lay with self-adhered membranes rated for the substrate above.",
+    title: "Felt",
+    body: "What you don't see is what determines whether a roof leaks. We replace many roofs because they have an old #30 lb felt underneath or a failed ice and water shield. We cover all specialty roofs we install in a high-temperature ice and water shield — above industry standard, our own standard.",
     image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=1200&auto=format&fit=crop&q=80",
   },
   {
     num: "02 / 03",
-    title: "Flashings & Penetrations",
-    body: "Flashings are the single largest source of failure. We hand-form copper, lead, and stainless step- and pan-flashings to match original details and outlast the roof material above.",
-    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=1200&auto=format&fit=crop&q=80",
+    title: "Fasteners",
+    body: "Not using the proper material — copper or steel that corrodes long after the slate or tile ever would — or over- and under-driven nails that let wind-driven rain in. The fastener decides whether the system reaches its rated life.",
+    image: "https://images.unsplash.com/photo-1565953554309-9e60d3edec64?w=1200&auto=format&fit=crop&q=80",
   },
   {
     num: "03 / 03",
-    title: "Fasteners & Installation",
-    body: "Stainless or copper-only fasteners, shimmed and torqued to manufacturer spec. Installation method matters more than material — we install the way each system was specified, not the way it's been done locally.",
-    image: "https://images.unsplash.com/photo-1565953554309-9e60d3edec64?w=1200&auto=format&fit=crop&q=80",
+    title: "Flashings",
+    body: "Flashings are the single largest source of failure. We hand-form copper, lead, and stainless step- and pan-flashings to match original details and outlast the roof material above.",
+    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=1200&auto=format&fit=crop&q=80",
   },
 ];
 

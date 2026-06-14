@@ -1,19 +1,19 @@
-/* global React, ReactDOM, Nav, PageHero, DiscontinuedIntro, ThreeReasonsSection, Discontinued, WhatToDo, DiscontinuedFAQ, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, PageHero, DiscontinuedIntro, ThreeReasonsSection, Discontinued, WhatToDo, FinalCTA, Footer */
 function App() {
   return (
     <React.Fragment>
       <Nav />
+      {/* Jack 2026-06-11: subheader removed; hero is now a "failed roof" overview
+          pulled from the discontinued-product photos. FAQ moved off to the blog. */}
       <PageHero
         eyebrow="Industry Knowledge · Trade Standards"
         title="Discontinued Products We Know in the Field"
-        sub="Some failed in the field. Others are simply no longer manufactured. Either way, we know how to match, repair, or replace them."
-        image="assets/hero/4-Jul 13 2024 07_44am-uY2n.jpg"
+        image="assets/discontinued/imported-slate/01.webp"
       />
       <DiscontinuedIntro />
       <Discontinued onJump={() => { window.location.href = "contact.html"; }} />
       <ThreeReasonsSection />
       <WhatToDo />
-      <DiscontinuedFAQ />
       <FinalCTA />
       <Footer />
     </React.Fragment>

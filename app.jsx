@@ -13,7 +13,7 @@ function Intro({ leaving }) {
           <span className="word two">Designer</span>
         </div>
         <div className="intro-rule" />
-        <div className="intro-meta">HISTORIC EXTERIORS · SLATE · CLAY · METAL</div>
+        <div className="intro-meta">HISTORIC EXTERIORS · SLATE · CLAY · COPPER</div>
       </div>
     </div>
   );
@@ -24,17 +24,17 @@ function App() {
   const [introLeaving, setIntroLeaving] = useState(false);
   const [heroRevealed, setHeroRevealed] = useState(false);
 
-  // Hero variant toggle (Jack asked for two variations on 2026-05-29; we ship
-  // three so Ryan can compare locally before picking which two go to Jack).
-  // Default to "reel" (current refined hero + RoofReel canvas).
-  // ?hero=mosaic → tile mosaic that shuffles on scroll
-  // ?hero=slides → cross-fading slideshow of the top five projects
+  // Hero variant: Jack picked "slides" on the 2026-06-11 call ("Hands down my
+  // favorite"), so slides is now the default. The other two stay reachable via
+  // query string for local comparison only:
+  //   ?hero=reel   → original refined hero + RoofReel canvas
+  //   ?hero=mosaic → tile mosaic that shuffles on scroll
   const heroVariant = (() => {
     try {
       const v = new URLSearchParams(window.location.search).get("hero");
-      return v === "mosaic" || v === "slides" ? v : "reel";
+      return v === "mosaic" || v === "reel" ? v : "slides";
     } catch (e) {
-      return "reel";
+      return "slides";
     }
   })();
 

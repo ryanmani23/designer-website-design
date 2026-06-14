@@ -1,20 +1,19 @@
-/* global React, ReactDOM, Nav, PageHero, MaterialsPhilosophy, Manufacturers, RequestSample, MaterialComparison, InstallProcess, LifecycleROI, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, PageHero, Manufacturers, RequestSample, MaterialComparison, FinalCTA, Footer */
 function App() {
   return (
     <React.Fragment>
       <Nav />
+      {/* TODO(jack): swap the hero image for the showroom photo once supplied. */}
+      {/* Jack 2026-06-11: showroom hero, title only; lead with the sample request,
+          then the materials, then the comparison sheet. Trimmed the long
+          MaterialsPhilosophy / InstallProcess / LifecycleROI sections. */}
       <PageHero
-        eyebrow="Manufacturer Partnerships"
         title="Materials That Can Recreate the Irreplaceable"
-        sub="Four manufacturers — each selected because we would install their products on our own homes, and have."
         image="assets/hero/3-Jul 06 2024 09_34am-W6PV.jpg"
       />
-      <MaterialsPhilosophy />
-      <Manufacturers banner="none" />
       <RequestSample />
+      <Manufacturers banner="none" />
       <MaterialComparison />
-      <InstallProcess />
-      <LifecycleROI />
       <FinalCTA />
       <Footer />
     </React.Fragment>
