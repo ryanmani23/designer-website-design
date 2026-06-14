@@ -433,7 +433,7 @@ const MAP_PROJECTS = [
 const HERO_TOP_FIVE = [
   { slug: "estate-slate-copper",        name: "Historic Estate · Natural Slate & Copper",  image: "assets/projects/estate-slate-copper/01.webp" },
   { slug: "estate-clay-tile",           name: "Historic Estate · Clay Tile",               image: "assets/projects/estate-clay-tile/01.webp" },
-  // { slug: "holy-trinity-clay",       name: "Holy Trinity Catholic · Clay Tile",         image: "assets/projects/holy-trinity-clay/01.webp" },
+  { slug: "holy-trinity-clay",          name: "Holy Trinity Catholic · Clay Tile",         image: "assets/projects/holy-trinity-clay/01.webp" },
   { slug: "waco-natural-slate",         name: "Central Texas Estate · Natural Slate",      image: "assets/projects/waco-natural-slate/01.webp" },
   { slug: "westlake-designer-shingle",  name: "Westlake Estate · Designer Shingle + Copper", image: "assets/projects/westlake-designer-shingle/01.webp" },
   { slug: "carmel-coastal-slate",       name: "Coastal California Estate · Pacific Slate", image: "assets/projects/carmel-coastal-slate/01.webp" },
@@ -673,15 +673,16 @@ const TRADE_CIVIC = [
 // legacy export name preserved for any other consumer
 const PARTNERS = [...PRESERVATION, ...TRADE_CIVIC];
 
-// TODO(jack): Drop real affiliation logos at assets/logos/trust/*.svg|.png.
-// When `logo` is present, the marquee renders the image instead of the text badge.
+// 2026-06-14: real affiliation logos supplied by Ryan, converted to webp under
+// assets/logos/trust/. The marquee renders the image; the initials badge stays
+// as the onError fallback. (Manufacturer-card logos are still pending.)
 const TRUST = [
-  { initials: "TRI", name: "Tile Roofing Institute",        role: "Certified Tile Installer",      logo: "assets/logos/trust/tri.png" },
-  { initials: "SRC", name: "Slate Roofing Contractors",     role: "Certified Slate Specialist",    logo: "assets/logos/trust/srca.png" },
-  { initials: "NSA", name: "National Slate Association",    role: "NSA Certified Member",          logo: "assets/logos/trust/nsa.png" },
-  { initials: "MRC", name: "Metal Roofing Consortium",      role: "Certified Metal Specialist",    logo: "assets/logos/trust/mrc.png" },
-  { initials: "AIG", name: "AIG & Chubb Preferred",         role: "Preferred Contractor / Vendor", logo: "assets/logos/trust/aig-chubb.png" },
-  { initials: "FTF", name: "FORTIFIED",                     role: "Storm-Resilient Installation",  logo: "assets/logos/trust/fortified.png" },
+  { initials: "TRI", name: "Tile Roofing Institute",        role: "Certified Tile Installer",      logo: "assets/logos/trust/tri.webp" },
+  { initials: "SRC", name: "Slate Roofing Contractors",     role: "Certified Slate Specialist",    logo: "assets/logos/trust/srca.webp" },
+  { initials: "NSA", name: "National Slate Association",    role: "NSA Certified Member",          logo: "assets/logos/trust/nsa.webp" },
+  { initials: "MRC", name: "Metal Roofing Consortium",      role: "Certified Metal Specialist",    logo: "assets/logos/trust/mrc.webp" },
+  { initials: "AIG", name: "AIG & Chubb Preferred",         role: "Preferred Contractor / Vendor", logo: "assets/logos/trust/aig-chubb.webp" },
+  { initials: "FTF", name: "FORTIFIED",                     role: "Storm-Resilient Installation",  logo: "assets/logos/trust/fortified.webp" },
 ];
 
 const NAV_ITEMS = [
