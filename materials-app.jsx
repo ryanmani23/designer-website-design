@@ -11,9 +11,9 @@ function App() {
         title="Materials That Can Recreate the Irreplaceable"
         image="assets/hero/3-Jul 06 2024 09_34am-W6PV.jpg"
       />
+      <MaterialComparison />
       <RequestSample />
       <Manufacturers banner="none" />
-      <MaterialComparison />
       <FinalCTA />
       <Footer />
     </React.Fragment>

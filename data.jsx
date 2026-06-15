@@ -82,7 +82,7 @@ const MANUFACTURERS = [
     logo: "assets/logos/manufacturers/ludowici.png", // placeholder path
   },
   {
-    name: "Slate Valley Supply / Be Natural",
+    name: "Slate Valley Supply",
     role: "Natural S1 Slate from Vermont & Spain",
     body: "Slate isn't manufactured, it's farmed. The selection process of that slate is almost as important as its rating. Our partners were born and live right where the quarries are and have a depth of knowledge that give us and our customers full confidence in the quality of the product installed and some of the shortest lead times in the industry.",
     image: "assets/materials/metal.jpg",
@@ -453,7 +453,7 @@ const THREE_REASONS = [
       "A failed or melted ice and water shield",
       "Underlayment that aged out while the field above held",
     ],
-    image: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=2200&auto=format&fit=crop&q=85",
+    image: "assets/discontinued/tamko-tw-underlayment/02.webp",
   },
   {
     num: "02",
@@ -465,7 +465,7 @@ const THREE_REASONS = [
       "Over-driven nails that crush the slate or tile",
       "Under-driven nails that let wind-driven rain in",
     ],
-    image: "https://images.unsplash.com/photo-1565953554309-9e60d3edec64?w=2200&auto=format&fit=crop&q=85",
+    image: "assets/discontinued/imported-slate/02.webp",
   },
   {
     num: "03",
@@ -477,7 +477,7 @@ const THREE_REASONS = [
       "Caulked chimney saddles with no cricket",
       "Plastic plumbing boots over hot decks",
     ],
-    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=2200&auto=format&fit=crop&q=85",
+    image: "assets/projects/highland-park-copper-slate/02.webp",
   },
 ];
 

@@ -1,16 +1,16 @@
-/* global React, ReactDOM, Nav, PageHero, DiscontinuedIntro, ThreeReasonsSection, Discontinued, WhatToDo, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, PageHero, ThreeReasonsSection, Discontinued, WhatToDo, FinalCTA, Footer */
 function App() {
   return (
     <React.Fragment>
       <Nav />
-      {/* Jack 2026-06-11: subheader removed; hero is now a "failed roof" overview
-          pulled from the discontinued-product photos. FAQ moved off to the blog. */}
+      {/* 2026-06-15: the "note from the field" is folded into the hero subheading
+          (attribution dropped); the standalone DiscontinuedIntro section is gone. */}
       <PageHero
-        eyebrow="Industry Knowledge · Trade Standards"
+        eyebrow="Note From the Field"
         title="Discontinued Products We Know in the Field"
+        sub="We do not wish to hoard information from any competition that might see it; rather, we wish to educate and inform homeowners so that they can better protect their homes and finances."
         image="assets/discontinued/imported-slate/01.webp"
       />
-      <DiscontinuedIntro />
       <Discontinued onJump={() => { window.location.href = "contact.html"; }} />
       <ThreeReasonsSection />
       <WhatToDo />
