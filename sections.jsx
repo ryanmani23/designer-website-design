@@ -1810,13 +1810,14 @@ function CompanyStory() {
     </section>);
 }
 
-// 2026-06-11 (Jack): trimmed to the three he named on the call, headline only.
-// (He floated a fourth — "We don't tell you what you want to hear because it
-// creates income for us" — but the recorded decision was three; add if wanted.)
+// 2026-06-15 (Ryan): back to a 5-item list with descriptions restored for review
+// (dropped only "We don't subcontract installation" from the original six).
 const PRINCIPLES = [
-  { title: "We don't install less-than-quality materials.", body: "" },
-  { title: "We don't play insurance games without legitimate cause.", body: "" },
-  { title: "We don't call a roof sound just because it has no hail damage.", body: "" },
+  { title: "We don't install less-than-quality materials.", body: "Natural slate, authentic clay, and the one synthetic we trust — that's the list. We won't put a cheaper material on your roof to win a bid, because we're the ones who have to stand behind it." },
+  { title: "We don't call a roof sound just because it has no hail damage.", body: "A roof can pass a hail inspection and still be failing — at the flashings, the underlayment, the fasteners. We assess the whole system, not just the surface an adjuster photographs." },
+  { title: "We don't file insurance claims without legitimate cause.", body: "We pursue a claim only when there is genuine, documented cause an insurer owes. We won't manufacture damage or file a claim that wastes your time and raises your premium." },
+  { title: "We don't chase volume.", body: "We take fewer projects than we could. That's a deliberate choice. It means the principals are involved in every estimate, every installation decision, and every final walkthrough — not managing from a distance." },
+  { title: "We don't cut corners on what you can't see.", body: "Underlayment, fasteners, deck preparation — these are the components no inspector photographs and no homeowner sees. They are also the components that determine whether your roof holds for fifty years or fifteen." },
 ];
 
 function PhilosophyCard({ title, body, index }) {
