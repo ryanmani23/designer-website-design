@@ -4,16 +4,17 @@ function App() {
     <React.Fragment>
       <Nav />
       {/* TODO(jack): swap the hero image for the showroom photo once supplied. */}
-      {/* Jack 2026-06-11: showroom hero, title only; lead with the sample request,
-          then the materials, then the comparison sheet. Trimmed the long
-          MaterialsPhilosophy / InstallProcess / LifecycleROI sections. */}
+      {/* Jack 2026-06-11/06-13: showroom hero, title only; lead with the sample
+          request, then the materials (like the homepage), then the comparison
+          sheet. Trimmed the long MaterialsPhilosophy / InstallProcess /
+          LifecycleROI sections. */}
       <PageHero
         title="Materials That Can Recreate the Irreplaceable"
         image="assets/hero/3-Jul 06 2024 09_34am-W6PV.jpg"
       />
-      <MaterialComparison />
       <RequestSample />
       <Manufacturers banner="none" />
+      <MaterialComparison />
       <FinalCTA />
       <Footer />
     </React.Fragment>

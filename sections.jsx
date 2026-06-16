@@ -612,13 +612,33 @@ function Manufacturers({ banner = "partners" }) {
 }
 
 function JobsMap() {
-  const [active, setActive] = useState(null); // clicked pin → popup
-  const [hover, setHover] = useState(null); // hovered pin → tooltip
+  const [active, setActive] = useState(null); // clicked single pin → popup
+  const [hover, setHover] = useState(null); // hovered single pin → tooltip
+  const [openCluster, setOpenCluster] = useState(null); // metro key → zoom + panel
   const [viewMode, setViewMode] = useState("map"); // 'map' | 'list'
   const cardRef = useRef(null);
   const markup = (typeof window !== "undefined" && window.US_STATES_MARKUP) || "";
   const shown = active !== null ? active : hover;
-  const toggle = (i) => setActive((a) => a === i ? null : i);
+  const toggle = (i) => { setOpenCluster(null); setActive((a) => a === i ? null : i); };
+
+  // Group pins by metro. A metro with >1 job collapses into one numbered cluster
+  // bubble (so the ~12 DFW jobs don't stack); a metro with 1 job is a normal pin.
+  const groups = React.useMemo(() => {
+    const order = []; const by = {};
+    MAP_PROJECTS.forEach((p, i) => {
+      const key = p.metro || `${p.city}, ${p.state}`;
+      if (!by[key]) { by[key] = []; order.push(key); }
+      by[key].push(Object.assign({ idx: i }, p));
+    });
+    return order.map((key) => {
+      const members = by[key];
+      const cx = members.reduce((s, m) => s + m.x, 0) / members.length;
+      const cy = members.reduce((s, m) => s + m.y, 0) / members.length;
+      return { key, members, cx, cy, count: members.length };
+    });
+  }, []);
+  const activeCluster = openCluster !== null ? groups.find((g) => g.key === openCluster) : null;
+  const openClusterAt = (key) => { setActive(null); setHover(null); setOpenCluster((c) => c === key ? null : key); };
 
   // Auto-pick list view on small screens. Listens to viewport changes so
   // rotation / resize re-applies the right default.
@@ -636,14 +656,13 @@ function JobsMap() {
   }, []);
 
   useEffect(() => {
-    if (active === null) return;
+    if (active === null && openCluster === null) return;
     const handlePointerDown = (e) => {
       if (cardRef.current && cardRef.current.contains(e.target)) return;
-      if (e.target.closest && e.target.closest(".jobsmap-pin")) return;
-      if (e.target.closest && e.target.closest(".jobsmap-list-item")) return;
-      setActive(null);
+      if (e.target.closest && (e.target.closest(".jobsmap-pin") || e.target.closest(".jobsmap-cluster") || e.target.closest(".jobsmap-list-item") || e.target.closest(".jobsmap-clusterpanel"))) return;
+      setActive(null); setOpenCluster(null);
     };
-    const handleKey = (e) => { if (e.key === "Escape") setActive(null); };
+    const handleKey = (e) => { if (e.key === "Escape") { setActive(null); setOpenCluster(null); } };
     document.addEventListener("mousedown", handlePointerDown);
     document.addEventListener("touchstart", handlePointerDown);
     document.addEventListener("keydown", handleKey);
@@ -652,7 +671,7 @@ function JobsMap() {
       document.removeEventListener("touchstart", handlePointerDown);
       document.removeEventListener("keydown", handleKey);
     };
-  }, [active]);
+  }, [active, openCluster]);
 
   return (
     <section className="jobsmap" id="projects" data-screen-label="Jobs of Distinction">
@@ -687,37 +706,54 @@ function JobsMap() {
 
       {viewMode === "map" &&
       <div className="jobsmap-stage">
-        <svg
-          className="jobsmap-base"
-          viewBox="0 0 960 600"
-          preserveAspectRatio="xMidYMid meet"
-          aria-hidden="true"
-          dangerouslySetInnerHTML={{ __html: markup }} />
+        <div className="jobsmap-zoomlayer">
+          <svg
+            className="jobsmap-base"
+            viewBox="0 0 960 600"
+            preserveAspectRatio="xMidYMid meet"
+            aria-hidden="true"
+            dangerouslySetInnerHTML={{ __html: markup }} />
 
-        <svg className="jobsmap-pins" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Project locations">
-          {MAP_PROJECTS.map((p, i) =>
-          <g
-            key={p.name}
-            className={`jobsmap-pin${active === i ? " is-active" : ""}${p.coming ? " is-coming" : ""}`}
-            onMouseEnter={() => setHover(i)}
-            onMouseLeave={() => setHover(null)}
-            onClick={() => toggle(i)}
-            tabIndex={0}
-            role="button"
-            aria-label={`${p.coming ? "Project coming — " : ""}${p.city}, ${p.state}`}
-            onKeyDown={(e) => {if (e.key === "Enter" || e.key === " ") {e.preventDefault();toggle(i);}}}>
+          <svg className="jobsmap-pins" viewBox="0 0 960 600" preserveAspectRatio="xMidYMid meet" role="group" aria-label="Project locations">
+            {groups.map((g) => g.count === 1 ? (() => {
+              const p = g.members[0]; const i = p.idx;
+              return (
+              <g
+                key={g.key}
+                className={`jobsmap-pin${active === i ? " is-active" : ""}`}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
+                onClick={() => toggle(i)}
+                tabIndex={0}
+                role="button"
+                aria-label={`${p.city}, ${p.state}`}
+                onKeyDown={(e) => {if (e.key === "Enter" || e.key === " ") {e.preventDefault();toggle(i);}}}>
+                {/* Transparent hit target — keeps the pin visually small while
+                    giving touch users a 44px-equivalent tap area at typical
+                    stage widths (≈22 SVG units ≈ 36–48 device pixels). */}
+                <circle className="jobsmap-pin-hit" cx={p.x} cy={p.y} r="22" fill="transparent" />
+                <circle className="jobsmap-pin-halo" cx={p.x} cy={p.y} r="13" />
+                <circle className="jobsmap-pin-dot" cx={p.x} cy={p.y} r="5" />
+              </g>);
+            })() : (
+              <g
+                key={g.key}
+                className={`jobsmap-cluster${activeCluster && activeCluster.key === g.key ? " is-open" : ""}`}
+                onClick={() => openClusterAt(g.key)}
+                tabIndex={0}
+                role="button"
+                aria-label={`${g.count} projects in ${g.key} — open list`}
+                onKeyDown={(e) => {if (e.key === "Enter" || e.key === " ") {e.preventDefault();openClusterAt(g.key);}}}>
+                <circle className="jobsmap-pin-hit" cx={g.cx} cy={g.cy} r="22" fill="transparent" />
+                <circle className="jobsmap-cluster-halo" cx={g.cx} cy={g.cy} r="18" />
+                <circle className="jobsmap-cluster-bubble" cx={g.cx} cy={g.cy} r="12" />
+                <text className="jobsmap-cluster-count" x={g.cx} y={g.cy} textAnchor="middle" dominantBaseline="central">{g.count}</text>
+              </g>
+            ))}
+          </svg>
+        </div>
 
-              {/* Transparent hit target — keeps the pin visually small while
-                  giving touch users a 44px-equivalent tap area at typical
-                  stage widths (≈22 SVG units ≈ 36–48 device pixels). */}
-              <circle className="jobsmap-pin-hit" cx={p.x} cy={p.y} r="22" fill="transparent" />
-              <circle className="jobsmap-pin-halo" cx={p.x} cy={p.y} r="13" />
-              <circle className="jobsmap-pin-dot" cx={p.x} cy={p.y} r="5" />
-            </g>
-          )}
-        </svg>
-
-        {shown !== null && (() => {
+        {shown !== null && !activeCluster && (() => {
           const p = MAP_PROJECTS[shown];
           const isPopup = active === shown;
           const xPct = p.x / 960 * 100;
@@ -763,6 +799,33 @@ function JobsMap() {
             </div>);
 
         })()}
+
+        {activeCluster &&
+        <div className="jobsmap-clusterpanel" ref={cardRef} role="dialog" aria-label={`${activeCluster.key} projects`}>
+          <div className="jobsmap-clusterpanel-head">
+            <div>
+              <span className="jobsmap-clusterpanel-eyebrow">{activeCluster.count} Projects</span>
+              <h3 className="jobsmap-clusterpanel-title">{activeCluster.key}</h3>
+            </div>
+            <button className="jobsmap-clusterpanel-close" onClick={() => setOpenCluster(null)} aria-label="Close">×</button>
+          </div>
+          <ul className="jobsmap-clusterpanel-list">
+            {activeCluster.members.map((p) =>
+            <li key={p.slug || p.name} className="jobsmap-clusterpanel-row">
+              <a className="jobsmap-clusterpanel-item" href={p.slug ? `portfolio.html?p=${p.slug}` : "portfolio.html"}>
+                <span className="jobsmap-clusterpanel-thumb" style={{ backgroundImage: `url("${p.image}")` }} aria-hidden="true" />
+                <span className="jobsmap-clusterpanel-text">
+                  <span className="jobsmap-clusterpanel-loc">{p.city}, {p.state}</span>
+                  <span className="jobsmap-clusterpanel-name">{p.name}</span>
+                  <span className="jobsmap-clusterpanel-sys">{p.system}</span>
+                </span>
+                <ArrowRight size={14} />
+              </a>
+            </li>
+            )}
+          </ul>
+        </div>
+        }
       </div>
       }
 
@@ -1226,9 +1289,9 @@ function FinalCTA({ variant }) {
           : <React.Fragment>
                 <span className="final-cta-eyebrow">A Note on How Roofs Actually Work</span>
                 <h2>
-                  Roofs often leak for three reasons:
+                  Roofs leak for three reasons:
                   <br />
-                  <em>Fasteners, Flashings, <span className="amp">and</span> Flawed installation.</em>
+                  <em>Felt, Fasteners, <span className="amp">and</span> Flashings.</em>
                 </h2>
                 <div className="final-cta-actions">
                   <a className="btn-copper-solid" href="contact.html">Request a System Assessment</a>
@@ -1422,7 +1485,7 @@ function ContactForm() {
 
 // ─── Portfolio page ───────────────────────────────────────────
 
-const FILTER_TYPES = ["All", "Slate", "Clay Tile", "Metal", "Designer Shingles", "Commercial"];
+const FILTER_TYPES = ["All", "Slate", "Clay Tile", "Designer Shingles", "Commercial"];
 
 function ProjectGrid({ onOpen }) {
   const [filter, setFilter] = useState("All");
@@ -1812,6 +1875,9 @@ function CompanyStory() {
 
 // 2026-06-15 (Ryan): back to a 5-item list with descriptions restored for review
 // (dropped only "We don't subcontract installation" from the original six).
+// 2026-06-16 (Ryan): INTENTIONAL OVERRIDE of Jack's 06-13 About-page note asking to
+// cut this to three. Ryan opted to keep the 5-item list with descriptions. Do not
+// "fix" this back down to three without checking with Ryan first.
 const PRINCIPLES = [
   { title: "We don't install less-than-quality materials.", body: "Natural slate, authentic clay, and the one synthetic we trust — that's the list. We won't put a cheaper material on your roof to win a bid, because we're the ones who have to stand behind it." },
   { title: "We don't call a roof sound just because it has no hail damage.", body: "A roof can pass a hail inspection and still be failing — at the flashings, the underlayment, the fasteners. We assess the whole system, not just the surface an adjuster photographs." },
