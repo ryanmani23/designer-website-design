@@ -114,21 +114,21 @@ const MANUFACTURERS = [
 // Each project has a `gallery[]` of 3–8 photos under assets/projects/<slug>/.
 const PROJECTS = [
   {
-    // 2026-06-17 (Jack): "Mark Taylor's" job — variegated natural slate + copper.
-    // Public name kept generic per no-client-names rule; confirm exact city with Jack.
-    name: "Dallas Estate · Variegated Slate & Copper",
-    slug: "dallas-variegated-slate-copper",
-    loc: "Dallas, TX",
+    // 2026-06-17 (Jack): "Mark Taylor's" Highland Park job — variegated natural slate + copper.
+    // Public name kept generic per no-client-names rule.
+    name: "Highland Park Estate · Variegated Slate & Copper",
+    slug: "highland-park-variegated-slate-copper",
+    loc: "Highland Park, TX",
     tag: "Natural Slate · Purple/Grey/Green",
     type: "Slate",
     desc: "A Tudor estate finished in hand-blended purple, grey, and green natural slate, detailed throughout in copper at the ridges, valleys, and penetrations.",
-    longDesc: "A Dallas-area Tudor finished in a variegated natural slate field — purple, grey, and green blended across the roof so the color reads evenly from every approach. We re-underlaid in a high-temperature ice-and-water membrane and hand-formed copper at every ridge, valley, and penetration, sized to outlast the slate above.",
-    image: "assets/projects/dallas-variegated-slate-copper/01.webp",
+    longDesc: "A Highland Park Tudor finished in a variegated natural slate field — purple, grey, and green blended across the roof so the color reads evenly from every approach. We re-underlaid in a high-temperature ice-and-water membrane and hand-formed copper at every ridge, valley, and penetration, sized to outlast the slate above.",
+    image: "assets/projects/highland-park-variegated-slate-copper/01.webp",
     gallery: [
-      "assets/projects/dallas-variegated-slate-copper/01.webp",
-      "assets/projects/dallas-variegated-slate-copper/02.webp",
-      "assets/projects/dallas-variegated-slate-copper/03.webp",
-      "assets/projects/dallas-variegated-slate-copper/04.webp",
+      "assets/projects/highland-park-variegated-slate-copper/01.webp",
+      "assets/projects/highland-park-variegated-slate-copper/02.webp",
+      "assets/projects/highland-park-variegated-slate-copper/03.webp",
+      "assets/projects/highland-park-variegated-slate-copper/04.webp",
     ],
   },
   {
@@ -462,7 +462,7 @@ const HERO_TOP_FIVE = [
   { slug: "estate-slate-copper",        name: "Historic Estate · Natural Slate & Copper",  image: "assets/projects/estate-slate-copper/01.webp" },
   { slug: "estate-clay-tile",           name: "Historic Estate · Clay Tile",               image: "assets/projects/estate-clay-tile/01.webp" },
   { slug: "holy-trinity-clay",          name: "Holy Trinity Catholic · Clay Tile",         image: "assets/projects/holy-trinity-clay/01.webp" },
-  { slug: "dallas-variegated-slate-copper", name: "Dallas Estate · Variegated Slate & Copper", image: "assets/projects/dallas-variegated-slate-copper/02.webp" },
+  { slug: "highland-park-variegated-slate-copper", name: "Highland Park Estate · Variegated Slate & Copper", image: "assets/projects/highland-park-variegated-slate-copper/02.webp" },
   { slug: "westlake-designer-shingle",  name: "Westlake Estate · Designer Shingle + Copper", image: "assets/projects/westlake-designer-shingle/01.webp" },
   { slug: "carmel-coastal-slate",       name: "Coastal California Estate · Pacific Slate", image: "assets/projects/carmel-coastal-slate/01.webp" },
 ];
