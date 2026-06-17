@@ -720,7 +720,7 @@ function JobsMap() {
               return (
               <g
                 key={g.key}
-                className={`jobsmap-pin${active === i ? " is-active" : ""}`}
+                className={`jobsmap-pin${active === i ? " is-active" : ""}${p.coming ? " is-coming" : ""}`}
                 onMouseEnter={() => setHover(i)}
                 onMouseLeave={() => setHover(null)}
                 onClick={() => toggle(i)}
@@ -779,7 +779,7 @@ function JobsMap() {
               {isPopup &&
               <button className="jobsmap-card-close" onClick={() => setActive(null)} aria-label="Close">×</button>
               }
-              <div className="jobsmap-card-img" style={{ backgroundImage: `url("${p.image}")` }}>
+              <div className="jobsmap-card-img" style={p.image ? { backgroundImage: `url("${p.image}")` } : undefined}>
                 {p.coming && <span className="jobsmap-card-coming">Project Coming</span>}
               </div>
               <div className="jobsmap-card-body">
@@ -842,7 +842,7 @@ function JobsMap() {
               onClick={() => toggle(i)}>
               <span
                 className="jobsmap-list-thumb"
-                style={{ backgroundImage: `url("${p.image}")` }}
+                style={p.image ? { backgroundImage: `url("${p.image}")` } : undefined}
                 aria-hidden="true" />
               <span className="jobsmap-list-text">
                 <span className="jobsmap-list-loc">{p.city}, {p.state}{p.coming ? " · Project Coming" : ""}</span>
@@ -1195,66 +1195,24 @@ function Partners() {
 
 }
 
+// 2026-06-17 (Jack, "Blog Section" email): "make this say coming soon and I'll get you some
+// over time." Journal carousel parked behind a coming-soon state; JOURNAL data kept for when
+// Jack supplies real posts (just restore the previous carousel markup).
 function Journal() {
-  const visible = 3;
-  const total = JOURNAL.length;
-  const max = Math.max(0, total - visible);
-  const [idx, setIdx] = useState(0);
-  const prev = () => setIdx((i) => Math.max(0, i - 1));
-  const next = () => setIdx((i) => Math.min(max, i + 1));
   return (
     <section className="journal" id="journal" data-screen-label="Journal">
       <div className="journal-head">
         <h2 className="journal-title">Roofing<br />Field Journal</h2>
         <div className="journal-meta" style={{ textAlign: "right", justifyContent: "center", alignItems: "flex-end" }}>
           <p className="journal-sub" style={{ textAlign: "right" }}>Expert notes on materials, restoration, and historic craft.</p>
-          <button className="journal-viewall" style={{ justifyContent: "flex-end", alignItems: "flex-end" }}>
-            <ArrowRight size={14} /> View all
-          </button>
         </div>
       </div>
       <div className="journal-divider" />
-      <div className="journal-track-wrap">
-        <div
-          className="journal-track"
-          style={{ transform: `translateX(calc(${idx * -100 / visible}% - ${idx} * var(--carousel-gap, 16px)))` }}>
-          
-          {JOURNAL.map((a) =>
-          <article className="journal-card" key={a.title}>
-              <div className="journal-card-img" style={{ backgroundImage: `url("${a.image}")` }} />
-              <div className="journal-card-tag">{a.tag} · {a.date}</div>
-              <h3 className="journal-card-title">{a.title}</h3>
-              <div className="journal-card-foot">
-                <ArrowRight size={14} /> Read article
-              </div>
-            </article>
-          )}
-        </div>
-      </div>
-      <div className="journal-controls">
-        <button
-          className="journal-btn"
-          onClick={prev}
-          disabled={idx === 0}
-          aria-label="Previous">
-          
-          <span className="journal-arrow journal-arrow--left">
-            <ArrowRight size={16} />
-          </span>
-        </button>
-        <button
-          className="journal-btn is-dark"
-          onClick={next}
-          disabled={idx >= max}
-          aria-label="Next">
-          
-          <span className="journal-arrow">
-            <ArrowRight size={16} />
-          </span>
-        </button>
+      <div className="journal-soon">
+        <span className="journal-soon-eyebrow">Coming Soon</span>
+        <p className="journal-soon-body">Field notes on materials, restoration, and historic craft are on the way. Check back shortly.</p>
       </div>
     </section>);
-
 }
 
 function FinalCTA({ variant }) {
@@ -1645,14 +1603,16 @@ function MaterialsPhilosophy() {
     </section>);
 }
 
+// 2026-06-17 (Jack, "Material page section 3" email): dropped the Cost Tier and Landmark
+// Compatible rows; real lifespans/weights/fire ratings; "Historic Authenticity" → "Historic
+// Material" (Yes/No). The `metal` key now maps to the Copper column. Weight/lightweight
+// caveats live in the footnote below the table.
 const COMPARISON_ROWS = [
-  { label: "Lifespan",            slate: "75–150 yrs",  clay: "50–100 yrs", metal: "40–70 yrs",  synth: "30–50 yrs" },
-  { label: "Cost Tier",           slate: "Premium",     clay: "Premium",    metal: "High",        synth: "Mid" },
-  { label: "Weight",              slate: "Heavy",       clay: "Heavy",      metal: "Light",       synth: "Light" },
-  { label: "Fire Rating",         slate: "Class A",     clay: "Class A",    metal: "Class A",     synth: "Class 4" },
-  { label: "Historic Authenticity", slate: "Highest",   clay: "Highest",    metal: "High",        synth: "Moderate" },
-  { label: "Landmark Compatible", slate: "Yes",         clay: "Yes",        metal: "Often",       synth: "Rarely" },
-  { label: "Best For",            slate: "Tudor, Colonial, Châteauesque",  clay: "Spanish, Mediterranean, French Norman", metal: "Modern, Craftsman, transitions", synth: "Budget-conscious historic, high-wind zones" },
+  { label: "Lifespan",          slate: "100+ yrs",          clay: "75+ yrs",            metal: "100+ yrs",        synth: "50 yrs" },
+  { label: "Weight",            slate: "~1,000 lbs/sq*",    clay: "1,000–2,000 lbs/sq*", metal: "75–200 lbs/sq*",  synth: "250–350 lbs/sq*" },
+  { label: "Fire Rating",       slate: "Class A",           clay: "Class A",            metal: "Class A",         synth: "Class C" },
+  { label: "Historic Material", slate: "Yes",               clay: "Yes",                metal: "Yes",             synth: "No" },
+  { label: "Best For",          slate: "Tudor, Colonial, Châteauesque",  clay: "Spanish, Mediterranean, French Norman", metal: "Modern, Craftsman, transitions", synth: "Budget-conscious historic, high-wind zones" },
 ];
 
 function MaterialComparison() {
@@ -1670,7 +1630,7 @@ function MaterialComparison() {
               <th />
               <th className="is-featured">Natural Slate</th>
               <th>Clay Tile</th>
-              <th>Metal / Copper</th>
+              <th>Copper</th>
               <th>Synthetic</th>
             </tr>
           </thead>
@@ -1687,6 +1647,7 @@ function MaterialComparison() {
           </tbody>
         </table>
       </div>
+      <p className="mat-comp-foot">*Weights vary by profile and detailing. Lightweight natural slate options are available — ask us. Clay weight depends on the tile profile; copper weight depends on the ounce specified.</p>
     </section>);
 }
 
@@ -1873,17 +1834,13 @@ function CompanyStory() {
     </section>);
 }
 
-// 2026-06-15 (Ryan): back to a 5-item list with descriptions restored for review
-// (dropped only "We don't subcontract installation" from the original six).
-// 2026-06-16 (Ryan): INTENTIONAL OVERRIDE of Jack's 06-13 About-page note asking to
-// cut this to three. Ryan opted to keep the 5-item list with descriptions. Do not
-// "fix" this back down to three without checking with Ryan first.
+// 2026-06-17 (Ryan, per Jack's 06-16 "About us we don't" email): cut down to the three
+// items Jack supplied, using his exact copy. This supersedes the earlier keep-5 override —
+// do not restore the dropped "less-than-quality materials" / "cut corners" items.
 const PRINCIPLES = [
-  { title: "We don't install less-than-quality materials.", body: "Natural slate, authentic clay, and the one synthetic we trust — that's the list. We won't put a cheaper material on your roof to win a bid, because we're the ones who have to stand behind it." },
-  { title: "We don't call a roof sound just because it has no hail damage.", body: "A roof can pass a hail inspection and still be failing — at the flashings, the underlayment, the fasteners. We assess the whole system, not just the surface an adjuster photographs." },
-  { title: "We don't file insurance claims without legitimate cause.", body: "We pursue a claim only when there is genuine, documented cause an insurer owes. We won't manufacture damage or file a claim that wastes your time and raises your premium." },
-  { title: "We don't chase volume.", body: "We take fewer projects than we could. That's a deliberate choice. It means the principals are involved in every estimate, every installation decision, and every final walkthrough — not managing from a distance." },
-  { title: "We don't cut corners on what you can't see.", body: "Underlayment, fasteners, deck preparation — these are the components no inspector photographs and no homeowner sees. They are also the components that determine whether your roof holds for fifty years or fifteen." },
+  { title: "We don't call a roof sound just because it has no hail damage.", body: "A roof can pass a hail inspection or a home inspection and still be failing — at the flashings, the ventilation, the underlayment, the fasteners, the product itself. We assess the whole system, not just the surface an adjuster photographs." },
+  { title: "We don't encourage filing claims without legitimate cause.", body: "We don't encourage pursuing a claim unless there is genuine, documented cause an insurer owes. Much of filing a claim is a math game — what is the cost of your deductible in relation to the cost of repairs and what those repairs accomplish." },
+  { title: "We don't chase volume.", body: "We take fewer projects than we could. That's a deliberate choice — one that allows us to stay true to what we believe and preserve quality in everything we do." },
 ];
 
 function PhilosophyCard({ title, body, index }) {
@@ -2206,7 +2163,7 @@ function ThreeReasonsSection() {
 const WTD_STEPS = [
   { num: "01", title: "Identify the product on your roof.", body: "Most homeowners don't know exactly what is on their roof. We document the tile profile, manufacturer marks, lot numbers where they exist, and the installation generation. That documentation is what every warranty claim and insurance file starts from." },
   { num: "02", title: "Document the failure.", body: "Photographs, attic moisture readings, fastener pulls, and a written condition report. We compile the failure documentation the manufacturer and your insurer will require — not generic adjuster notes." },
-  { num: "03", title: "File the manufacturer warranty claim.", body: "We coordinate the claim with Da Vinci, Tamko, Ludowici, or whichever successor company holds the warranty record. Many products discontinued 15–20 years ago still carry actionable warranty paths and class-action settlements." },
+  { num: "03", title: "File the manufacturer warranty claim.", body: "We coordinate the claim with the applicable manufacturer. Many products discontinued 15–20 years ago still carry actionable warranty paths and class-action settlements." },
   { num: "04", title: "Replace with the correct system.", body: "Once the warranty path is closed, we install the replacement — matching profile and color where the home requires it, or upgrading to a current system where the original product is no longer defensible. Either way, we install it once." },
 ];
 
@@ -2317,61 +2274,16 @@ function FeaturedArticle() {
     </section>);
 }
 
+// 2026-06-17 (Jack, "Blog Section" email): library parked behind a coming-soon state until
+// Jack supplies real articles. Search/grid + JOURNAL filtering kept in git history to restore.
 function ArticleGrid() {
-  const [q, setQ] = useState("");
-  const [cat, setCat] = useState("All");
-  const cats = ["All", ...Array.from(new Set(JOURNAL.map((a) => a.tag)))];
-  const ql = q.trim().toLowerCase();
-  const items = JOURNAL.filter((a) => {
-    const okCat = cat === "All" || a.tag === cat;
-    const okQ = !ql || a.title.toLowerCase().includes(ql) || a.tag.toLowerCase().includes(ql);
-    return okCat && okQ;
-  });
   return (
     <section className="article-grid-section section-light" id="resource-library">
       <div className="article-grid-head">
         <span className="eyebrow">Resource Library</span>
-        <h2>Find What You <em>Need to Know</em></h2>
-        <p className="reslib-sub">Search the full library — material guides, warranty and insurance notes, and field research on how historic roofs actually perform.</p>
+        <h2>Coming <em>Soon</em></h2>
+        <p className="reslib-sub">Material guides, warranty and insurance notes, and field research on how historic roofs actually perform are being written now. Check back shortly — or reach out and we'll answer your question directly in the meantime.</p>
       </div>
-      <div className="reslib-controls">
-        <label className="reslib-search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-            <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
-          </svg>
-          <input
-            type="search"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search articles, materials, topics…"
-            aria-label="Search the resource library" />
-
-        </label>
-        <div className="reslib-chips">
-          {cats.map((c) =>
-          <button key={c} className={`reslib-chip${cat === c ? " active" : ""}`} onClick={() => setCat(c)}>{c}</button>
-          )}
-        </div>
-      </div>
-      {items.length === 0 ?
-      <p className="reslib-empty">No resources match your search yet. Try a different term or category.</p> :
-
-      <div className="article-grid">
-          {items.map((a) =>
-        <article className="article-card" key={a.title}>
-              <div className="article-card-img" style={{ backgroundImage: `url("${a.image}")` }} />
-              <div className="article-card-body">
-                <div className="article-card-meta">
-                  <span className="article-card-tag">{a.tag}</span>
-                  <span className="article-card-date">{a.date}</span>
-                </div>
-                <h3 className="article-card-title">{a.title}</h3>
-                <a className="article-card-link" href="#">Read <ArrowRight size={12} /></a>
-              </div>
-            </article>
-        )}
-        </div>
-      }
     </section>);
 }
 

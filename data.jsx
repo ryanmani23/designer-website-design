@@ -114,6 +114,24 @@ const MANUFACTURERS = [
 // Each project has a `gallery[]` of 3–8 photos under assets/projects/<slug>/.
 const PROJECTS = [
   {
+    // 2026-06-17 (Jack): "Mark Taylor's" job — variegated natural slate + copper.
+    // Public name kept generic per no-client-names rule; confirm exact city with Jack.
+    name: "Dallas Estate · Variegated Slate & Copper",
+    slug: "dallas-variegated-slate-copper",
+    loc: "Dallas, TX",
+    tag: "Natural Slate · Purple/Grey/Green",
+    type: "Slate",
+    desc: "A Tudor estate finished in hand-blended purple, grey, and green natural slate, detailed throughout in copper at the ridges, valleys, and penetrations.",
+    longDesc: "A Dallas-area Tudor finished in a variegated natural slate field — purple, grey, and green blended across the roof so the color reads evenly from every approach. We re-underlaid in a high-temperature ice-and-water membrane and hand-formed copper at every ridge, valley, and penetration, sized to outlast the slate above.",
+    image: "assets/projects/dallas-variegated-slate-copper/01.webp",
+    gallery: [
+      "assets/projects/dallas-variegated-slate-copper/01.webp",
+      "assets/projects/dallas-variegated-slate-copper/02.webp",
+      "assets/projects/dallas-variegated-slate-copper/03.webp",
+      "assets/projects/dallas-variegated-slate-copper/04.webp",
+    ],
+  },
+  {
     name: "St. Louis Residence · Purple, Grey & Green Slate",
     slug: "st-louis-tri-color-slate",
     loc: "St. Louis, MO",
@@ -423,6 +441,14 @@ const MAP_PROJECTS = [
   { name: "Westlake Estate · Designer Shingle + Copper",      city: "Westlake", state: "TX", metro: "Dallas–Fort Worth, TX", x: 453, y: 413, slug: "westlake-designer-shingle",            system: "Designer Shingle · Copper",         scope: "Estate New Construction",  blurb: "Designer shingle field with hand-formed copper turrets — Class 4 impact rating and estate depth.", image: "assets/projects/westlake-designer-shingle/01.webp" },
   { name: "St. Louis Residence · Ludowici Clay Tile",         city: "St. Louis", state: "MO", metro: "St. Louis, MO",        x: 579, y: 283, slug: "st-louis-ludowici-tile",               system: "Clay Tile · Ludowici S-Tile",       scope: "Clay Tile Restoration",    blurb: "Ludowici S-profile clay tile, hand-blended and detailed in copper at every transition.", image: "assets/projects/st-louis-ludowici-tile/01.webp" },
   { name: "Institutional Clay Tile · Hand-Reset Restoration", city: "Dallas", state: "TX", metro: "Dallas–Fort Worth, TX",  x: 460, y: 419, slug: "dallas-parish-clay",                  system: "Commercial · Clay Tile",            scope: "Institutional Restoration",blurb: "Institutional clay tile carefully unstacked, salvaged, and re-laid over new underlayment.", image: "assets/projects/dallas-parish-clay/01.webp" },
+  // 2026-06-17 (Jack): upcoming jobs added for geographic reach — no photos yet, so these
+  // carry `coming: true` (the existing "Project Coming" pin/popup treatment) and no `slug`/`image`
+  // (popup shows the badge instead of a thumbnail + deep-link). x/y from the same affine lat/lng
+  // fit as the rest (see comment above; residuals <3px on all anchors). KC client name omitted per
+  // no-client-names rule; the Cheyenne cathedral is an institutional landmark name and is retained.
+  { name: "Wisconsin Estate · Natural Slate",                city: "Madison", state: "WI", metro: "Wisconsin",            x: 601, y: 174, coming: true, system: "Natural Slate",            scope: "Full Slate Restoration",   blurb: "An upcoming natural-slate estate restoration in Wisconsin — scheduled for August 2026." },
+  { name: "Kansas City Residence · Natural Slate",           city: "Kansas City", state: "MO", metro: "Kansas City, MO",   x: 508, y: 263, coming: true, system: "Natural Slate",            scope: "Full Slate Restoration",   blurb: "An upcoming natural-slate residence in the Kansas City metro." },
+  { name: "St. Joseph's Catholic Cathedral · Cheyenne, WY",  city: "Cheyenne", state: "WY", metro: "Cheyenne, WY",         x: 340, y: 190, coming: true, system: "Specialty · Cathedral Roofing", scope: "Cathedral Restoration",    blurb: "An upcoming cathedral restoration at St. Joseph's in Cheyenne, Wyoming." },
 ];
 
 // Hero variants A/C — featured projects with real photos.
@@ -436,7 +462,7 @@ const HERO_TOP_FIVE = [
   { slug: "estate-slate-copper",        name: "Historic Estate · Natural Slate & Copper",  image: "assets/projects/estate-slate-copper/01.webp" },
   { slug: "estate-clay-tile",           name: "Historic Estate · Clay Tile",               image: "assets/projects/estate-clay-tile/01.webp" },
   { slug: "holy-trinity-clay",          name: "Holy Trinity Catholic · Clay Tile",         image: "assets/projects/holy-trinity-clay/01.webp" },
-  { slug: "waco-natural-slate",         name: "Central Texas Estate · Natural Slate",      image: "assets/projects/waco-natural-slate/01.webp" },
+  { slug: "dallas-variegated-slate-copper", name: "Dallas Estate · Variegated Slate & Copper", image: "assets/projects/dallas-variegated-slate-copper/02.webp" },
   { slug: "westlake-designer-shingle",  name: "Westlake Estate · Designer Shingle + Copper", image: "assets/projects/westlake-designer-shingle/01.webp" },
   { slug: "carmel-coastal-slate",       name: "Coastal California Estate · Pacific Slate", image: "assets/projects/carmel-coastal-slate/01.webp" },
 ];
@@ -453,7 +479,6 @@ const THREE_REASONS = [
     examples: [
       "Old #30 lb felt beneath natural slate or tile",
       "A failed or melted ice and water shield",
-      "Underlayment that aged out while the field above held",
     ],
     image: "assets/discontinued/tamko-tw-underlayment/02.webp",
   },
@@ -467,7 +492,7 @@ const THREE_REASONS = [
       "Over-driven nails that crush the slate or tile",
       "Under-driven nails that let wind-driven rain in",
     ],
-    image: "assets/discontinued/imported-slate/02.webp",
+    image: "assets/materials/copper-nails.webp",
   },
   {
     num: "03",
@@ -545,6 +570,9 @@ const DISCONTINUED = {
         title: "Fiber Cement / Asbestos",
         sub: "Asbestos-Containing Material · Regulated",
         desc: "Fiber Cement doesn't have to contain asbestos, but most did. These roof tiles have been discontinued due to the health hazards (mesothelioma & lung cancer) that come from the particles that can be breathed in. Removal of these roofs is required and delicate in relation to following the necessary safety protocols.",
+        images: [
+          "assets/discontinued/fiber-cement-asbestos/01.webp",
+        ],
       },
     ],
   },
