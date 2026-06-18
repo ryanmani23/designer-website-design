@@ -1,0 +1,12 @@
+.git
+.github
+.claude
+.gitignore
+.assetsignore
+.DS_Store
+**/.DS_Store
+wrangler.jsonc
+wrangler.toml
+wrangler.json
+node_modules
+discontinued products
