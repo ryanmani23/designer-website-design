@@ -1373,9 +1373,17 @@ function TeamSection() {
 
 function ContactForm() {
   const [sent, setSent] = useState(false);
+  const startedAt = useRef(Date.now());
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = Object.fromEntries(new FormData(e.target).entries());
+    // Bot traps: a hidden honeypot field (real users never see it) plus a
+    // minimum fill time. Bots auto-fill every field and submit instantly.
+    // If either trips, show the success state but skip the send so the bot
+    // gets no signal it was caught.
+    const trapped = payload.company_url || (Date.now() - startedAt.current) < 2500;
+    delete payload.company_url;
+    if (trapped) { setSent(true); return; }
     payload.source = "Designer site - Contact form";
     fetch("https://services.leadconnectorhq.com/hooks/IttIHY385RavkfuxG6Mo/webhook-trigger/76d49395-2780-49a6-8ac2-cb7cc7d2b2e0",
       { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
@@ -1401,6 +1409,9 @@ function ContactForm() {
                 <p>We'll be in touch within one business day.</p>
               </div>
           : <form className="contact-form" onSubmit={handleSubmit}>
+                {/* honeypot: off-screen, hidden from users & assistive tech; only bots fill it */}
+                <input type="text" name="company_url" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }} />
                 <div className="form-row">
                   <label>
                     <span>Name</span>
@@ -1754,9 +1765,15 @@ function LifecycleROI() {
 
 function RequestSample() {
   const [sent, setSent] = useState(false);
+  const startedAt = useRef(Date.now());
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = Object.fromEntries(new FormData(e.target).entries());
+    // Bot traps: hidden honeypot field + minimum fill time. If either trips,
+    // show success but skip the send (see ContactForm for rationale).
+    const trapped = payload.company_url || (Date.now() - startedAt.current) < 2500;
+    delete payload.company_url;
+    if (trapped) { setSent(true); return; }
     payload.source = "Designer site - Request a Sample";
     fetch("https://services.leadconnectorhq.com/hooks/IttIHY385RavkfuxG6Mo/webhook-trigger/24032a72-5d4b-4092-a67d-8aa04a07d019",
       { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }).
@@ -1779,6 +1796,9 @@ function RequestSample() {
               <p>Tell us what you're considering and we'll get a sample into your hands, or invite you to the showroom to see the full range in person.</p>
             </div>
             <form className="req-sample-form" onSubmit={handleSubmit}>
+              {/* honeypot: off-screen, hidden from users & assistive tech; only bots fill it */}
+              <input type="text" name="company_url" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }} />
               <div className="req-row">
                 <label>
                   <span>Material</span>
@@ -1909,12 +1929,12 @@ const MORRIS_QUOTE = {
   text: "To preserve what is beautiful is to keep faith with the past and to build a bridge of excellence to the future.",
   cite: "Roger Scruton",
 };
-// A real copper detail from our own work carries the quote, proof that the
-// working parts of a roof are worth looking at. Easily swappable.
+// Photo from our own work carries the quote, proof that the working parts of
+// a roof are worth looking at. Easily swappable.
 // (Ryan picked the three-column layout 2026-06-07; the editorial variant was dropped.)
-// Hand-formed copper gutter, downspout, and valley work, the literal "beautiful
-// drainpipe" idea (Ryan supplied this photo 2026-06-07).
-const ETHOS_IMAGE = "assets/ethos-copper.webp";
+// 2026-06-18 (Jack): swapped the copper-detail photo (ethos-copper.webp, kept
+// in assets/) for this image.
+const ETHOS_IMAGE = "assets/ethos-quote.webp";
 const TRIAD = [
   {
     word: "Good",

@@ -45,26 +45,6 @@ function App() {
     return () => { clearTimeout(t1); clearTimeout(t2); document.body.classList.remove("intro-active"); };
   }, []);
 
-  // global subtle reveal-on-scroll for content sections
-  useEffect(() => {
-    const targets = ["manufacturers", "projects", "discontinued", "systems", "ethos-echo", "partners", "journal"];
-    const els = targets.map((id) => document.getElementById(id)).filter(Boolean);
-    els.forEach((el) => el.classList.add("scroll-reveal"));
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("is-revealed");
-            io.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.25, rootMargin: "0px 0px -10% 0px" }
-    );
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
   return (
     <React.Fragment>
       {introVisible && <Intro leaving={introLeaving} />}
