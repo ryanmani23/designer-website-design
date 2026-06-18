@@ -256,7 +256,7 @@ function HeroMosaic({ revealed }) {
     Array.from({ length: TILE_COUNT }, (_, i) => pool[i % pool.length])
   );
 
-  // Mosaic hero is not framed — reset the framed-reel inset so the nav sits flush.
+  // Mosaic hero is not framed, reset the framed-reel inset so the nav sits flush.
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty("--hero-inset", "0px");
@@ -308,17 +308,21 @@ function HeroMosaic({ revealed }) {
 function HeroSlides({ revealed }) {
   const slides = HERO_TOP_FIVE;
   const [active, setActive] = useState(0);
-  // Slides hero is not framed — reset the framed-reel inset so the fixed nav
+  // Slides hero is not framed, reset the framed-reel inset so the fixed nav
   // sits flush at the top (fixes the small gap Jack flagged on 2026-06-11).
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty("--hero-inset", "0px");
     root.style.setProperty("--hero-radius", "0px");
   }, []);
+  // Don't start the cross-fade until the intro animation has finished and the
+  // hero is actually visible (revealed). Otherwise the first slide can advance
+  // before it's ever shown on screen.
   useEffect(() => {
+    if (!revealed) return undefined;
     const id = setInterval(() => setActive((a) => (a + 1) % slides.length), 5000);
     return () => clearInterval(id);
-  }, [slides.length]);
+  }, [revealed, slides.length]);
   return (
     <section className={`hero hero-slides${revealed ? " revealed" : ""}`} id="top" data-screen-label="Hero" data-nav-theme="dark">
       <div className="hero-slides-stage" aria-hidden="true">
@@ -525,7 +529,7 @@ function RoofReel() {
 
               The great mistake is thinking that things being interesting
               and things being useful are mutually exclusive. We refuse the
-              tradeoff — and build every roof to prove it.
+              tradeoff, and build every roof to prove it.
             </p>
           </div>
         </div>
@@ -586,7 +590,7 @@ function Manufacturers({ banner = "partners" }) {
       <div className="mat-banner mat-banner--head">
         <h3>Four Partners. <em>Craftsmanship Over Compromise.</em></h3>
         <p>
-          We add a manufacturer only when a product raises our standard — not when it expands our<br />
+          We add a manufacturer only when a product raises our standard, not when it expands our<br />
           catalog.
         </p>
       </div>
@@ -681,7 +685,7 @@ function JobsMap() {
           <h2>Jobs of <em>Distinction</em></h2>
         </div>
         <div className="jobsmap-intro">
-          Licensed across the lower 48 — a selection of projects we're proud of, from local estates to landmarks across the country.
+          Licensed across the lower 48. A selection of projects we're proud of, from local estates to landmarks across the country.
         </div>
       </div>
 
@@ -728,7 +732,7 @@ function JobsMap() {
                 role="button"
                 aria-label={`${p.city}, ${p.state}`}
                 onKeyDown={(e) => {if (e.key === "Enter" || e.key === " ") {e.preventDefault();toggle(i);}}}>
-                {/* Transparent hit target — keeps the pin visually small while
+                {/* Transparent hit target, keeps the pin visually small while
                     giving touch users a 44px-equivalent tap area at typical
                     stage widths (≈22 SVG units ≈ 36–48 device pixels). */}
                 <circle className="jobsmap-pin-hit" cx={p.x} cy={p.y} r="22" fill="transparent" />
@@ -742,7 +746,7 @@ function JobsMap() {
                 onClick={() => openClusterAt(g.key)}
                 tabIndex={0}
                 role="button"
-                aria-label={`${g.count} projects in ${g.key} — open list`}
+                aria-label={`${g.count} projects in ${g.key}, open list`}
                 onKeyDown={(e) => {if (e.key === "Enter" || e.key === " ") {e.preventDefault();openClusterAt(g.key);}}}>
                 <circle className="jobsmap-pin-hit" cx={g.cx} cy={g.cy} r="22" fill="transparent" />
                 <circle className="jobsmap-cluster-halo" cx={g.cx} cy={g.cy} r="18" />
@@ -876,7 +880,7 @@ function JobsMap() {
 // Opened from a product thumbnail. Scrollable gallery overlay with
 // arrows / swipe / keyboard nav and an iOS-safe scroll lock (mirrors
 // the ProjectDetail modal pattern).
-function DiscLightbox({ images, title, start = 0, onClose }) {
+function DiscLightbox({ images, title, caption, start = 0, onClose }) {
   const [i, setI] = useState(start);
   const touch = useRef(null);
   const n = images.length;
@@ -931,9 +935,9 @@ function DiscLightbox({ images, title, start = 0, onClose }) {
           if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
           touch.current = null;
         }}>
-        <img src={images[i]} alt={`${title} — image ${i + 1} of ${n}`} />
+        <img src={images[i]} alt={`${title}, image ${i + 1} of ${n}`} />
         <figcaption className="disc-lb-cap">
-          <span>{title}</span>
+          <span>{title}{caption ? ` · ${caption}` : ""}</span>
           {n > 1 && <span className="disc-lb-count">{i + 1} / {n}</span>}
         </figcaption>
       </figure>
@@ -953,7 +957,7 @@ function Discontinued({ onJump }) {
       <div className="disc-head">
         <span className="eyebrow">Industry Knowledge · Trade Standards</span>
         <h2>Discontinued Products We <em>Know in the Field</em></h2>
-        <p>Some of these products failed; others were simply discontinued and are no longer made. We keep documented history on each — how it performs, why it left the market, and whether your roof can be matched, repaired, or saved rather than torn off.</p>
+        <p>Some of these products failed; others were simply discontinued and are no longer made. We keep documented history on each: how it performs, why it left the market, and whether your roof can be matched, repaired, or saved rather than torn off.</p>
       </div>
       <div className="disc-tabs">
         {tabs.map((t) =>
@@ -973,7 +977,7 @@ function Discontinued({ onJump }) {
                     type="button"
                     className="disc-prod-thumb"
                     style={{ backgroundImage: `url("${imgs[0]}")` }}
-                    onClick={() => setLb({ images: imgs, title: p.title })}
+                    onClick={() => setLb({ images: imgs, title: p.title, caption: p.imgCaption })}
                     aria-label={`View ${imgs.length} photo${imgs.length > 1 ? "s" : ""} of ${p.title}`}>
                     {imgs.length > 1 && <span className="disc-prod-thumb-count">{imgs.length}</span>}
                   </button> :
@@ -985,11 +989,11 @@ function Discontinued({ onJump }) {
           })}
         </div>
       </div>
-      {lb && <DiscLightbox images={lb.images} title={lb.title} onClose={() => setLb(null)} />}
+      {lb && <DiscLightbox images={lb.images} title={lb.title} caption={lb.caption} onClose={() => setLb(null)} />}
       <div className="disc-cta">
         <div className="disc-cta-text">
           <div className="label">Think you have one of these systems?</div>
-          <div className="small">Request a system assessment and we can source it for you. In many cases — particularly with historic clay tile — the roof itself is salvageable: the product failed, the installation may not have. We'll help you understand the difference.</div>
+          <div className="small">Request a system assessment and we can source it for you. In many cases, particularly with historic clay tile, the roof itself is salvageable: the product failed, the installation may not have. We'll help you understand the difference.</div>
         </div>
         <button className="btn-copper" onClick={() => onJump("contact")}>Request a System Assessment <ArrowRight size={14} /></button>
       </div>
@@ -1003,7 +1007,7 @@ function SystemsNote() {
       <div className="systems-segue-lead">
         <span className="eyebrow">A Note on How Roofs Actually Work</span>
         <h2>Roofs leak for three reasons: <em>felt, fasteners, and flashings.</em></h2>
-        <p>What goes on top matters — but a roof is a system. The felt beneath it, the fasteners holding it, and the flashings at every transition are what decide whether it holds.</p>
+        <p>What goes on top matters, but a roof is a system. The felt beneath it, the fasteners holding it, and the flashings at every transition are what decide whether it holds.</p>
       </div>
       <div className="systems-segue-row">
         {ROOF_SYSTEMS.map((s) =>
@@ -1335,7 +1339,7 @@ function DiscontinuedTeaser() {
         <div className="disc-teaser-text">
           <span className="eyebrow">Industry Knowledge</span>
           <h2>Discontinued Products We <em>Know in the Field</em></h2>
-          <p>Some products on our discontinued list failed in the field; others were simply phased out and are no longer manufactured. We carry documented history on each — and know how to match, repair, or replace them.</p>
+          <p>Some products on our discontinued list failed in the field; others were simply phased out and are no longer manufactured. We carry documented history on each, and know how to match, repair, or replace them.</p>
         </div>
         <a className="btn-copper disc-teaser-link" href="discontinued.html">
           See Discontinued Products <ArrowRight size={14} />
@@ -1345,7 +1349,7 @@ function DiscontinuedTeaser() {
 }
 
 function TeamSection() {
-  const groupPhoto = ""; // single group photo — to be supplied by Jack
+  const groupPhoto = ""; // single group photo, to be supplied by Jack
   return (
     <section className="team" id="team" data-screen-label="Team">
       <div className="section-head">
@@ -1354,7 +1358,7 @@ function TeamSection() {
           <h2>Meet the <em>Team</em></h2>
         </div>
         <div className="right">
-          Every estimate, every installation, every call-back is handled by the same people. No subcontractor carousel — just tradesmen who have been doing this for years and know the difference between a roof that holds and one that doesn't.
+          Every estimate, every installation, every call-back is handled by the same people. No subcontractor carousel, just tradesmen who have been doing this for years and know the difference between a roof that holds and one that doesn't.
         </div>
       </div>
       <figure className="team-photo">
@@ -1362,7 +1366,7 @@ function TeamSection() {
         <img src={groupPhoto} alt="The Priority Designer team" /> :
         <div className="team-photo-placeholder"><span>Team photo coming soon</span></div>
         }
-        <figcaption>The Priority Designer crew — Dallas–Fort Worth.</figcaption>
+        <figcaption>The Priority Designer crew, Dallas–Fort Worth.</figcaption>
       </figure>
     </section>);
 }
@@ -1371,8 +1375,10 @@ function ContactForm() {
   const [sent, setSent] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = new FormData(e.target);
-    fetch("https://formspree.io/f/placeholder", { method: "POST", body: data, headers: { Accept: "application/json" } })
+    const payload = Object.fromEntries(new FormData(e.target).entries());
+    payload.source = "Designer site - Contact form";
+    fetch("https://services.leadconnectorhq.com/hooks/IttIHY385RavkfuxG6Mo/webhook-trigger/76d49395-2780-49a6-8ac2-cb7cc7d2b2e0",
+      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
       .then(() => setSent(true))
       .catch(() => setSent(true));
   };
@@ -1511,7 +1517,7 @@ function ProjectDetail({ slug, onClose }) {
       document.body.style.position = prevPosition;
       document.body.style.top = prevTop;
       document.body.style.width = prevWidth;
-      // Restore scroll instantly — the global `html { scroll-behavior: smooth }`
+      // Restore scroll instantly, the global `html { scroll-behavior: smooth }`
       // would otherwise animate the jump when the position:fixed lock releases.
       const html = document.documentElement;
       const prevBehavior = html.style.scrollBehavior;
@@ -1540,6 +1546,7 @@ function ProjectDetail({ slug, onClose }) {
             <div><dt>Location</dt><dd>{project.loc}</dd></div>
             <div><dt>System</dt><dd>{project.tag}</dd></div>
             <div><dt>Category</dt><dd>{project.type}</dd></div>
+            {project.blend && <div className="spec-blend"><dt>Blend</dt><dd>{project.blend}</dd></div>}
             {project.coming && <div><dt>Status</dt><dd className="is-coming">Project coming</dd></div>}
           </dl>
           <p className="project-detail-long">{project.longDesc || project.desc}</p>
@@ -1551,12 +1558,15 @@ function ProjectDetail({ slug, onClose }) {
 
 // Portfolio = A-to-Z customer process (Jack, 2026-05-29). Replaces the old
 // inspection→sourcing→install→review framing with the actual customer journey.
+// 2026-06-17 (Jack, "Portfolio process timeline" email): step wording refreshed;
+// step 04 renamed "Communicate With Your Insurance" with the softer, legally-safe
+// copy (we never talk policy) that replaces the old adjuster-negotiation language.
 const PROCESS_STEPS = [
   { num: "01", title: "First Call", body: "We talk through the project before scheduling anything. Address, structure, what you're seeing, and what your timeline looks like. If we're not the right fit, we'll tell you and point you toward someone who is." },
-  { num: "02", title: "Site Assessment", body: "We come to the property and spend time on the roof — not the driveway. Substrate condition, flashing integrity, fastener type, and a documented evaluation of what's salvageable. You receive a written assessment before any number is discussed." },
-  { num: "03", title: "File the Claim", body: "If insurance is involved, we document the damage on your behalf, compile the photo package, and submit the claim through your carrier. We coordinate the adjuster visit and walk the roof with them." },
-  { num: "04", title: "Work With Your Insurance", body: "Adjuster negotiation, scope alignment, supplement requests where the original estimate falls short. You don't manage the back-and-forth with your carrier — we do." },
-  { num: "05", title: "Schedule & Walkthrough", body: "Install scheduled around your calendar. Our crew, our quality control, our final walkthrough with you on the completed roof. Written documentation of all work performed and any conditions to monitor going forward." },
+  { num: "02", title: "Site Assessment", body: "We come to the property and spend time inspecting the roof, either in person or via drone. Decking, underlayment, flashing, fastener type, ventilation, material identification, and a documented evaluation of all findings. You receive a written assessment before any number is discussed." },
+  { num: "03", title: "File the Claim", body: "If insurance is involved, we document the damage on your behalf, compile the photo package, and submit the estimate to your carrier. We coordinate the adjuster visit and walk the roof with them." },
+  { num: "04", title: "Communicate With Your Insurance", body: "As your contractor, we are never allowed to talk policy. Most times, no one needs to. We help communicate how the roof works, what repairs are necessary, if replacement is needed, and what the true costs associated with specialty work entail. We find the documentation and education is what we can provide and what helps all parties find the right solution." },
+  { num: "05", title: "Schedule & Walkthrough", body: "Once the job is approved, we help you decide the product and blend that best compliments your home's architecture and design. From there, we schedule the install and walk you through every step. Most importantly, we project manage every job, meaning we pay someone year round to ensure perfect installs and as smooth an install as you can find in construction." },
 ];
 
 const PORTFOLIO_STEP_PHOTOS = [
@@ -1596,7 +1606,7 @@ function MaterialsPhilosophy() {
         </div>
         <div className="mat-philosophy-right">
           <p>Most roofing contractors carry whatever their distributor stocks. We don't work that way. Before a manufacturer earns a place on our approved list, we install their product on a real project, inspect it after two full weather cycles, and evaluate it against the alternatives we already trust.</p>
-          <p>That process has taken us the better part of a decade to complete. It's why we have four manufacturers and not forty. It's also why we can stand behind every material we install — not because we read a spec sheet, but because we've seen what happens when these products encounter the Texas climate, a century of thermal movement, and a contractor who cuts corners on the underlayment.</p>
+          <p>That process has taken us the better part of a decade to complete. It's why we have four manufacturers and not forty. It's also why we can stand behind every material we install, not because we read a spec sheet, but because we've seen what happens when these products encounter the Texas climate, a century of thermal movement, and a contractor who cuts corners on the underlayment.</p>
           <p>If a product can't survive that evaluation, we don't install it. If a manufacturer discontinues a product we believe in, we find out why before we recommend the replacement.</p>
         </div>
       </div>
@@ -1621,7 +1631,7 @@ function MaterialComparison() {
       <div className="mat-comp-head">
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>Side by Side</span>
         <h2>Choosing the <em>Right Material</em></h2>
-        <p className="mat-comp-sub">Every material has a right application. These are the facts that guide our recommendations — not distributor margins.</p>
+        <p className="mat-comp-sub">Every material has a right application. These are the facts that guide our recommendations, not distributor margins.</p>
       </div>
       <div className="mat-comp-table-wrap">
         <table className="mat-comp-table">
@@ -1647,7 +1657,7 @@ function MaterialComparison() {
           </tbody>
         </table>
       </div>
-      <p className="mat-comp-foot">*Weights vary by profile and detailing. Lightweight natural slate options are available — ask us. Clay weight depends on the tile profile; copper weight depends on the ounce specified.</p>
+      <p className="mat-comp-foot">*Weights vary by profile and detailing. Lightweight natural slate options are available. Ask us. Clay weight depends on the tile profile; copper weight depends on the ounce specified.</p>
     </section>);
 }
 
@@ -1688,7 +1698,7 @@ function LifecycleROI() {
       <div className="lifecycle-head">
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>The Math on Premium Materials</span>
         <h2>One slate installation <em>outlasts five asphalt roofs.</em></h2>
-        <p className="lifecycle-sub">A 150-year window, set against the rated lifespan of every material we install. The story isn't subtle — and it isn't about cost per square. It's about how many times the same house gets re-roofed in your lifetime.</p>
+        <p className="lifecycle-sub">A 150-year window, set against the rated lifespan of every material we install. The story isn't subtle, and it isn't about cost per square. It's about how many times the same house gets re-roofed in your lifetime.</p>
       </div>
 
       <div className={`lifecycle-rows${seen ? " is-in" : ""}`}>
@@ -1697,7 +1707,7 @@ function LifecycleROI() {
             years: m.years,
             isLast: i === m.segments - 1,
           }));
-          // The last segment may extend past 150 — clamp by reducing flex on overflow.
+          // The last segment may extend past 150, clamp by reducing flex on overflow.
           const totalRaw = m.segments * m.years;
           const overflow = Math.max(0, totalRaw - HORIZON);
           return (
@@ -1734,7 +1744,7 @@ function LifecycleROI() {
         <div className="lifecycle-callout-num">40%</div>
         <div className="lifecycle-callout-text">
           <span className="lifecycle-callout-eyebrow">Insurance premium reduction</span>
-          <p>Typical reduction available to FORTIFIED-certified roof installations — applicable to slate, clay, and qualifying metal systems.</p>
+          <p>Typical reduction available to FORTIFIED-certified roof installations, applicable to slate, clay, and qualifying metal systems.</p>
         </div>
       </div>
 
@@ -1746,8 +1756,10 @@ function RequestSample() {
   const [sent, setSent] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = new FormData(e.target);
-    fetch("https://formspree.io/f/placeholder", { method: "POST", body: data, headers: { Accept: "application/json" } }).
+    const payload = Object.fromEntries(new FormData(e.target).entries());
+    payload.source = "Designer site - Request a Sample";
+    fetch("https://services.leadconnectorhq.com/hooks/IttIHY385RavkfuxG6Mo/webhook-trigger/24032a72-5d4b-4092-a67d-8aa04a07d019",
+      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }).
     then(() => setSent(true)).
     catch(() => setSent(true));
   };
@@ -1764,7 +1776,7 @@ function RequestSample() {
             <div className="req-sample-head">
               <span className="eyebrow">See It in Person</span>
               <h3>Request a <em>Sample</em></h3>
-              <p>Tell us what you're considering and we'll get a sample into your hands — or invite you to the showroom to see the full range in person.</p>
+              <p>Tell us what you're considering and we'll get a sample into your hands, or invite you to the showroom to see the full range in person.</p>
             </div>
             <form className="req-sample-form" onSubmit={handleSubmit}>
               <div className="req-row">
@@ -1828,7 +1840,7 @@ function CompanyStory() {
         </div>
         <div className="company-story-right">
           <p>Priority Designer was founded in Dallas in 2016 with a straightforward premise: the historic homes of the DFW Metroplex deserved a contractor who understood them. Not a generalist who could put on an asphalt shingle and walk away, but a tradesman who knew the difference between a Vermont slate and a Pennsylvania blue-grey, who could source a discontinued clay tile profile, and who understood that a flashing installed incorrectly on a 1928 Tudor would cost the homeowner ten times more in twenty years than doing it right the first time.</p>
-          <p>A decade later, the company is still built around that idea. We haven't grown into a franchise. We haven't diversified into gutters and siding to chase volume. Every project we take is a historic or estate-class exterior — the kind of work that requires a contractor who has seen the same roof fail twice and knows exactly why. That's the only kind of contractor we've ever tried to be.</p>
+          <p>A decade later, the company is still built around that idea. We haven't grown into a franchise. We haven't diversified into gutters and siding to chase volume. Every project we take is a historic or estate-class exterior, the kind of work that requires a contractor who has seen the same roof fail twice and knows exactly why. That's the only kind of contractor we've ever tried to be.</p>
         </div>
       </div>
     </section>);
@@ -1838,9 +1850,9 @@ function CompanyStory() {
 // items Jack supplied, using his exact copy. This supersedes the earlier keep-5 override —
 // do not restore the dropped "less-than-quality materials" / "cut corners" items.
 const PRINCIPLES = [
-  { title: "We don't call a roof sound just because it has no hail damage.", body: "A roof can pass a hail inspection or a home inspection and still be failing — at the flashings, the ventilation, the underlayment, the fasteners, the product itself. We assess the whole system, not just the surface an adjuster photographs." },
-  { title: "We don't encourage filing claims without legitimate cause.", body: "We don't encourage pursuing a claim unless there is genuine, documented cause an insurer owes. Much of filing a claim is a math game — what is the cost of your deductible in relation to the cost of repairs and what those repairs accomplish." },
-  { title: "We don't chase volume.", body: "We take fewer projects than we could. That's a deliberate choice — one that allows us to stay true to what we believe and preserve quality in everything we do." },
+  { title: "We don't call a roof sound just because it has no hail damage.", body: "A roof can pass a hail inspection or a home inspection and still be failing at the flashings, the ventilation, the underlayment, the fasteners, the product itself. We assess the whole system, not just the surface an adjuster photographs." },
+  { title: "We don't encourage filing claims without legitimate cause.", body: "We don't encourage pursuing a claim unless there is genuine, documented cause an insurer owes. Much of filing a claim is a math game: what is the cost of your deductible in relation to the cost of repairs and what those repairs accomplish." },
+  { title: "We don't chase volume.", body: "We take fewer projects than we could. That's a deliberate choice, one that allows us to stay true to what we believe and preserve quality in everything we do." },
 ];
 
 function PhilosophyCard({ title, body, index }) {
@@ -1891,23 +1903,23 @@ function PhilosophySection() {
 // Cultural Tutor / William Morris idea Jack shared: the "useful vs.
 // beautiful" tradeoff is a false one. Three-column layout (Ryan picked
 // it over the editorial variant on 2026-06-07).
-// 2026-06-11 (Jack): swapped the William Morris "perforce" quote — Jack and Ryan
-// both found it too hard to parse — for this Roger Scruton line.
+// 2026-06-11 (Jack): swapped the William Morris "perforce" quote, Jack and Ryan
+// both found it too hard to parse, for this Roger Scruton line.
 const MORRIS_QUOTE = {
   text: "To preserve what is beautiful is to keep faith with the past and to build a bridge of excellence to the future.",
   cite: "Roger Scruton",
 };
-// A real copper detail from our own work carries the quote — proof that the
+// A real copper detail from our own work carries the quote, proof that the
 // working parts of a roof are worth looking at. Easily swappable.
 // (Ryan picked the three-column layout 2026-06-07; the editorial variant was dropped.)
-// Hand-formed copper gutter, downspout, and valley work — the literal "beautiful
+// Hand-formed copper gutter, downspout, and valley work, the literal "beautiful
 // drainpipe" idea (Ryan supplied this photo 2026-06-07).
 const ETHOS_IMAGE = "assets/ethos-copper.webp";
 const TRIAD = [
   {
     word: "Good",
     sub: "Built honestly, built to last.",
-    body: "The good means that we treat our work with diligence and dignity. We believe in building roofs that last for centuries as an act of civic virtue — providing sanctuary for families and the generations to come.",
+    body: "The good means that we treat our work with diligence and dignity. We believe in building roofs that last for centuries as an act of civic virtue, providing sanctuary for families and the generations to come.",
   },
   {
     word: "True",
@@ -1917,7 +1929,7 @@ const TRIAD = [
   {
     word: "Beautiful",
     sub: "The useful and the beautiful were never enemies.",
-    body: "Somewhere we taught ourselves that a thing can be useful or beautiful but not both. Much of modern work has traded beauty for cost, efficiency, or ease. Our roofs are an attempt to return to beautifying the world around us. Historically, architecture and roofs served as a visual theology — inspiring a sense of awe embedded in the grain, shadow lines, textures, and colors of slate, clay, and copper.",
+    body: "Somewhere we taught ourselves that a thing can be useful or beautiful but not both. Much of modern work has traded beauty for cost, efficiency, or ease. Our roofs are an attempt to return to beautifying the world around us. Historically, architecture and roofs served as a visual theology, inspiring a sense of awe embedded in the grain, shadow lines, textures, and colors of slate, clay, and copper.",
   },
 ];
 
@@ -1951,7 +1963,7 @@ function Ethos() {
         <header className="ethos-head">
           <span className="eyebrow">What We Build For</span>
           <h2>The Good, the True,<br />and the <em>Beautiful</em></h2>
-          <p className="ethos-lede">Three words, borrowed from a very old idea about what makes a thing worth building. They're the closest thing we have to a creed — and the test every roof we touch has to pass.</p>
+          <p className="ethos-lede">Three words, borrowed from a very old idea about what makes a thing worth building. They're the closest thing we have to a creed, and the test every roof we touch has to pass.</p>
         </header>
         <div className="ethos-grid">
           {TRIAD.map((t, i) => <EthosPillar key={t.word} t={t} index={i} />)}
@@ -1969,7 +1981,7 @@ function Ethos() {
     </section>);
 }
 
-// Condensed Home-page echo — the three words large, linking to the full
+// Condensed Home-page echo, the three words large, linking to the full
 // section on the About page.
 function EthosEcho() {
   return (
@@ -1988,7 +2000,7 @@ function EthosEcho() {
 }
 
 const OVERVIEW_STEPS = [
-  { num: "01", title: "First Call", body: "We talk through the project before scheduling anything. If it's not the right fit for us, we'll tell you — and we'll tell you who might be a better match." },
+  { num: "01", title: "First Call", body: "We talk through the project before scheduling anything. If it's not the right fit for us, we'll tell you, and we'll tell you who might be a better match." },
   { num: "02", title: "Site Assessment", body: "We spend time on the roof. Condition of the deck, flashing integrity, substrate compatibility, salvageability. You receive a written assessment before any number is discussed." },
   { num: "03", title: "Material Proposal", body: "We present a specific material recommendation with sourcing timeline, installation method, and warranty terms. We explain why, not just what." },
   { num: "04", title: "Installation", body: "Our own crew, our own schedule, our own quality control at every stage. No surprises, no change orders for work that should have been in the scope from the start." },
@@ -2107,7 +2119,7 @@ function DiscontinuedIntro() {
 
 // 2026-05-29: HistoricalContext + EraFrame + HISTORICAL_ERAS removed.
 // Jack asked us to drop the era framing and replace it with "three reasons we
-// see roofs fail" — see ThreeReasonsSection below, which uses THREE_REASONS
+// see roofs fail", see ThreeReasonsSection below, which uses THREE_REASONS
 // from data.jsx.
 
 function ReasonFrame({ r, index }) {
@@ -2147,7 +2159,7 @@ function ThreeReasonsSection() {
       <div className="three-reasons-head">
         <span className="eyebrow">Why Roofs Fail</span>
         <h2>The Three Reasons We <em>See Roofs Fail</em></h2>
-        <p className="three-reasons-sub">It is rarely the visible field material. It is almost always one of three things — the felt beneath it, the fasteners holding it, or the flashings at every transition — done quickly the first time and discovered slowly twenty years later.</p>
+        <p className="three-reasons-sub">It is rarely the visible field material. It is almost always one of three things: the felt beneath it, the fasteners holding it, or the flashings at every transition, done quickly the first time and discovered slowly twenty years later.</p>
       </div>
       <div className="reason-frames">
         {THREE_REASONS.map((r, i) =>
@@ -2162,25 +2174,25 @@ function ThreeReasonsSection() {
 // run when their roof has a Da Vinci / Tamko / etc. discontinued product on it.
 const WTD_STEPS = [
   { num: "01", title: "Identify the product on your roof.", body: "Most homeowners don't know exactly what is on their roof. We document the tile profile, manufacturer marks, lot numbers where they exist, and the installation generation. That documentation is what every warranty claim and insurance file starts from." },
-  { num: "02", title: "Document the failure.", body: "Photographs, attic moisture readings, fastener pulls, and a written condition report. We compile the failure documentation the manufacturer and your insurer will require — not generic adjuster notes." },
+  { num: "02", title: "Document the failure.", body: "Photographs, attic moisture readings, fastener pulls, and a written condition report. We compile the failure documentation the manufacturer and your insurer will require, not generic adjuster notes." },
   { num: "03", title: "File the manufacturer warranty claim.", body: "We coordinate the claim with the applicable manufacturer. Many products discontinued 15–20 years ago still carry actionable warranty paths and class-action settlements." },
-  { num: "04", title: "Replace with the correct system.", body: "Once the warranty path is closed, we install the replacement — matching profile and color where the home requires it, or upgrading to a current system where the original product is no longer defensible. Either way, we install it once." },
+  { num: "04", title: "Replace with the correct system.", body: "Once the warranty path is closed, we install the replacement, matching profile and color where the home requires it, or upgrading to a current system where the original product is no longer defensible. Either way, we install it once." },
 ];
 
 const WTD_ICONS = [
-  // 01 Identify — magnifier / tag
+  // 01 Identify, magnifier / tag
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i1">
     <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.35-4.35" />
   </svg>,
-  // 02 Document — clipboard / paper
+  // 02 Document, clipboard / paper
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i2">
     <rect x="5" y="4" width="14" height="17" rx="1.5" /><path d="M9 4h6v3H9z" /><path d="M9 12h6M9 16h4" />
   </svg>,
-  // 03 File claim — shield / check
+  // 03 File claim, shield / check
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i3">
     <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" /><path d="M9 12l2.2 2.2L15 10.5" />
   </svg>,
-  // 04 Replace — arrows / refresh
+  // 04 Replace, arrows / refresh
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" key="i4">
     <path d="M4 12a8 8 0 0 1 14-5.3" /><path d="M18 3v4h-4" /><path d="M20 12a8 8 0 0 1-14 5.3" /><path d="M6 21v-4h4" />
   </svg>,
@@ -2213,11 +2225,11 @@ function WhatToDo() {
 const DISC_FAQS = [
   {
     q: "Does my homeowner's insurance cover a discontinued product failure?",
-    a: "It depends on the policy and the failure mode. Sudden, accidental damage is generally covered. Gradual deterioration from a known product defect often is not — unless you can document that the product was defective at installation. We help clients compile this documentation for insurance and legal purposes.",
+    a: "It depends on the policy and the failure mode. Sudden, accidental damage is generally covered. Gradual deterioration from a known product defect often is not, unless you can document that the product was defective at installation. We help clients compile this documentation for insurance and legal purposes.",
   },
   {
     q: "Should I replace the roof now, or wait until it's actively leaking?",
-    a: "In most cases, proactive replacement on a documented failing product is significantly less expensive than reactive replacement after water damage. The cost of a failed roof is rarely the roof itself — it's the decking, insulation, plaster, and millwork below it. Address the roof before you're addressing all of those.",
+    a: "In most cases, proactive replacement on a documented failing product is significantly less expensive than reactive replacement after water damage. The cost of a failed roof is rarely the roof itself. It's the decking, insulation, plaster, and millwork below it. Address the roof before you're addressing all of those.",
   },
   {
     q: "How do I get a second opinion if my contractor says I need a full replacement?",
@@ -2282,7 +2294,7 @@ function ArticleGrid() {
       <div className="article-grid-head">
         <span className="eyebrow">Resource Library</span>
         <h2>Coming <em>Soon</em></h2>
-        <p className="reslib-sub">Material guides, warranty and insurance notes, and field research on how historic roofs actually perform are being written now. Check back shortly — or reach out and we'll answer your question directly in the meantime.</p>
+        <p className="reslib-sub">Material guides, warranty and insurance notes, and field research on how historic roofs actually perform are being written now. Check back shortly, or reach out and we'll answer your question directly in the meantime.</p>
       </div>
     </section>);
 }
@@ -2290,8 +2302,8 @@ function ArticleGrid() {
 // ─── Contact page ─────────────────────────────────────────────
 
 const WTE_STEPS = [
-  { num: "01", title: "We review your inquiry the same day.", body: "Every submission is read by a principal — not a call center. If the project is a fit, you'll hear from us within one business day." },
-  { num: "02", title: "We schedule a site visit at your convenience.", body: "We come to the property and spend time on the roof — not the driveway. The site visit is at no charge and carries no obligation." },
+  { num: "01", title: "We review your inquiry the same day.", body: "Every submission is read by a principal, not a call center. If the project is a fit, you'll hear from us within one business day." },
+  { num: "02", title: "We schedule a site visit at your convenience.", body: "We come to the property and spend time on the roof, not the driveway. The site visit is at no charge and carries no obligation." },
   { num: "03", title: "You receive a written proposal.", body: "A specific scope, a specific material recommendation with sourcing timeline, and a fixed price. No allowances, no change order surprises." },
 ];
 
@@ -2324,7 +2336,7 @@ function Testimonials() {
       <div className="testimonials-head">
         <span className="eyebrow" style={{ color: "var(--copper-300)" }}>From Our Clients</span>
         <h2>Reviewed by the People <em>We Work For</em></h2>
-        <p className="testimonials-sub">We keep our clients' business private — so our reviews live where they can't be edited or invented. Read them in full on Google.</p>
+        <p className="testimonials-sub">We keep our clients' business private, so our reviews live where they can't be edited or invented. Read them in full on Google.</p>
         <a className="btn-copper" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
           Read Our Google Reviews <ArrowRight size={14} />
         </a>

@@ -1788,7 +1788,7 @@ img { display: block; max-width: 100%; }
 }
 .intro-bg {
   position: absolute; inset: 0;
-  background: url("https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=2400&auto=format&fit=crop&q=85") center/cover no-repeat;
+  background: url("assets/hero/intro-bg.webp") center/cover no-repeat;
   opacity: 0;
   animation: introBgIn 1.4s 0.4s ease-out forwards;
 }
@@ -2591,9 +2591,6 @@ body[data-atmosphere="cinematic"] .hero-video { filter: saturate(1.02) contrast(
 .scroll-reveal.is-revealed {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-}
-.scroll-reveal.is-revealed:hover {
-  transform: translate3d(0, -8px, 0);
 }
 /* slight stagger for top-level child blocks inside a revealed section */
 .scroll-reveal > * {
@@ -4546,6 +4543,7 @@ a.btn-copper {
   border-bottom: 1px solid var(--cream-200);
 }
 .project-detail-specs > div { display: flex; flex-direction: column; gap: 4px; }
+.project-detail-specs .spec-blend { grid-column: 1 / -1; }
 .project-detail-specs dt {
   font-size: 11px;
   text-transform: uppercase;
