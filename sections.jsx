@@ -95,7 +95,8 @@ function Nav({ onLight: forcedOnLight }) {
   const activeId = activePage ? activePage.id : null;
 
   return (
-    <nav className={`nav${scrolled ? " scrolled" : ""}${onLight ? " on-light" : ""}`}>
+    <React.Fragment>
+    <nav className={`nav${scrolled ? " scrolled" : ""}${onLight ? " on-light" : ""}${menuOpen ? " menu-open" : ""}`}>
       <a className="logo" href="index.html">
         <img src="assets/logo.png" alt="Priority Designer · Historic Exteriors" className="logo-img" />
       </a>
@@ -119,6 +120,12 @@ function Nav({ onLight: forcedOnLight }) {
         onClick={() => setMenuOpen((o) => !o)}>
         <span /><span /><span />
       </button>
+    </nav>
+    {/* Portal to <body>: once scrolled, .nav.scrolled gets a backdrop-filter,
+        which makes the nav a containing block for position:fixed descendants
+        and would collapse this overlay's inset:0 onto the nav bar instead of
+        the viewport. Portaling escapes that (same fix as the disc-lightbox). */}
+    {ReactDOM.createPortal(
       <div
         id="nav-overlay"
         className={`nav-overlay${menuOpen ? " is-open" : ""}${onLight ? " on-light" : ""}`}
@@ -143,8 +150,9 @@ function Nav({ onLight: forcedOnLight }) {
             <span className="icon"><ArrowRight size={14} /></span>
           </a>
         </div>
-      </div>
-    </nav>);
+      </div>,
+      document.body)}
+    </React.Fragment>);
 
 }
 

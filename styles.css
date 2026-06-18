@@ -84,6 +84,17 @@ img { display: block; max-width: 100%; }
   border-bottom: 1px solid rgba(26, 24, 20, 0.08);
   height: 88px;
 }
+/* While the mobile menu is open the overlay is portaled to <body> (z-index
+   101). Lift the bar above it so the morphing hamburger (the close "×") and
+   logo stay clickable, and drop the bar background so only they float over
+   the menu. Must follow .nav.scrolled / .nav.on-light to win on source order. */
+.nav.menu-open {
+  z-index: 103;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
 
 .logo {
   display: inline-flex;
