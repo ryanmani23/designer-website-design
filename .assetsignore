@@ -11,12 +11,14 @@ wrangler.json
 node_modules
 discontinued products
 
-# Build sources — present for the build, but not served (dist/ ships instead)
-package.json
-package-lock.json
-build.mjs
-*.jsx
-styles.css
+# Build sources — present for the build, but not served (dist/ ships instead).
+# Anchor with a leading slash: a bare `styles.css` would also match
+# dist/styles.css (gitignore globs match in every directory) and 404 the site.
+/package.json
+/package-lock.json
+/build.mjs
+/styles.css
+/*.jsx
 
 # Superseded originals (now served as optimized webp) and unused hero shots
 assets/cta-bg.jpg
