@@ -1,0 +1,14 @@
+{
+  "name": "designer-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Priority Designer marketing site — precompiled with esbuild.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}

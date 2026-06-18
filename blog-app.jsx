@@ -7,7 +7,7 @@ function App() {
         eyebrow="Resource Library"
         title="A Searchable Library of Roofing Knowledge"
         sub="Material guides, warranty and insurance notes, and field research — written by tradesmen who have spent decades on roofs that don't forgive shortcuts."
-        image="assets/hero/5-Jul 27 2024 01_06am-aSX4.jpg"
+        image="assets/hero/blog-hero.webp"
       />
       <ArticleGrid />
       <FinalCTA />

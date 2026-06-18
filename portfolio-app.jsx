@@ -18,7 +18,7 @@ function App() {
       <PageHero
         eyebrow="Selected Work"
         title="Projects of Distinction"
-        image="assets/hero/2-Oct 03 2023 09_56am-6LHU.jpg"
+        image="assets/hero/portfolio-hero.webp"
       />
       <ProjectGrid onOpen={(slug) => setActiveSlug(slug)} />
       <ProcessSection />
