@@ -316,6 +316,24 @@ function HeroMosaic({ revealed }) {
 function HeroSlides({ revealed }) {
   const slides = HERO_TOP_FIVE;
   const [active, setActive] = useState(0);
+  // Load slide backgrounds just-in-time rather than mounting all six up front.
+  // Only slide 0 (which the page also <link rel=preload>s) gets a background up
+  // front, so the hero's first paint isn't competing with five other full-bleed
+  // images. We then keep exactly one slide ahead of the rotation loaded: the
+  // "next" slide is fetched when the current one becomes active, so each
+  // cross-fade has its image ready without a blank flash — and the throttled
+  // mobile network is never flooded with the whole set at once (which inflates
+  // the simulated LCP). The static .hero-slides-base keeps slide 0 painted as a
+  // stable LCP candidate regardless of where the rotation is.
+  const [loaded, setLoaded] = useState(() => new Set([0]));
+  useEffect(() => {
+    setLoaded((prev) => {
+      const next = new Set(prev);
+      next.add(active);
+      if (revealed) next.add((active + 1) % slides.length);
+      return next;
+    });
+  }, [active, revealed, slides.length]);
   // Slides hero is not framed, reset the framed-reel inset so the fixed nav
   // sits flush at the top (fixes the small gap Jack flagged on 2026-06-11).
   useEffect(() => {
@@ -333,12 +351,23 @@ function HeroSlides({ revealed }) {
   }, [revealed, slides.length]);
   return (
     <section className={`hero hero-slides${revealed ? " revealed" : ""}`} id="top" data-screen-label="Hero" data-nav-theme="dark">
+      {/* Static base layer showing the first (preloaded) slide. It is never
+          faded out, so it stays a stable Largest Contentful Paint candidate.
+          Without it, the cross-fade drops the outgoing slide to opacity 0 —
+          which the browser treats as the LCP element being removed and then
+          re-promotes each newly faded-in slide, so an auto-advancing carousel
+          keeps pushing LCP later and later. The cross-fading layers above are
+          the same full-bleed size, so they never supersede this base. */}
+      <div
+        className="hero-slides-base"
+        aria-hidden="true"
+        style={{ backgroundImage: `url("${slides[0].image}")` }} />
       <div className="hero-slides-stage" aria-hidden="true">
         {slides.map((s, i) =>
           <div
             className={`hero-slides-layer${i === active ? " is-active" : ""}`}
             key={s.slug}
-            style={{ backgroundImage: `url("${s.image}")` }} />
+            style={loaded.has(i) ? { backgroundImage: `url("${s.image}")` } : undefined} />
         )}
       </div>
       <div className="hero-slides-scrim" aria-hidden="true" />

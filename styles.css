@@ -310,7 +310,10 @@ img { display: block; max-width: 100%; }
 }
 .hero-img {
   position: absolute; inset: 0;
-  background: url("https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=2400&auto=format&fit=crop&q=85") center/cover no-repeat;
+  background:
+    radial-gradient(1100px 700px at 65% 25%, rgba(192,122,58,0.18), transparent 60%),
+    radial-gradient(900px 600px at 25% 80%, rgba(107,133,181,0.16), transparent 60%),
+    linear-gradient(180deg, #0d1c30 0%, #162540 100%);
   opacity: 0.55;
 }
 .hero-video-wrap {
@@ -1093,8 +1096,10 @@ img { display: block; max-width: 100%; }
 .discontinued::before {
   content: "";
   position: absolute; inset: 0;
-  background: url("https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=2200&auto=format&fit=crop&q=85") center/cover no-repeat;
-  opacity: 0.18;
+  background:
+    radial-gradient(1000px 600px at 75% 15%, rgba(192,122,58,0.20), transparent 62%),
+    radial-gradient(800px 520px at 15% 85%, rgba(107,133,181,0.16), transparent 62%);
+  opacity: 0.9;
   pointer-events: none;
 }
 .discontinued::after {
@@ -1612,7 +1617,7 @@ img { display: block; max-width: 100%; }
 .final-cta-img {
   position: absolute;
   inset: 0;
-  background-image: url("./assets/cta-bg.webp");
+  background-image: url("/assets/cta-bg.webp");
   background-size: cover;
   background-position: center;
   z-index: 0;
@@ -1799,7 +1804,7 @@ img { display: block; max-width: 100%; }
 }
 .intro-bg {
   position: absolute; inset: 0;
-  background: url("assets/hero/intro-bg.webp") center/cover no-repeat;
+  background: url("/assets/hero/intro-bg.webp") center/cover no-repeat;
   opacity: 0;
   animation: introBgIn 1.4s 0.4s ease-out forwards;
 }
@@ -4179,6 +4184,16 @@ a.btn-copper {
   isolation: isolate;
 }
 .hero-slides-stage { position: absolute; inset: 0; z-index: 1; }
+/* Static first-slide layer beneath the cross-fading stage — keeps the LCP
+   element stable (see HeroSlides in sections.jsx). No opacity/transform
+   animation: it must paint immediately and never be removed. */
+.hero-slides-base {
+  position: absolute; inset: 0; z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: saturate(0.9) brightness(0.72);
+}
 .hero-slides-layer {
   position: absolute; inset: 0;
   background-size: cover;
@@ -4821,3 +4836,22 @@ a.btn-copper {
   .journal-card:hover .journal-card-img { transform: none; }
 }
 
+
+/* ── PageSpeed R2: defer offscreen sections ───────────────────────────────
+   The homepage is long and several below-the-fold sections carry heavy
+   imagery (manufacturer cards, the mobile jobs list, discontinued thumbs).
+   content-visibility:auto lets Chromium skip rendering — and defer fetching
+   the CSS background-images of — these sections until they approach the
+   viewport, so they no longer compete with the hero LCP image on first load.
+   `auto` in contain-intrinsic-size records each section's real height after
+   first render, avoiding scroll jank / layout shift. */
+.section.materials,
+.jobsmap,
+.discontinued,
+.ethos-echo,
+.partners,
+.journal,
+.final-cta {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}

@@ -79,15 +79,13 @@ const MANUFACTURERS = [
     body: "Ludowici is the oldest and most renowned clay roof tile manufacturer in America. They can remake any mold dating back to their conception as well as match discontinued tile molds such as Heinz tile or Mineral Wells tile to keep the exact historic charm the home previously had.",
     image: "assets/projects/estate-clay-tile/01.webp",
     stamp: "01 / 04",
-    logo: "assets/logos/manufacturers/ludowici.png", // placeholder path
   },
   {
     name: "Slate Valley Supply / Be Natural",
     role: "Natural S1 Slate from Vermont & Spain",
     body: "Slate isn't manufactured, it's farmed. The selection process of that slate is almost as important as its rating. Our partners were born and live right where the quarries are and have a depth of knowledge that give us and our customers full confidence in the quality of the product installed and some of the shortest lead times in the industry.",
-    image: "assets/materials/slate.jpg",
+    image: "assets/materials/slate.webp",
     stamp: "02 / 04",
-    logo: "assets/logos/manufacturers/slate-valley.png",
   },
   {
     name: "Brava",
@@ -95,15 +93,13 @@ const MANUFACTURERS = [
     body: "We are roofing snobs. We only install what we believe in and what we love. Typically, that's natural slate or authentic clay tile. But Brava is the one synthetic company we believe in. They have never had a product discontinued, and their offering of lightweight, Class 4, hurricane rated Tile, Slate and Shake is incredible. Truly a product that has earned our trust and recommendation.",
     image: "assets/materials/brava.webp",
     stamp: "03 / 04",
-    logo: "assets/logos/manufacturers/brava.png",
   },
   {
     name: "La Escandella",
     role: "Spain's Leading Clay Tile Manufacturer · European Certified",
     body: "La Escandella is the leading clay tile manufacturer in Spain and highly sought after throughout Europe. Their tiles have the highest ratings clay can earn and give the property a truly authentic European style.",
-    image: "assets/materials/clay.jpg",
+    image: "assets/materials/clay.webp",
     stamp: "04 / 04",
-    logo: "assets/logos/manufacturers/la-escandella.png",
   },
 ];
 

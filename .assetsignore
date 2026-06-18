@@ -29,3 +29,11 @@ assets/hero/4-*.jpg
 assets/hero/5-*.jpg
 assets/hero/6-*.jpg
 assets/hero/7-*.jpg
+
+# Round 2 (2026-06-18): manufacturer JPGs now served as resized webp, plus
+# images no longer referenced anywhere in the code.
+assets/materials/slate.jpg
+assets/materials/clay.jpg
+assets/materials/synthetic.jpg
+assets/materials/metal.jpg
+assets/partners-hero.jpg
