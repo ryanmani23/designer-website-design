@@ -1861,6 +1861,18 @@ img { display: block; max-width: 100%; }
   color: var(--cream-100);
   animation: introFadeUp 0.7s 1.7s ease-out forwards;
 }
+/* Hold the intro text animations until the wordmark font has loaded (the
+   `is-ready` class is toggled from app.jsx once Cormorant Garamond is in).
+   Paused animations rest at their `from` keyframe — words sit translated out
+   of the overflow-clipped mask, eyebrow/rule/meta at opacity/width 0 — so
+   nothing is visible in the fallback typeface and there is no mid-animation
+   reflow when the real font swaps in. The dark .intro background + bg/veil
+   fades are intentionally left running so the screen is never blank. */
+.intro:not(.is-ready) .intro-eyebrow,
+.intro:not(.is-ready) .intro-mark .word,
+.intro:not(.is-ready) .intro-rule,
+.intro:not(.is-ready) .intro-meta { animation-play-state: paused; }
+
 .intro.leaving {
   animation: introLeave 1.2s 0s cubic-bezier(.7,0,.3,1) forwards;
 }
