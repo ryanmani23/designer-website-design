@@ -39,20 +39,6 @@ function App() {
     }
   })();
 
-  // Mobile shortens the intro to ~1.2s (desktop keeps the full 3.3s moment).
-  // With the payload/FCP work done, the hero — the LCP element — is hidden
-  // behind the intro splash, so on a throttled phone the splash duration *is*
-  // the LCP. Revealing the hero sooner on mobile is the last real LCP lever.
-  // Reduced-motion gets it near-instant. Computed once at mount.
-  const isMobile = (() => {
-    try { return window.matchMedia("(max-width: 768px)").matches; }
-    catch (e) { return false; }
-  })();
-  const reduceMotion = (() => {
-    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
-    catch (e) { return false; }
-  })();
-
   // Lock scroll for the intro and eagerly load the two display faces the
   // "Priority Designer" wordmark uses (Cormorant Garamond 500, roman + italic).
   // The site now paints fast enough that, without this, the wordmark animates
@@ -81,7 +67,7 @@ function App() {
     } catch (e) {
       ready();
     }
-    const cap = setTimeout(ready, isMobile ? 800 : 1500);
+    const cap = setTimeout(ready, 1500);
     return () => { clearTimeout(cap); document.body.classList.remove("intro-active"); };
   }, []);
 
@@ -89,11 +75,8 @@ function App() {
   // whole on-screen moment plays in the correct typeface.
   useEffect(() => {
     if (!fontsReady) return undefined;
-    // reveal = hero takes over (intro starts leaving); gone = intro unmounts.
-    const reveal = reduceMotion ? 200 : isMobile ? 1200 : 3300;
-    const gone = reduceMotion ? 500 : isMobile ? 2000 : 4500;
-    const t1 = setTimeout(() => { setIntroLeaving(true); setHeroRevealed(true); }, reveal);
-    const t2 = setTimeout(() => { setIntroVisible(false); document.body.classList.remove("intro-active"); }, gone);
+    const t1 = setTimeout(() => { setIntroLeaving(true); setHeroRevealed(true); }, 3300);
+    const t2 = setTimeout(() => { setIntroVisible(false); document.body.classList.remove("intro-active"); }, 4500);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [fontsReady]);
 
