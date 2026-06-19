@@ -61,13 +61,50 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+SC:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+SC:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap"></noscript>
-<link rel="preload" as="image" href="assets/hero/intro-bg-mobile.webp" media="(max-width: 768px)">
+<link rel="preload" as="image" href="assets/hero/intro-bg-mobile.webp" media="(max-width: 768px)" fetchpriority="high">
 <link rel="preload" as="image" href="assets/hero/intro-bg.webp" media="(min-width: 769px)" fetchpriority="high">
 <link rel="preload" as="image" href="assets/projects/estate-slate-copper/01-mobile.webp" media="(max-width: 768px)" fetchpriority="high">
 <link rel="preload" as="image" href="assets/projects/estate-slate-copper/01.webp" media="(min-width: 769px)" fetchpriority="high">
-<link rel="stylesheet" href="dist/styles.css" />
+
+<!-- Critical CSS, inlined so the intro splash paints before the main stylesheet
+     and React load. Everything pre-React sees is the dark intro overlay, so the
+     main stylesheet is loaded non-blocking below (no FCP wait); the 3.3s splash
+     covers the screen while it and React arrive. The .intro rules mirror the
+     intro block in styles.css — keep them in sync if that block changes. -->
+<style>
+html,body{margin:0;background:#0d1c30}
+:root{--navy-900:#0d1c30;--copper-500:#c07a3a;--copper-300:#e8c49a;--cream-50:#f7f3ec;--cream-100:#ede6d8;--serif:"Cormorant Garamond","Cormorant","Times New Roman",serif;--serif-sc:"Cormorant SC","Cormorant Garamond",serif}
+#intro-static{position:fixed;inset:0;z-index:1002;background:#0d1c30;overflow:hidden}
+#intro-static .b{position:absolute;inset:0;background:url("assets/hero/intro-bg.webp") center/cover no-repeat;opacity:.32}
+#intro-static .v{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,28,48,.85),rgba(13,28,48,.95))}
+@media(max-width:768px){#intro-static .b{background-image:url("assets/hero/intro-bg-mobile.webp")}}
+.intro{position:fixed;inset:0;z-index:1000;background:var(--navy-900);display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none}
+.intro-bg{position:absolute;inset:0;background:url("/assets/hero/intro-bg.webp") center/cover no-repeat;opacity:0;animation:introBgIn 1.4s .4s ease-out forwards}
+.intro-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,28,48,.85),rgba(13,28,48,.95));animation:introVeil 1.4s .4s ease-out forwards}
+.intro-content{position:relative;z-index:2;text-align:center;color:var(--cream-50)}
+.intro-eyebrow{font-family:var(--serif-sc);font-size:11px;letter-spacing:.32em;color:var(--copper-300);opacity:0;animation:introFadeUp .8s .2s ease-out forwards;display:block;margin-bottom:18px}
+.intro-mark{display:inline-block;overflow:hidden;padding-bottom:.12em}
+.intro-mark .word{font-family:var(--serif);font-weight:500;font-size:clamp(48px,7.5vw,112px);letter-spacing:-.005em;line-height:1.22;display:inline-block;margin:0 12px;position:relative;transform:translateY(120%);animation:introWord 1s .5s cubic-bezier(.2,.7,.15,1) forwards}
+.intro-mark .word.two{font-style:italic;color:var(--copper-300);animation-delay:.7s}
+.intro-rule{width:0;height:1px;background:var(--copper-500);margin:32px auto 18px;animation:introRule .9s 1.4s cubic-bezier(.4,0,.2,1) forwards}
+.intro-meta{font-family:var(--serif-sc);font-size:11px;letter-spacing:.22em;opacity:0;color:var(--cream-100);animation:introFadeUp .7s 1.7s ease-out forwards}
+.intro:not(.is-ready) .intro-eyebrow,.intro:not(.is-ready) .intro-mark .word,.intro:not(.is-ready) .intro-rule,.intro:not(.is-ready) .intro-meta{animation-play-state:paused}
+.intro.leaving{animation:introLeave 1.2s 0s cubic-bezier(.7,0,.3,1) forwards}
+.intro.leaving .intro-content{animation:introContentOut .6s ease-out forwards}
+@keyframes introWord{from{transform:translateY(120%)}to{transform:translateY(0)}}
+@keyframes introFadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes introRule{from{width:0}to{width:220px}}
+@keyframes introBgIn{from{opacity:0;transform:scale(1.08)}to{opacity:.32;transform:scale(1)}}
+@keyframes introVeil{from{opacity:1}to{opacity:.86}}
+@keyframes introLeave{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-100%);opacity:1}}
+@keyframes introContentOut{to{opacity:0;transform:translateY(-12px)}}
+@media(max-width:768px){.intro-bg{background-image:url("/assets/hero/intro-bg-mobile.webp")}}
+</style>
+<link rel="stylesheet" href="dist/styles.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="dist/styles.css"></noscript>
 </head>
 <body>
+<div id="intro-static" aria-hidden="true"><div class="b"></div><div class="v"></div></div>
 <div id="root"></div>
 
 

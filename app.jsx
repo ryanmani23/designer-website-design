@@ -48,6 +48,11 @@ function App() {
   // failed font fetch can never stall the intro.
   useEffect(() => {
     document.body.classList.add("intro-active");
+    // Drop the static first-paint splash now that React's own <Intro> has
+    // rendered underneath it (see #intro-static in index.html). The static node
+    // exists only to give the browser something to paint before the JS boots.
+    const staticSplash = document.getElementById("intro-static");
+    if (staticSplash) staticSplash.remove();
     let settled = false;
     const ready = () => { if (!settled) { settled = true; setFontsReady(true); } };
     try {
