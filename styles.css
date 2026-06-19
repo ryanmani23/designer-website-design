@@ -1894,6 +1894,22 @@ img { display: block; max-width: 100%; }
 }
 @keyframes introContentOut { to { opacity: 0; transform: translateY(-12px); } }
 
+/* On mobile app.jsx reveals the hero at ~1.2s (vs 3.3s on desktop) to stop
+   Google's throttled audit from reading the splash as dead LCP time. Compress
+   the intro timing to match so the eyebrow -> wordmark -> rule -> meta sequence
+   still plays out and settles by ~1.0s instead of getting cut mid-animation. */
+@media (max-width: 768px) {
+  .intro-bg     { animation-duration: 0.6s; animation-delay: 0.1s; }
+  .intro-veil   { animation-duration: 0.6s; animation-delay: 0.1s; }
+  .intro-eyebrow{ animation-duration: 0.4s; animation-delay: 0.1s; }
+  .intro-mark .word     { animation-duration: 0.5s; animation-delay: 0.15s; }
+  .intro-mark .word.two { animation-delay: 0.3s; }
+  .intro-rule   { animation-duration: 0.4s; animation-delay: 0.6s; }
+  .intro-meta   { animation-duration: 0.3s; animation-delay: 0.7s; }
+  .intro.leaving { animation-duration: 0.8s; }
+  .intro.leaving .intro-content { animation-duration: 0.4s; }
+}
+
 /* hero entrance after intro */
 .hero-inner > * { opacity: 0; transform: translateY(18px); }
 .hero.revealed .hero-eyebrow      { animation: introFadeUp 0.7s 0.05s ease-out forwards; }
