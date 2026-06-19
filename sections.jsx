@@ -1,6 +1,36 @@
 /* global React, ReactDOM, MANUFACTURERS, PROJECTS, DISCONTINUED, ROOF_SYSTEMS, PARTNERS, PRESERVATION, TRADE_CIVIC, CERTIFICATIONS, TRUST, NAV_ITEMS */
 const { useState, useEffect, useRef } = React;
 
+// Decorative background-image element that holds its fetch until it nears the
+// viewport. Below-the-fold backgrounds (the JobsMap thumbnails default to a
+// 16-item list view on mobile, plus the manufacturer cards) were all fetching
+// during initial load and starving the hero LCP image on throttled 4G. With
+// this, an unscrolled Lighthouse run never requests them at all.
+function LazyBg({ image, className, tag = "div", margin = "400px 0px", children, ...rest }) {
+  const ref = useRef(null);
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || show) return undefined;
+    if (typeof IntersectionObserver === "undefined") { setShow(true); return undefined; }
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { setShow(true); io.disconnect(); }
+    }, { rootMargin: margin });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [show, margin]);
+  const Tag = tag;
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      style={show && image ? { backgroundImage: `url("${image}")` } : undefined}
+      {...rest}>
+      {children}
+    </Tag>
+  );
+}
+
 const ArrowRight = ({ size = 16 }) =>
 <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
     <path d="M5 12h14M13 6l6 6-6 6" />
@@ -316,6 +346,16 @@ function HeroMosaic({ revealed }) {
 function HeroSlides({ revealed }) {
   const slides = HERO_TOP_FIVE;
   const [active, setActive] = useState(0);
+  // Each slide ships a ~820px "-mobile.webp" variant (~30-120KB) alongside the
+  // full 1600px desktop file (~400-480KB). On phones, serve the small variant
+  // for every slide: slide 0 is the LCP image (no point downloading 1600px for a
+  // 412px screen), and the just-in-time next-slide preload then costs ~100KB
+  // instead of ~400KB. Desktop keeps the full-resolution files.
+  const isMobile = (() => {
+    try { return window.matchMedia("(max-width: 768px)").matches; }
+    catch (e) { return false; }
+  })();
+  const slideImage = (src) => (isMobile ? src.replace(/\.webp$/, "-mobile.webp") : src);
   // Load slide backgrounds just-in-time rather than mounting all six up front.
   // Only slide 0 (which the page also <link rel=preload>s) gets a background up
   // front, so the hero's first paint isn't competing with five other full-bleed
@@ -361,13 +401,13 @@ function HeroSlides({ revealed }) {
       <div
         className="hero-slides-base"
         aria-hidden="true"
-        style={{ backgroundImage: `url("${slides[0].image}")` }} />
+        style={{ backgroundImage: `url("${slideImage(slides[0].image)}")` }} />
       <div className="hero-slides-stage" aria-hidden="true">
         {slides.map((s, i) =>
           <div
             className={`hero-slides-layer${i === active ? " is-active" : ""}`}
             key={s.slug}
-            style={loaded.has(i) ? { backgroundImage: `url("${s.image}")` } : undefined} />
+            style={loaded.has(i) ? { backgroundImage: `url("${slideImage(s.image)}")` } : undefined} />
         )}
       </div>
       <div className="hero-slides-scrim" aria-hidden="true" />
@@ -582,10 +622,7 @@ function ManufacturerCell({ m, index }) {
   const stamp = `${String(index + 1).padStart(2, "0")} / 04`;
   return (
     <article className={`mat-cell${hasLogo ? " has-logo" : ""}`}>
-      <div
-        className="mat-cell-grain"
-        style={{ backgroundImage: `url("${m.image}")` }}
-        aria-hidden="true" />
+      <LazyBg className="mat-cell-grain" image={m.image} aria-hidden="true" />
       <div className="mat-cell-scrim" aria-hidden="true" />
       <div className="mat-cell-grit" aria-hidden="true" />
       <div className="mat-cell-rest">
@@ -881,9 +918,10 @@ function JobsMap() {
               className="jobsmap-list-button"
               aria-expanded={active === i}
               onClick={() => toggle(i)}>
-              <span
+              <LazyBg
+                tag="span"
                 className="jobsmap-list-thumb"
-                style={p.image ? { backgroundImage: `url("${p.image}")` } : undefined}
+                image={p.image}
                 aria-hidden="true" />
               <span className="jobsmap-list-text">
                 <span className="jobsmap-list-loc">{p.city}, {p.state}{p.coming ? " · Project Coming" : ""}</span>
@@ -1010,14 +1048,15 @@ function Discontinued({ onJump }) {
               <div className={`disc-prod${imgs ? " has-thumb" : ""}`} key={p.title}>
                 <div className="ix">
                   {imgs ?
-                  <button
+                  <LazyBg
+                    tag="button"
                     type="button"
                     className="disc-prod-thumb"
-                    style={{ backgroundImage: `url("${imgs[0]}")` }}
+                    image={imgs[0]}
                     onClick={() => setLb({ images: imgs, title: p.title, caption: p.imgCaption })}
                     aria-label={`View ${imgs.length} photo${imgs.length > 1 ? "s" : ""} of ${p.title}`}>
                     {imgs.length > 1 && <span className="disc-prod-thumb-count">{imgs.length}</span>}
-                  </button> :
+                  </LazyBg> :
                   String(i + 1).padStart(2, "0")}
                 </div>
                 <div className="title">{p.title}<small>{p.sub}</small></div>
@@ -1269,7 +1308,7 @@ function FinalCTA({ variant }) {
       </div>
 
       <div className="final-cta-card">
-        <div className="final-cta-img" />
+        <LazyBg className="final-cta-img" image="assets/cta-bg.webp" aria-hidden="true" />
         <div className="final-cta-scrim" />
         <div className="final-cta-inner">
           {isContact

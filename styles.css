@@ -1617,7 +1617,8 @@ img { display: block; max-width: 100%; }
 .final-cta-img {
   position: absolute;
   inset: 0;
-  background-image: url("/assets/cta-bg.webp");
+  /* background-image is set lazily via the LazyBg component (FinalCTA) so this
+     527KB below-the-fold image isn't fetched during initial load. */
   background-size: cover;
   background-position: center;
   z-index: 0;
@@ -1899,7 +1900,8 @@ img { display: block; max-width: 100%; }
    the intro timing to match so the eyebrow -> wordmark -> rule -> meta sequence
    still plays out and settles by ~1.0s instead of getting cut mid-animation. */
 @media (max-width: 768px) {
-  .intro-bg     { animation-duration: 0.6s; animation-delay: 0.1s; }
+  /* 820px / 68KB intro bg instead of the 1920px / 340KB desktop file */
+  .intro-bg     { background-image: url("/assets/hero/intro-bg-mobile.webp"); animation-duration: 0.6s; animation-delay: 0.1s; }
   .intro-veil   { animation-duration: 0.6s; animation-delay: 0.1s; }
   .intro-eyebrow{ animation-duration: 0.4s; animation-delay: 0.1s; }
   .intro-mark .word     { animation-duration: 0.5s; animation-delay: 0.15s; }
