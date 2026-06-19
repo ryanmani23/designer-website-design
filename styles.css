@@ -1895,21 +1895,10 @@ img { display: block; max-width: 100%; }
 }
 @keyframes introContentOut { to { opacity: 0; transform: translateY(-12px); } }
 
-/* On mobile app.jsx reveals the hero at ~1.2s (vs 3.3s on desktop) to stop
-   Google's throttled audit from reading the splash as dead LCP time. Compress
-   the intro timing to match so the eyebrow -> wordmark -> rule -> meta sequence
-   still plays out and settles by ~1.0s instead of getting cut mid-animation. */
+/* Mobile serves a lighter intro background (820px / 68KB vs the 1920px / 340KB
+   desktop file); the intro timing itself is identical on all viewports. */
 @media (max-width: 768px) {
-  /* 820px / 68KB intro bg instead of the 1920px / 340KB desktop file */
-  .intro-bg     { background-image: url("/assets/hero/intro-bg-mobile.webp"); animation-duration: 0.6s; animation-delay: 0.1s; }
-  .intro-veil   { animation-duration: 0.6s; animation-delay: 0.1s; }
-  .intro-eyebrow{ animation-duration: 0.4s; animation-delay: 0.1s; }
-  .intro-mark .word     { animation-duration: 0.5s; animation-delay: 0.15s; }
-  .intro-mark .word.two { animation-delay: 0.3s; }
-  .intro-rule   { animation-duration: 0.4s; animation-delay: 0.6s; }
-  .intro-meta   { animation-duration: 0.3s; animation-delay: 0.7s; }
-  .intro.leaving { animation-duration: 0.8s; }
-  .intro.leaving .intro-content { animation-duration: 0.4s; }
+  .intro-bg { background-image: url("/assets/hero/intro-bg-mobile.webp"); }
 }
 
 /* hero entrance after intro */
