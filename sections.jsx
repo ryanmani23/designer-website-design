@@ -664,7 +664,7 @@ function Manufacturers({ banner = "partners" }) {
       <div className="mat-banner mat-banner--head">
         <h3>Four Partners. <em>Craftsmanship Over Compromise.</em></h3>
         <p>
-          We add a manufacturer only when a product raises our standard, not when it expands our<br />
+          We add a manufacturer only when a product raises our standard, not when it expands our{" "}<br />
           catalog.
         </p>
       </div>
@@ -678,7 +678,7 @@ function Manufacturers({ banner = "partners" }) {
 
       <div className="mat-foot">
         <p>
-          Four manufacturers. Each one selected because we would install<br />
+          Four manufacturers. Each one selected because we would install{" "}<br />
           their products on our own homes and have.
         </p>
         <button className="mat-foot-link">
@@ -1282,7 +1282,7 @@ function Journal() {
   return (
     <section className="journal" id="journal" data-screen-label="Journal">
       <div className="journal-head">
-        <h2 className="journal-title">Roofing<br />Field Journal</h2>
+        <h2 className="journal-title">Roofing{" "}<br />Field Journal</h2>
         <div className="journal-meta" style={{ textAlign: "right", justifyContent: "center", alignItems: "flex-end" }}>
           <p className="journal-sub" style={{ textAlign: "right" }}>Expert notes on materials, restoration, and historic craft.</p>
         </div>
