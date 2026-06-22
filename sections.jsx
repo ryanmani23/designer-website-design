@@ -404,8 +404,14 @@ function HeroSlides({ revealed }) {
         style={{ backgroundImage: `url("${slideImage(slides[0].image)}")` }} />
       <div className="hero-slides-stage" aria-hidden="true">
         {slides.map((s, i) =>
+          // The Ken Burns zoom is a CSS transition that only fires when
+          // .is-active is *added* (scale 1.06 -> 1.0). Gate slide 0 on `revealed`
+          // too: if it mounted already-active it would paint at 1.0 with no
+          // start->end change to animate, so the first slide alone sat static.
+          // Withholding is-active until reveal makes it zoom like the rest; the
+          // static .hero-slides-base underneath still covers LCP / blank flash.
           <div
-            className={`hero-slides-layer${i === active ? " is-active" : ""}`}
+            className={`hero-slides-layer${i === active && revealed ? " is-active" : ""}`}
             key={s.slug}
             style={loaded.has(i) ? { backgroundImage: `url("${slideImage(s.image)}")` } : undefined} />
         )}
