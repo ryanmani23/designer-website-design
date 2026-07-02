@@ -10,8 +10,10 @@
 
 import * as esbuild from "esbuild";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { buildBlog } from "./build-blog.mjs";
 
 const OUT = "dist";
+const SITE = "https://prioritydesigner.com";
 
 // Per-page source groupings, mirroring the old `type="text/babel"` tags.
 // The dev-only tweaks panel (tweaks-panel.jsx + tweaks.jsx) is intentionally
@@ -69,6 +71,30 @@ async function buildCss() {
   return result.code.length;
 }
 
+// Static sitemap covering the hand-authored pages plus every generated blog
+// article, so new articles appear in the sitemap automatically on build.
+async function buildSitemap(articles) {
+  // Clean (extensionless) URLs: Cloudflare serves these directly and
+  // 307-redirects the .html forms to them, so the sitemap lists the canonical
+  // served URLs.
+  const base = [
+    { loc: `${SITE}/`, freq: "monthly", pri: "1.0" },
+    { loc: `${SITE}/about`, freq: "monthly", pri: "0.8" },
+    { loc: `${SITE}/portfolio`, freq: "monthly", pri: "0.9" },
+    { loc: `${SITE}/materials`, freq: "monthly", pri: "0.8" },
+    { loc: `${SITE}/discontinued`, freq: "monthly", pri: "0.7" },
+    { loc: `${SITE}/blog`, freq: "weekly", pri: "0.8" },
+    { loc: `${SITE}/contact`, freq: "monthly", pri: "0.9" },
+  ];
+  const arts = articles.map((a) => ({
+    loc: `${SITE}/${a.slug}`, freq: "yearly", pri: "0.7", lastmod: a.date,
+  }));
+  const urls = [...base, ...arts].map((u) =>
+    `  <url>\n    <loc>${u.loc}</loc>\n${u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>\n` : ""}    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`).join("\n");
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+  await writeFile("sitemap.xml", xml);
+}
+
 async function buildAll() {
   await mkdir(OUT, { recursive: true });
   const tasks = Object.entries(PAGES).map(async ([name, files]) => {
@@ -77,6 +103,12 @@ async function buildAll() {
   });
   tasks.push(
     buildCss().then((b) => console.log(`  dist/styles.css  ${(b / 1024).toFixed(1)} KB`)),
+  );
+  tasks.push(
+    buildBlog().then((articles) => {
+      articles.forEach((a) => console.log(`  ${a.slug}.html`));
+      return buildSitemap(articles).then(() => console.log(`  sitemap.xml  (${articles.length} articles)`));
+    }),
   );
   await Promise.all(tasks);
 }
@@ -99,4 +131,5 @@ if (watch) {
   for (const f of [...new Set(Object.values(PAGES).flat()), "styles.css"]) {
     fsWatch(f, rebuild);
   }
+  fsWatch("content/blog", rebuild); // rebuild article pages on content edits
 }

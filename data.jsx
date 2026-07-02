@@ -1,67 +1,10 @@
 /* global window */
 
-const JOURNAL = [
-  {
-    title: "Why Natural Slate Outlasts Every Modern Alternative, and What That Means for a Roof You'll Own for a Century",
-    image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=900&q=80",
-    tag: "Material Science",
-    date: "May 2026",
-  },
-  {
-    title: "What Most Homeowners Don't Know About Discontinued Clay Tile (and Why a Match Still Exists)",
-    image: "https://images.unsplash.com/photo-1567521464027-f127ff144326?w=900&q=80",
-    tag: "Restoration",
-    date: "April 2026",
-  },
-  {
-    title: "Hand-Formed Copper Flashings: The Forgotten Detail That Determines Whether a Roof Leaks in 20 Years",
-    image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=900&q=80",
-    tag: "Craftsmanship",
-    date: "April 2026",
-  },
-  {
-    title: "Reading a Historic Roof: How Preservationists Date a Building From the Profile of Its Tile",
-    image: "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=900&q=80",
-    tag: "Field Notes",
-    date: "March 2026",
-  },
-  {
-    title: "Synthetic Composites Have a Reputation Problem: Here's the Only One We'd Install on Our Own Home",
-    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=80",
-    tag: "Material Science",
-    date: "March 2026",
-  },
-  {
-    title: "The Case for Copper Gutters on a Slate Roof, and Why Most Contractors Won't Touch Them",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80",
-    tag: "Craftsmanship",
-    date: "February 2026",
-  },
-  {
-    title: "How to Read a Roofing Estimate: What Every Line Item Actually Means",
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=80",
-    tag: "Field Notes",
-    date: "February 2026",
-  },
-  {
-    title: "Why Historic Designation Changes Everything About Your Roofing Options",
-    image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=80",
-    tag: "Restoration",
-    date: "January 2026",
-  },
-  {
-    title: "The Difference Between a Repair and a Replacement: A Field Guide for Estate Owners",
-    image: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=900&q=80",
-    tag: "Field Notes",
-    date: "January 2026",
-  },
-  {
-    title: "Ice and Water Shield: When Felt-15 Isn't Enough and What to Use Instead",
-    image: "https://images.unsplash.com/photo-1565953554309-9e60d3edec64?w=900&q=80",
-    tag: "Material Science",
-    date: "December 2025",
-  },
-];
+// Blog articles are authored as markdown in content/blog/*.md and compiled by
+// build-blog.mjs into (a) static <slug>.html pages and (b) dist/blog-articles.js,
+// which sets window.BLOG_ARTICLES (title/tag/date/image/excerpt/url + plaintext
+// searchText for in-content search). The blog index (ArticleGrid in sections.jsx)
+// reads window.BLOG_ARTICLES, so there is no hand-maintained JOURNAL array here.
 
 // ---------- Data: manufacturers, projects, discontinued products, partners ----------
 
@@ -903,6 +846,6 @@ const TEAM = [
 ];
 
 Object.assign(window, {
-  MANUFACTURERS, PROJECTS, MAP_PROJECTS, DISCONTINUED, ROOF_SYSTEMS, PARTNERS, PRESERVATION, TRADE_CIVIC, CERTIFICATIONS, TRUST, NAV_ITEMS, JOURNAL, TEAM, TESTIMONIALS,
+  MANUFACTURERS, PROJECTS, MAP_PROJECTS, DISCONTINUED, ROOF_SYSTEMS, PARTNERS, PRESERVATION, TRADE_CIVIC, CERTIFICATIONS, TRUST, NAV_ITEMS, TEAM, TESTIMONIALS,
   HERO_TOP_FIVE, THREE_REASONS, LIFECYCLE_MATERIALS, INSTALL_STEPS, INSTALL_STEP_PHOTOS,
 });

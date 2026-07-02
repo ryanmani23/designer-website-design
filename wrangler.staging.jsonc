@@ -1,0 +1,14 @@
+{
+  // Staging deploy target — a SEPARATE Cloudflare Worker from production
+  // ("designer-website"), so deploying here never touches prioritydesigner.com.
+  // Production is deployed automatically from the `main` branch via Workers
+  // Builds; this one is deployed manually for review:
+  //   npm run build && npx wrangler deploy -c wrangler.staging.jsonc
+  // It serves at https://designer-website-staging.<your-subdomain>.workers.dev
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "designer-website-staging",
+  "compatibility_date": "2026-06-18",
+  "assets": {
+    "directory": "."
+  }
+}
