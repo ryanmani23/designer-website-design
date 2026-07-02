@@ -6,32 +6,32 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://prioritydesigner.com/about.html</loc>
+    <loc>https://prioritydesigner.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://prioritydesigner.com/portfolio.html</loc>
+    <loc>https://prioritydesigner.com/portfolio</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://prioritydesigner.com/materials.html</loc>
+    <loc>https://prioritydesigner.com/materials</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://prioritydesigner.com/discontinued.html</loc>
+    <loc>https://prioritydesigner.com/discontinued</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://prioritydesigner.com/blog.html</loc>
+    <loc>https://prioritydesigner.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://prioritydesigner.com/contact.html</loc>
+    <loc>https://prioritydesigner.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
