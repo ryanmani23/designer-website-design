@@ -1,4 +1,5 @@
 ---
+draft: true
 slug: what-a-restoration-roof-costs-in-dallas
 image: assets/projects/highland-park-lorraine-slate/01.webp
 title: "What a Restoration-Grade Roof Costs in Dallas, and Why"

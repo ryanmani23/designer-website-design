@@ -1,4 +1,5 @@
 ---
+draft: true
 slug: copper-vs-standing-seam-metal-roof
 image: assets/projects/westlake-designer-shingle/01.webp
 title: "Copper vs. Standing Seam: Choosing Metal for a Historic Home"

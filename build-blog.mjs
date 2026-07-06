@@ -264,11 +264,16 @@ const toPlainText = (html) =>
     .replace(/\s+/g, " ").trim().toLowerCase();
 
 export async function buildBlog() {
+  // Articles with `draft: true` are held back from production. The staging
+  // deploy sets INCLUDE_DRAFTS=1 so reviewers see them; the Cloudflare prod
+  // build runs `npm run build` with no flag, so only finished posts ship.
+  const includeDrafts = !!process.env.INCLUDE_DRAFTS;
   const files = (await readdir(CONTENT_DIR)).filter((f) => f.endsWith(".md"));
   const articles = [];
   for (const f of files) {
     const raw = await readFile(`${CONTENT_DIR}/${f}`, "utf8");
     const { data, body } = parseFrontmatter(raw);
+    if (data.draft === "true" && !includeDrafts) continue;
     articles.push({ ...data, html: marked.parse(body.trim()) });
   }
   // Newest first by date.

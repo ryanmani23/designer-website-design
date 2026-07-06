@@ -1,4 +1,5 @@
 ---
+draft: true
 slug: caring-for-an-estate-roof-in-the-dfw-climate
 image: assets/projects/fort-worth-unfading-grey-slate/01.webp
 title: "Caring for an Estate Roof in the DFW Climate"

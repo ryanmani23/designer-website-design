@@ -1,4 +1,5 @@
 ---
+draft: true
 slug: how-long-does-a-slate-roof-last
 image: assets/projects/highland-park-variegated-slate-copper/01.webp
 title: How Long Does a Slate Roof Actually Last?

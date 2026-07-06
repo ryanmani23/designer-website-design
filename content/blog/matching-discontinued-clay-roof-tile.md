@@ -1,4 +1,5 @@
 ---
+draft: true
 slug: matching-discontinued-clay-roof-tile
 image: assets/projects/st-louis-ludowici-tile/01.webp
 title: "Matching a Discontinued Clay Tile: What's Possible and What Isn't"

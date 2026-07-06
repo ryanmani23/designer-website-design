@@ -1,4 +1,5 @@
 ---
+draft: true
 slug: natural-slate-vs-synthetic-slate
 image: assets/projects/plano-davinci-slate/01.webp
 title: "Natural Slate vs. Synthetic Slate: An Honest Comparison"
