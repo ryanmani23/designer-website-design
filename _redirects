@@ -1,0 +1,6 @@
+# Cloudflare Workers Static Assets — permanent redirects.
+# The blog moved from flat root URLs to /blog/<slug> (2026-07-06). Only
+# "a-brief-history-of-slate-roofing" was ever published to production at the old
+# flat URL, so it's the only one that needs a 301 to preserve its indexing.
+/a-brief-history-of-slate-roofing       /blog/a-brief-history-of-slate-roofing  301
+/a-brief-history-of-slate-roofing.html  /blog/a-brief-history-of-slate-roofing  301
