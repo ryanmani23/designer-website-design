@@ -19,7 +19,7 @@ Yet, the Roman Empire was vast and much of the slate Rome used came from the reg
 
 <figure class="article-figure">
   <img src="assets/blog/roman-slate-finds.webp" alt="Line drawings of Roman-era roofing slates, showing rounded and diamond shapes each with a single nail hole, beside a 10 centimeter scale bar." loading="lazy" width="420" />
-  <figcaption>Roman-era roofing slates: rounded and diamond forms, each cut with a single hole for nailing. Scale bar in centimeters.</figcaption>
+  <figcaption>Roman-era roofing slates: rounded and diamond forms, each cut with a single hole for nailing. Scale bar in centimeters.<span class="fig-credit">Image from <em>The Roman Swithland Slate Industry</em> (1988) by Alan McWhirr.</span></figcaption>
 </figure>
 
 When the Romans left the Isles, it was over half a millennium until we heard activity of slate roofing again, which came in the Medieval age. Between the 11-13th centuries, slate mining became a true industry thanks to the Normans.
