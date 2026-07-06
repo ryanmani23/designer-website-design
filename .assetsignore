@@ -6,10 +6,12 @@
 .DS_Store
 **/.DS_Store
 wrangler.jsonc
+wrangler.staging.jsonc
 wrangler.toml
 wrangler.json
 node_modules
 discontinued products
+content
 
 # Build sources — present for the build, but not served (dist/ ships instead).
 # Anchor with a leading slash: a bare `styles.css` would also match
@@ -17,6 +19,7 @@ discontinued products
 /package.json
 /package-lock.json
 /build.mjs
+/build-blog.mjs
 /styles.css
 /*.jsx
 

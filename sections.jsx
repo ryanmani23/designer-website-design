@@ -41,6 +41,12 @@ const Plus = ({ size = 16 }) =>
     <path d="M12 5v14M5 12h14" />
   </svg>;
 
+const SearchIcon = ({ size = 16 }) =>
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <circle cx="11" cy="11" r="7" />
+    <path d="m20 20-3.2-3.2" />
+  </svg>;
+
 const PhoneIcon = () =>
 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -2371,40 +2377,77 @@ function DiscontinuedFAQ() {
 
 // ─── Blog page ────────────────────────────────────────────────
 
-function FeaturedArticle() {
-  const a = JOURNAL[0];
-  return (
-    <section className="featured-article">
-      <div className="feat-img" style={{ backgroundImage: `url("${a.image}")` }} />
-      <div className="feat-scrim" />
-      <div className="feat-body">
-        <div className="feat-meta">
-          <span className="feat-tag">{a.tag}</span>
-          <span className="feat-date">{a.date}</span>
-        </div>
-        <h2 className="feat-title">{a.title}</h2>
-        <a className="feat-link" href="#">Read Article <ArrowRight size={14} /></a>
-      </div>
-    </section>);
-}
-
-// 2026-06-17 (Jack, "Blog Section" email): library parked behind a coming-soon state until
-// Jack supplies real articles. Search/grid + JOURNAL filtering kept in git history to restore.
+// 2026-06-29: live Resource Library. Articles are authored as markdown in
+// content/blog/*.md and compiled by build-blog.mjs into static <slug>.html pages
+// (what gets indexed) plus dist/blog-articles.js, which sets window.BLOG_ARTICLES
+// with a plaintext `searchText` per article. This is a uniform grid (no featured
+// item) with a search box that matches against title, tag, excerpt, and body
+// text, plus tag chips. Loaded before dist/blog.js, so the data is ready.
 function ArticleGrid() {
+  const articles = (typeof window !== "undefined" && window.BLOG_ARTICLES) || [];
+  const [query, setQuery] = useState("");
+  const [tag, setTag] = useState("All");
+  const tags = ["All", ...Array.from(new Set(articles.map((a) => a.tag)))];
+  const q = query.trim().toLowerCase();
+  const filtered = articles.filter((a) =>
+    (tag === "All" || a.tag === tag) &&
+    (q === "" || (a.searchText || "").includes(q)));
   return (
     <section className="article-grid-section section-light" id="resource-library">
       <div className="article-grid-head">
         <span className="eyebrow">Resource Library</span>
-        <h2>Coming <em>Soon</em></h2>
-        <p className="reslib-sub">Material guides, warranty and insurance notes, and field research on how historic roofs actually perform are being written now. Check back shortly, or reach out and we'll answer your question directly in the meantime.</p>
+        <h2>Field Notes &amp; <em>Material Guides</em></h2>
+        <p className="reslib-sub">Material guides, cost and insurance notes, and field research on how historic roofs actually perform, written by tradesmen who have spent decades on roofs that don't forgive shortcuts.</p>
       </div>
+      <div className="reslib-controls">
+        <label className="reslib-search">
+          <SearchIcon size={16} />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by topic, material, or phrase"
+            aria-label="Search the resource library" />
+        </label>
+        <div className="reslib-chips">
+          {tags.map((t) =>
+            <button
+              key={t}
+              type="button"
+              className={`reslib-chip${tag === t ? " active" : ""}`}
+              onClick={() => setTag(t)}>
+              {t}
+            </button>
+          )}
+        </div>
+      </div>
+      {filtered.length === 0 ?
+        <p className="reslib-empty">No articles match your search. Try a different term, or reach out and we'll answer your question directly.</p> :
+        <div className="article-grid">
+          {filtered.map((a) =>
+            <a className="article-card" key={a.url} href={a.url}>
+              <div className="article-card-img" style={{ backgroundImage: `url("${a.image}")` }} />
+              <div className="article-card-scrim" />
+              <div className="article-card-body">
+                <div className="article-card-meta">
+                  <span className="article-card-tag">{a.tag}</span>
+                  <span className="article-card-date">{a.date}</span>
+                </div>
+                <h3 className="article-card-title">{a.title}</h3>
+                {a.excerpt && <p className="article-card-excerpt">{a.excerpt}</p>}
+                <span className="article-card-link">Read Article <ArrowRight size={14} /></span>
+              </div>
+            </a>
+          )}
+        </div>
+      }
     </section>);
 }
 
 // ─── Contact page ─────────────────────────────────────────────
 
 const WTE_STEPS = [
-  { num: "01", title: "We review your inquiry the same day.", body: "Every submission is read by a principal, not a call center. If the project is a fit, you'll hear from us within one business day." },
+  { num: "01", title: "We review your inquiry the same day.", body: "Every submission is read by an expert, not a call center. If the project is a fit, you'll hear from us within one business day." },
   { num: "02", title: "We schedule a site visit at your convenience.", body: "We come to the property and spend time on the roof, not the driveway. The site visit is at no charge and carries no obligation." },
   { num: "03", title: "You receive a written proposal.", body: "A specific scope, a specific material recommendation with sourcing timeline, and a fixed price. No allowances, no change order surprises." },
 ];
@@ -2453,7 +2496,7 @@ Object.assign(window, {
   MaterialsPhilosophy, MaterialComparison, InstallProcess, LifecycleROI, RequestSample,
   CompanyStory, PhilosophySection, ProcessOverview, ServiceArea,
   DiscontinuedIntro, ThreeReasonsSection, WhatToDo, DiscontinuedFAQ,
-  FeaturedArticle, ArticleGrid,
+  ArticleGrid,
   WhatToExpect, Testimonials,
   HeroMosaic, HeroSlides,
 });
