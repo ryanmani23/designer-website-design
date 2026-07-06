@@ -2447,7 +2447,7 @@ function ArticleGrid() {
 // ─── Contact page ─────────────────────────────────────────────
 
 const WTE_STEPS = [
-  { num: "01", title: "We review your inquiry the same day.", body: "Every submission is read by a principal, not a call center. If the project is a fit, you'll hear from us within one business day." },
+  { num: "01", title: "We review your inquiry the same day.", body: "Every submission is read by an expert, not a call center. If the project is a fit, you'll hear from us within one business day." },
   { num: "02", title: "We schedule a site visit at your convenience.", body: "We come to the property and spend time on the roof, not the driveway. The site visit is at no charge and carries no obligation." },
   { num: "03", title: "You receive a written proposal.", body: "A specific scope, a specific material recommendation with sourcing timeline, and a fixed price. No allowances, no change order surprises." },
 ];

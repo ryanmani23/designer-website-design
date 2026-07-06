@@ -171,7 +171,9 @@ function pageHtml(article, others) {
     image: imgAbs,
     datePublished: article.date,
     dateModified: article.date,
-    author: { "@type": "Organization", name: BRAND, url: SITE + "/" },
+    author: article.author
+      ? { "@type": "Person", name: article.author }
+      : { "@type": "Organization", name: BRAND, url: SITE + "/" },
     publisher: {
       "@type": "Organization",
       name: BRAND,
@@ -219,7 +221,7 @@ ${JSON.stringify(schema, null, 2)}
 </head>
 <body class="article-page">
 ${navMarkup("blog.html")}
-<header class="article-hero" style="background-image:url('${article.image}')">
+<header class="article-hero" style="background-image:url('${article.image}');background-position:${article.imagePosition || "center"}">
   <div class="article-hero-scrim"></div>
   <div class="article-hero-inner">
     <nav class="article-breadcrumb" aria-label="Breadcrumb">
@@ -227,6 +229,7 @@ ${navMarkup("blog.html")}
     </nav>
     <h1 class="article-title">${esc(article.title)}</h1>
     <div class="article-meta">
+      ${article.author ? `<span class="article-author">By ${esc(article.author)}</span>` : ""}
       <span class="article-tag">${esc(article.tag)}</span>
       <span class="article-date">${esc(displayDate(article.date))}</span>
     </div>
@@ -237,9 +240,9 @@ ${navMarkup("blog.html")}
 ${article.html}
   </article>
   <section class="article-cta">
-    <span class="eyebrow">Speak With a Principal</span>
+    <span class="eyebrow">Speak With an Expert</span>
     <h2>Have a Historic or Estate Roof in the <em>DFW Area?</em></h2>
-    <p>Every inquiry is read by a principal, not a call center. If the project is a fit, we will get on the roof and give you an honest assessment in writing.</p>
+    <p>Every inquiry is read by an expert, not a call center. If the project is a fit, we will get on the roof and give you an honest assessment in writing.</p>
     <a class="btn-copper-solid" href="contact.html">Schedule a Consultation ${ARROW}</a>
   </section>
 </main>

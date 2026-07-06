@@ -4940,6 +4940,46 @@ a.btn-copper {
 }
 .article-body blockquote p { font-size: 1.05rem; line-height: 1.6; margin: 0; }
 
+/* Author byline in the hero meta row (sits on the dark scrim). */
+.article-author {
+  font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+  color: var(--copper-300);
+}
+.article-author + .article-tag::before {
+  content: ""; display: inline-block; width: 1px; height: 11px;
+  background: rgba(244,239,230,0.3); margin-right: 16px; vertical-align: -1px;
+}
+
+/* Numbered citation markers linking to the Sources list. */
+.article-body sup.cite { font-size: 0.62em; line-height: 0; vertical-align: super; margin-left: 1px; }
+.article-body sup.cite a { color: var(--copper-600); text-decoration: none; font-weight: 600; }
+.article-body sup.cite a:hover { text-decoration: underline; }
+
+/* Inline figure (e.g. Jack's Roman-slate line drawing). */
+.article-figure { margin: 2em auto; max-width: 460px; text-align: center; }
+.article-figure img {
+  display: block; width: 100%; height: auto; margin: 0 auto;
+  background: #fff; padding: 20px; border: 1px solid var(--line, rgba(26,24,20,0.12));
+}
+.article-figure figcaption {
+  font-family: var(--sans); font-size: 13px; line-height: 1.5;
+  color: rgba(26,24,20,0.6); margin-top: 12px; font-style: normal;
+}
+
+/* Sources / references list at the foot of the article. */
+.article-sources { margin: 2.6em 0 0; padding-top: 1.8em; border-top: 1px solid rgba(26,24,20,0.12); }
+.article-sources h2 {
+  font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(26,24,20,0.55); margin: 0 0 1em;
+}
+.article-sources ol { margin: 0; padding-left: 1.4em; }
+.article-sources li {
+  font-family: var(--sans); font-size: 14px; line-height: 1.6;
+  color: rgba(26,24,20,0.72); margin: 0 0 0.7em; padding-left: 0.3em;
+}
+.article-sources li em { font-style: italic; }
+.article-sources li:target { color: var(--ink); }
+
 .article-cta {
   margin-top: clamp(40px,6vh,64px); padding: clamp(36px,5vh,56px) clamp(28px,5vw,48px);
   background: var(--navy-900); text-align: center;
