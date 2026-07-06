@@ -1,7 +1,8 @@
 // Blog generator for the Priority Designer site.
 //
-// Reads content/blog/*.md and emits one fully-static HTML page per article at
-// the project root (<slug>.html). Unlike the rest of the site (client-rendered
+// Reads content/blog/*.md and emits one fully-static HTML page per article
+// under the blog/ directory (blog/<slug>.html, served at /blog/<slug>). Unlike
+// the rest of the site (client-rendered
 // React into an empty #root), article pages bake the full article text, nav,
 // and footer into the HTML so search engines index the content directly. This
 // is the SEO point of the blog, so do NOT convert these to client-rendered.
@@ -10,7 +11,7 @@
 // sections.jsx (same class names, so dist/styles.css styles them). If those
 // components change structurally, update the partials below to match.
 
-import { readFile, writeFile, readdir } from "node:fs/promises";
+import { readFile, writeFile, readdir, mkdir } from "node:fs/promises";
 import { marked } from "marked";
 
 const SITE = "https://prioritydesigner.com";
@@ -149,14 +150,18 @@ const NAV_JS = `
 })();`;
 
 function pageHtml(article, others) {
-  // Cloudflare Workers Assets serves pages at clean (extensionless) URLs and
-  // 307-redirects the .html form to them, so canonical/OG/sitemap must point at
-  // the clean URL (a canonical that itself redirects can be ignored by Google).
-  const url = `${SITE}/${article.slug}`;
+  // Article pages live under /blog/ (output to blog/<slug>.html; Cloudflare
+  // serves that at the clean /blog/<slug> and 307-redirects the .html form to
+  // it), so canonical/OG/sitemap must point at the clean /blog/ URL (a canonical
+  // that itself redirects can be ignored by Google). Because the page now sits a
+  // directory deep, the head declares <base href="/"> so the relative nav/asset
+  // paths below (about.html, dist/styles.css, assets/…) resolve against the site
+  // root exactly as they did when these pages lived at the root.
+  const url = `${SITE}/blog/${article.slug}`;
   const imgAbs = `${SITE}/${article.image}`;
   const related = others.slice(0, 3).map((a) => `
-    <a class="rel-card" href="${a.slug}">
-      <div class="rel-img" style="background-image:url('${a.image}')"></div>
+    <a class="rel-card" href="blog/${a.slug}">
+      <div class="rel-img" style="background-image:url('/${a.image}')"></div>
       <div class="rel-body">
         <span class="rel-tag">${esc(a.tag)}</span>
         <h3 class="rel-title">${esc(a.title)}</h3>
@@ -187,6 +192,9 @@ function pageHtml(article, others) {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Article pages are served from /blog/<slug>; resolve all relative nav/asset
+     paths against the site root so they behave as they did at the root. -->
+<base href="/" />
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png" />
 <link rel="icon" href="assets/favicon/favicon-32.png" sizes="any" />
@@ -221,7 +229,7 @@ ${JSON.stringify(schema, null, 2)}
 </head>
 <body class="article-page">
 ${navMarkup("blog.html")}
-<header class="article-hero" style="background-image:url('${article.image}');background-position:${article.imagePosition || "center"}">
+<header class="article-hero" style="background-image:url('/${article.image}');background-position:${article.imagePosition || "center"}">
   <div class="article-hero-scrim"></div>
   <div class="article-hero-inner">
     <nav class="article-breadcrumb" aria-label="Breadcrumb">
@@ -279,15 +287,16 @@ export async function buildBlog() {
   // Newest first by date.
   articles.sort((a, b) => (a.date < b.date ? 1 : -1));
 
+  await mkdir("blog", { recursive: true });
   for (const a of articles) {
     const others = articles.filter((x) => x.slug !== a.slug);
-    await writeFile(`${a.slug}.html`, pageHtml(a, others));
+    await writeFile(`blog/${a.slug}.html`, pageHtml(a, others));
   }
 
   // Search index consumed by the blog index page (window.BLOG_ARTICLES).
   // searchText folds in body text so users can search within content/phrases.
   const index = articles.map((a) => ({
-    url: a.slug,
+    url: `/blog/${a.slug}`,
     title: a.title,
     tag: a.tag,
     date: displayDate(a.date),
@@ -303,6 +312,6 @@ export async function buildBlog() {
 // Allow running standalone: `node build-blog.mjs`
 if (import.meta.url === `file://${process.argv[1]}`) {
   const arts = await buildBlog();
-  arts.forEach((a) => console.log(`  ${a.slug}.html`));
+  arts.forEach((a) => console.log(`  blog/${a.slug}.html`));
   console.log(`blog: ${arts.length} article pages.`);
 }

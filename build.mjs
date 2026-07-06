@@ -87,7 +87,7 @@ async function buildSitemap(articles) {
     { loc: `${SITE}/contact`, freq: "monthly", pri: "0.9" },
   ];
   const arts = articles.map((a) => ({
-    loc: `${SITE}/${a.slug}`, freq: "yearly", pri: "0.7", lastmod: a.date,
+    loc: `${SITE}/blog/${a.slug}`, freq: "yearly", pri: "0.7", lastmod: a.date,
   }));
   const urls = [...base, ...arts].map((u) =>
     `  <url>\n    <loc>${u.loc}</loc>\n${u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>\n` : ""}    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`).join("\n");
@@ -106,7 +106,7 @@ async function buildAll() {
   );
   tasks.push(
     buildBlog().then((articles) => {
-      articles.forEach((a) => console.log(`  ${a.slug}.html`));
+      articles.forEach((a) => console.log(`  blog/${a.slug}.html`));
       return buildSitemap(articles).then(() => console.log(`  sitemap.xml  (${articles.length} articles)`));
     }),
   );
