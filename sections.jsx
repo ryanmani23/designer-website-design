@@ -134,7 +134,7 @@ function Nav({ onLight: forcedOnLight }) {
     <React.Fragment>
     <nav className={`nav${scrolled ? " scrolled" : ""}${onLight ? " on-light" : ""}${menuOpen ? " menu-open" : ""}`}>
       <a className="logo" href="index.html">
-        <img src="assets/logo.png" alt="Priority Designer · Historic Exteriors" className="logo-img" />
+        <img src="assets/logo.png" alt="Priority Designer · Slate & Tile" className="logo-img" />
       </a>
       <div className="nav-links">
         {NAV_ITEMS.map((n) =>
@@ -1314,7 +1314,7 @@ function FinalCTA({ variant }) {
       <div className="final-cta-brand">
         <span className="brand-rule" />
         <div className="brand-mark">
-          <img src="assets/logo.png" alt="Priority Designer · Historic Exteriors" className="brand-logo-img" />
+          <img src="assets/logo.png" alt="Priority Designer · Slate & Tile" className="brand-logo-img" />
         </div>
         <span className="brand-rule" />
       </div>
@@ -1388,7 +1388,7 @@ function Footer() {
       </div>
       <div className="footer-bottom">
         <div className="footer-line">
-          © 2026 PRIORITY DESIGNER · HISTORIC EXTERIORS · LICENSED · BONDED · INSURED
+          © 2026 PRIORITY DESIGNER · SLATE & TILE · LICENSED · BONDED · INSURED
         </div>
         <a className="footer-privacy" href="privacy.html">Privacy</a>
       </div>

@@ -15,7 +15,7 @@ import { readFile, writeFile, readdir, mkdir } from "node:fs/promises";
 import { marked } from "marked";
 
 const SITE = "https://prioritydesigner.com";
-const BRAND = "Priority Designer · Historic Exteriors";
+const BRAND = "Priority Designer · Slate & Tile";
 const CONTENT_DIR = "content/blog";
 
 // Real NAP, mirrored from the Footer component in sections.jsx.
@@ -115,7 +115,7 @@ function footerMarkup() {
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-line">© 2026 PRIORITY DESIGNER · HISTORIC EXTERIORS · LICENSED · BONDED · INSURED</div>
+    <div class="footer-line">© 2026 PRIORITY DESIGNER · SLATE &amp; TILE · LICENSED · BONDED · INSURED</div>
     <a class="footer-privacy" href="privacy.html">Privacy</a>
   </div>
 </footer>`;
@@ -182,7 +182,7 @@ function pageHtml(article, others) {
     publisher: {
       "@type": "Organization",
       name: BRAND,
-      logo: { "@type": "ImageObject", url: `${SITE}/assets/logo.png` },
+      logo: { "@type": "ImageObject", url: `${SITE}/assets/logo-mark-512.png` },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };

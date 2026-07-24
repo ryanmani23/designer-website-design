@@ -13,7 +13,7 @@ function Intro({ leaving, ready }) {
           <span className="word two">Designer</span>
         </div>
         <div className="intro-rule" />
-        <div className="intro-meta">HISTORIC EXTERIORS · SLATE · CLAY · COPPER</div>
+        <div className="intro-meta">SLATE · CLAY TILE · COPPER</div>
       </div>
     </div>
   );
