@@ -2508,6 +2508,10 @@ body.intro-active { overflow: hidden; }
   flex-direction: column;
   min-width: 0;
 }
+/* Homepage variant: wrap + center so 1–3 latest posts stay balanced (the blog
+   index page keeps the original fixed 3-up carousel track). */
+.journal-track--home { flex-wrap: wrap; justify-content: center; }
+.journal-track--home .journal-card { flex: 1 1 300px; max-width: 360px; text-decoration: none; }
 .journal-card-img {
   aspect-ratio: 4 / 3;
   background-size: cover;

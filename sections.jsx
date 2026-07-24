@@ -1287,23 +1287,42 @@ function Partners() {
 
 }
 
-// 2026-06-17 (Jack, "Blog Section" email): "make this say coming soon and I'll get you some
-// over time." Journal carousel parked behind a coming-soon state; JOURNAL data kept for when
-// Jack supplies real posts (just restore the previous carousel markup).
+// Homepage "Roofing Field Journal": surfaces the latest published posts from
+// window.BLOG_ARTICLES (set by dist/blog-articles.js, which index.html loads).
+// Falls back to the coming-soon state when no articles are published yet
+// (2026-06-17, Jack "Blog Section" email — kept for the empty case).
 function Journal() {
+  const articles = (typeof window !== "undefined" && window.BLOG_ARTICLES) || [];
+  const latest = articles.slice(0, 3);
   return (
     <section className="journal" id="journal" data-screen-label="Journal">
       <div className="journal-head">
         <h2 className="journal-title">Roofing{" "}<br />Field Journal</h2>
         <div className="journal-meta" style={{ textAlign: "right", justifyContent: "center", alignItems: "flex-end" }}>
           <p className="journal-sub" style={{ textAlign: "right" }}>Expert notes on materials, restoration, and historic craft.</p>
+          {latest.length > 0 &&
+            <a className="journal-viewall" href="blog.html">View All Field Notes <ArrowRight size={14} /></a>}
         </div>
       </div>
       <div className="journal-divider" />
-      <div className="journal-soon">
-        <span className="journal-soon-eyebrow">Coming Soon</span>
-        <p className="journal-soon-body">Field notes on materials, restoration, and historic craft are on the way. Check back shortly.</p>
-      </div>
+      {latest.length === 0 ?
+        <div className="journal-soon">
+          <span className="journal-soon-eyebrow">Coming Soon</span>
+          <p className="journal-soon-body">Field notes on materials, restoration, and historic craft are on the way. Check back shortly.</p>
+        </div> :
+        <div className="journal-track-wrap">
+          <div className="journal-track journal-track--home">
+            {latest.map((a) =>
+              <a className="journal-card" key={a.url} href={a.url}>
+                <div className="journal-card-img" style={{ backgroundImage: `url("${a.image}")` }} />
+                <span className="journal-card-tag">{a.tag}</span>
+                <h3 className="journal-card-title">{a.title}</h3>
+                <span className="journal-card-foot">Read Article <ArrowRight size={14} /></span>
+              </a>
+            )}
+          </div>
+        </div>
+      }
     </section>);
 }
 
