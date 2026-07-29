@@ -13,19 +13,39 @@ excerpt: Few names in American building materials carry as much continuous insti
 
 Few names in American building materials carry as much continuous institutional memory as Ludowici. The company operating today under that name traces an unbroken, if often turbulent, line back to a mid-19th-century German tileworks, through Gilded Age Chicago, a Georgia company town, a New York ceramics college, and four separate corporate parents, arriving in the present day as the oldest continuously operating clay roof tile manufacturer in the United States. Its tile sits atop the White House, the Pennsylvania State Capitol, and Wrigley Field, and its own factory complex in New Lexington, Ohio, is now itself a listed historic site. This is a history of a building material company that has, over roughly a century and a half, become inseparable from the buildings it was hired to protect.
 
+<figure class="article-figure">
+  <img src="assets/blog/ludowici-jubilee-catalog.webp" alt="The green cloth cover of Ludowici's 1907 jubilee catalog, with a gold panel framing a copper interlocking roof tile and the dates 1857 to 1907." loading="lazy" width="1400" height="890" />
+  <figcaption>The cover of Carl Ludowici's 1907 jubilee catalog (<em>Catalog der Ludowici Falzziegel</em>), marking fifty years of the firm, 1857–1907.</figcaption>
+</figure>
+
 ## Origins in the German Palatinate
 
 Ludowici traces its roots back nearly four centuries to a Ludovisi family in Rome, whose skill in crafting clay tile was well regarded before the family moved north, settling in Germany and Germanizing the family name to Ludowici. The best-documented chapter of that German story begins in 1857, when Carl Ludowici, a machinist in the town of Ensheim in the German Palatinate, purchased a local roof tile factory and began upgrading it with machinery of his own design. He founded the firm Carl Ludowici Ziegelwerke, and in 1861 relocated it to a new factory in Ludwigshafen, on the Rhine. The company's growth in this period owed much to a specific technical innovation: Ludowici's steam-powered tile press, which allowed for far greater and more consistent output than the hand methods still common among European tile makers.
 
 Carl Ludowici died in 1881. His sons, Wilhelm and Franz, took over the firm, dividing responsibilities along lines that would recur throughout the company's history: Franz managed the business side, while Wilhelm led design and product development. Under their direction the company relocated its primary operations to Jockgrim, where a large ring kiln, ninety meters long with forty-six firing chambers, could produce roughly 21,000 tiles in a single day-long firing cycle. Fired continuously on hard coal, the Jockgrim works became one of the major tile manufacturers in Germany, eventually operating as many as twelve branches across France, Germany, and the United States by 1935. Its tile reached some of Europe's most prominent rooftops, including St. Stephen's Cathedral in Vienna and later the Olympic Village built for the 1936 Berlin Olympics. The German operation persisted for decades after its American offshoot had grown far larger, and did not close until 1972, when the local clay deposits that had supplied it since the Roman era, according to local historians, were considered exhausted.
 
+<figure class="article-figure">
+  <img src="assets/blog/ludowici-terracotta-ornament.webp" alt="Architectural terra-cotta ornament: sculpted portrait medallions of faces set into decorative glazed brickwork beneath a red tiled roof." loading="lazy" width="1400" height="933" />
+  <figcaption>Sculpted terra-cotta portrait medallions and ornamental tilework beneath a tiled roof, the kind of decorative work the Ludowici firm was known for.</figcaption>
+</figure>
+
 ## Two Parallel American Beginnings
 
 The American history of Ludowici tile is, somewhat unusually, the product of two originally unrelated ventures that only later merged.
 
+<figure class="article-figure">
+  <img src="assets/blog/ludowici-tiler-laying.webp" alt="A black-and-white photograph of an elderly roofer in a cap kneeling on battens, hand-laying stacks of interlocking clay pantiles." loading="lazy" width="1161" height="887" />
+  <figcaption>A roofer hand-laying interlocking clay tile on battens, from the company's early decades.</figcaption>
+</figure>
+
 The first began in 1888 in Alfred, New York, a small village that was, and remains, home to Alfred University. A sculpting professor there determined that the local clay was well suited to ornamental work, and organized local investors to found the Celadon Terra Cotta Company, its name drawn from the pale green hue the clay took on when salt-fired, a color historically associated with Chinese ceramics. Among the early investors was George Herman Babcock, better known today as co-inventor of the Babcock & Wilcox boiler; Babcock became president of Celadon and personally filed patents for several tile profiles, including the Conosera tile and a system of combination tiles that let multiple interlocking designs share a common base, allowing several styles to be combined on a single roof. Babcock died in 1893, but the company continued to grow, shifting its focus toward roofing tile and renaming itself the Celadon Roofing Tile Company in 1900. Celadon's presence in Alfred was significant enough that it helped push for the establishment of the New York State School of Clay-Working and Ceramics at Alfred University, a program that gave the company access to leading contemporary ceramicists, including consulting work from Charles Fergus Binns, a foundational figure in American studio ceramics.
 
 The second American venture ran in parallel and carried the Ludowici name directly. In 1893, the German Ludowici firm licensed its patents and designs to a newly formed Ludowici Roofing Tile Company based in Chicago. That year the new company exhibited tile at the World's Columbian Exposition, using the fair to introduce German-engineered tile designs to an American audience, and built a factory in Chicago Heights that grew, by the turn of the century, into one of the leading roofing tile producers in the country. In 1902 the company built a further factory in the unincorporated community of Liberty City, Georgia; the town's residents were sufficiently grateful for the company's local philanthropy that Liberty City was formally incorporated as Ludowici, Georgia, in 1905, a rare instance of an American town renaming itself after a roofing tile manufacturer. Over the following years the Georgia plant supplied more than two million square feet of roofing tile for government buildings constructed in the Panama Canal Zone, a contract substantial enough to sustain the factory through a period when regional demand alone would not have. When that federal work concluded, demand fell off sharply enough that the Ludowici, Georgia plant closed in October 1913. The timing proved unusually harsh: the following month, the company's Chicago Heights factory burned to the ground and was never rebuilt, leaving the Ludowici Roofing Tile Company with no operating American factory of its own at all.
+
+<figure class="article-figure">
+  <img src="assets/blog/ludowici-celadon-chicago-sign.webp" alt="A period photograph of five men seated atop a large painted works sign reading Ludowici Celadon Co. of Chicago, Roofing Tile." loading="lazy" width="300" height="300" />
+  <figcaption>A works sign for the Ludowici-Celadon Co. of Chicago, the company formed when the two firms merged in 1906.</figcaption>
+</figure>
 
 ## Merger and Consolidation
 
