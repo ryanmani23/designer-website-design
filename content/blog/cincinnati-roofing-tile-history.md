@@ -23,6 +23,11 @@ The tile tradition Freund brought with him wasn't incidental, either. Roofing ti
 
 Freund started modestly and built the company up step by step with his associates, rather than launching at scale from the outset. Beyond his name, his location, and his motivation as described in the 1910 survey, I haven't been able to find further biographical detail on Freund himself, his birth year, immigration date, or life outside the company.
 
+<figure class="article-figure">
+  <img src="assets/blog/cincinnati-s-tile.webp" alt="A close-up of a terracotta four-corner S-tile roof, the interlocking barrel tiles weathered to a soft red with pale mineral streaking." loading="lazy" width="1400" height="1050" />
+  <figcaption>A Cincinnati four-corner "S" tile, photographed on a St. Louis roof we repaired after the 2025 tornado, still in service more than a century after the company made it.</figcaption>
+</figure>
+
 ## Succeeding Where Others Failed
 
 The mid-1890s were a crowded, difficult time to start an Ohio tile plant. The Repp Roofing Tile Co. of New Philadelphia and the Barnard Tile Co. of Bellaire both opened around 1893; the Zanesville Roofing Tile Co. opened the same year as Cincinnati Roofing Tile and Terra Cotta, in 1895; another plant followed at Ottawa in 1900. None of these operated more than three or four years. Cincinnati Roofing Tile and Terra Cotta was the exception. According to a 1910 Ohio Geological Survey account of the industry, the company solved its manufacturing problems independently, much as the pioneering Akron plant had, and produced tile of a different shape and design from its competitors rather than copying an existing product. That combination, working out its own methods instead of imitating someone else's, was credited as the reason it succeeded where the others quietly disappeared.

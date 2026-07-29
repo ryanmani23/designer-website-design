@@ -27,6 +27,11 @@ Ordinary clays tended to fire with a shine that gave away a tile's modern origin
 
 Beyond Plymouth Tile, Heinz also produced Spanish, Dutch, Dorian, and Italian profiles, each researched from period examples abroad. Installations ranged across the U.S. and Canada, including the Denver home of Mr. and Mrs. Churchill Owens, designed by the architecture firm Hoyt and Hoyt.
 
+<figure class="article-figure">
+  <img src="assets/blog/heinz-plymouth-tile.webp" alt="A period Heinz brochure plate: a watercolor of an English cottage with a weathered tile roof beside a framed swatch of multi-colored Old English Plymouth Tile." loading="lazy" width="639" height="384" />
+  <figcaption>A period Heinz brochure plate for the "Old English Plymouth Tile" line, its weathered, multi-color shingles set beside an idealized English cottage.</figcaption>
+</figure>
+
 ## An Unlikely Artistic Collaboration
 
 Heinz's plant on the north end of downtown Denver became, for a couple of years in the late 1920s, an unlikely meeting point between commercial tile-making and fine art. In 1927, Heinz hired ceramics instructor Paul Saint-Gaudens, nephew of the sculptor Augustus Saint-Gaudens, who was teaching at Denver's Chappell School. Saint-Gaudens used the kilns at Heinz's plant to produce his own decorative tile work, often signed with his initials, drawing heavily on Mayan design influences.
@@ -36,5 +41,10 @@ Sometime around 1928, the well-known San Ildefonso Pueblo artist Awa Tsireh (Alf
 ## The Company's End
 
 Heinz Roofing Tile Company closed in 1945. Its tile has outlasted it, though: suppliers who stock historic clay tile for roof repair list "Heinz Spanish" profile tile among their reclaimed inventory, and custom tile fabricators reference matching "Heinz and Ludowici" shingle slabs and hip rolls when reproducing period roofs, a sign that Heinz roofs, wherever they still stand, are being kept alive tile by tile rather than replaced wholesale.
+
+<figure class="article-figure">
+  <img src="assets/blog/heinz-brochure-cover.webp" alt="The illustrated cover of a Heinz Roofing Tiles brochure, showing a stylized tile-roofed cottage above hand-lettered type reading Heinz Roofing Tiles." loading="lazy" width="476" height="644" />
+  <figcaption>The cover of a Heinz Roofing Tiles brochure from the company's heyday.</figcaption>
+</figure>
 
 Matching a Heinz roof today means salvage or remanufacture rather than a call to the factory, since Ludowici can still reproduce discontinued Heinz molds. It is exactly the kind of [discontinued-tile sourcing](discontinued.html) we handle on estate roofs across North Texas.

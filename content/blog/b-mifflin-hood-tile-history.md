@@ -13,6 +13,11 @@ excerpt: Not every roofing tile maker's story starts with roofing tile. B. Miffl
 
 Not every roofing tile manufacturer's story is really about roofing tile at first. B. Mifflin Hood's company started in brick, took a public stand against one of the ugliest labor practices in the industry, and only became a major name in roof tile well after it was already established.
 
+<figure class="article-figure">
+  <img src="assets/blog/hood-trade-ad.webp" alt="A vintage B. Mifflin Hood Company trade advertisement headed with the company name, showing engravings of ceramic rings and spiral packing shapes alongside dense product copy." loading="lazy" width="240" height="320" />
+  <figcaption>A B. Mifflin Hood Company trade advertisement for its acid-resisting tile, brick, special shapes, and chemical stoneware.</figcaption>
+</figure>
+
 ## From Maryland to Atlanta
 
 Benjamin Mifflin Hood was a ceramicist born in Cambridge, Maryland, who moved to the Atlanta area in 1904 and got involved in brick manufacturing shortly after arriving. He formally incorporated the B. Mifflin Hood Brick Company in 1916 and built a factory to produce quarry tile, a category of unglazed, dense floor and wall tile distinct from roofing tile.
@@ -20,6 +25,11 @@ Benjamin Mifflin Hood was a ceramicist born in Cambridge, Maryland, who moved to
 ## Taking a Stand on Convict Labor
 
 Hood distinguished his company early on with something other than product design. Georgia's brick industry at the time relied heavily on convict leasing, in which private companies paid the state for the labor of incarcerated people, a practice widely criticized for its abuses. Hood refused to participate. As early as 1905, well before he'd even formally incorporated the company, he was signing his own name to advertisements urging customers to "buy free labor," marketing his bricks explicitly as "non-convict" product. It was an unusual position for a Georgia brick manufacturer of that era to stake out publicly, and it became part of how the company presented itself for decades.
+
+<figure class="article-figure">
+  <img src="assets/blog/hood-brick-building.webp" alt="The B. Mifflin Hood Brick Co. building, a red-brick facade with three arched windows and the company name in raised lettering across the top." loading="lazy" width="1200" height="1200" />
+  <figcaption>The B. Mifflin Hood Brick Co.'s 1909 office and showroom in Atlanta, later added to the National Register of Historic Places in 2018.</figcaption>
+</figure>
 
 ## From Quarry Tile to Roofing Tile
 
