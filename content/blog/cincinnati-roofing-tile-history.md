@@ -1,7 +1,7 @@
 ---
 draft: true
 slug: cincinnati-roofing-tile-history
-image: assets/projects/st-louis-la-escandella-tile/01.webp
+image: assets/blog/cincinnati-s-tile.webp
 title: "A Brief History of Cincinnati Roofing Tile"
 tag: Heritage
 date: 2026-07-27
@@ -22,11 +22,6 @@ That tradition ran deep. Cincinnati itself was one point of the so-called "Germa
 The tile tradition Freund brought with him wasn't incidental, either. Roofing tile has a documented history of following settlers rather than being invented fresh in a new country: the 1910 Ohio Geological Survey account that records Freund's founding also notes that colonies "usually adhere to the form of roofing tile in use in their parent countries," pointing to German Pennsylvania settlers making flat tile as early as 1735, and to the Zoarites, a German religious community in Tuscarawas County, Ohio, who built an entire town on tile roofs they knew how to make because they'd learned it before they ever left Germany. Freund's plant, arriving decades later in a different corner of the state, fits the same pattern, a German immigrant applying an inherited building tradition to American soil rather than starting from nothing.<sup class="cite"><a href="#src-1">1</a></sup>
 
 Freund started modestly and built the company up step by step with his associates, rather than launching at scale from the outset. Beyond his name, his location, and his motivation as described in the 1910 survey, I haven't been able to find further biographical detail on Freund himself, his birth year, immigration date, or life outside the company.
-
-<figure class="article-figure">
-  <img src="assets/blog/cincinnati-s-tile.webp" alt="A close-up of a terracotta four-corner S-tile roof, the interlocking barrel tiles weathered to a soft red with pale mineral streaking." loading="lazy" width="1400" height="1050" />
-  <figcaption>A Cincinnati four-corner "S" tile, photographed on a St. Louis roof we repaired after the 2025 tornado, still in service more than a century after the company made it.</figcaption>
-</figure>
 
 ## Succeeding Where Others Failed
 
