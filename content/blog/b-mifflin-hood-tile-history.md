@@ -20,11 +20,11 @@ Not every roofing tile manufacturer's story is really about roofing tile at firs
 
 ## From Maryland to Atlanta
 
-Benjamin Mifflin Hood was a ceramicist born in Cambridge, Maryland, who moved to the Atlanta area in 1904 and got involved in brick manufacturing shortly after arriving. He formally incorporated the B. Mifflin Hood Brick Company in 1916 and built a factory to produce quarry tile, a category of unglazed, dense floor and wall tile distinct from roofing tile.
+Benjamin Mifflin Hood was a ceramicist born in Cambridge, Maryland, who moved to the Atlanta area in 1904 and got involved in brick manufacturing shortly after arriving. He formally incorporated the B. Mifflin Hood Brick Company in 1916 and built a factory to produce quarry tile, a category of unglazed, dense floor and wall tile distinct from roofing tile.<sup class="cite"><a href="#src-1">1</a></sup>
 
 ## Taking a Stand on Convict Labor
 
-Hood distinguished his company early on with something other than product design. Georgia's brick industry at the time relied heavily on convict leasing, in which private companies paid the state for the labor of incarcerated people, a practice widely criticized for its abuses. Hood refused to participate. As early as 1905, well before he'd even formally incorporated the company, he was signing his own name to advertisements urging customers to "buy free labor," marketing his bricks explicitly as "non-convict" product. It was an unusual position for a Georgia brick manufacturer of that era to stake out publicly, and it became part of how the company presented itself for decades.
+Hood distinguished his company early on with something other than product design. Georgia's brick industry at the time relied heavily on convict leasing, in which private companies paid the state for the labor of incarcerated people, a practice widely criticized for its abuses. Hood refused to participate. As early as 1905, well before he'd even formally incorporated the company, he was signing his own name to advertisements urging customers to "buy free labor," marketing his bricks explicitly as "non-convict" product. It was an unusual position for a Georgia brick manufacturer of that era to stake out publicly, and it became part of how the company presented itself for decades.<sup class="cite"><a href="#src-1">1</a></sup>
 
 <figure class="article-figure">
   <img src="assets/blog/hood-brick-building.webp" alt="The B. Mifflin Hood Brick Co. building, a red-brick facade with three arched windows and the company name in raised lettering across the top." loading="lazy" width="1200" height="1200" />
@@ -43,6 +43,13 @@ B. Mifflin Hood tile roofed the clubhouse of the East Lake Golf Club in Atlanta 
 
 ## The Company's End and What's Left Today
 
-Hood died in 1946, and despite the company's success, it dissolved shortly afterward. Its tile and brick remain scattered across buildings throughout the American South. Ludowici lists B. Mifflin Hood, alongside Heinz, among the "long gone manufacturers" whose historic patterns it can still identify and hand-replicate for restoration work, and specific discontinued profiles, such as a flat clay tile marketed under the name "Dresden," still turn up for sale through tile salvage dealers today. Hood's 1909 office building and showroom in Atlanta also outlived the company itself: it was added to the National Register of Historic Places in 2018.
+Hood died in 1946, and despite the company's success, it dissolved shortly afterward. Its tile and brick remain scattered across buildings throughout the American South. Ludowici lists B. Mifflin Hood, alongside Heinz, among the "long gone manufacturers" whose historic patterns it can still identify and hand-replicate for restoration work, and specific discontinued profiles, such as a flat clay tile marketed under the name "Dresden," still turn up for sale through tile salvage dealers today. Hood's 1909 office building and showroom in Atlanta also outlived the company itself: it was added to the National Register of Historic Places in 2018.<sup class="cite"><a href="#src-1">1</a></sup>
 
 That Ludowici was called in to match Hood tile at East Lake is the same path available to any owner of a Hood roof today. When one in our region loses tile to a storm, salvage and remanufacture are exactly how we approach [discontinued and obsolete profiles](discontinued.html) rather than tearing off a sound roof.
+
+<div class="article-sources">
+<h2>Sources</h2>
+<ol>
+<li id="src-1"><a href="https://en.wikipedia.org/wiki/B._Mifflin_Hood_Brick_Company">Wikipedia, "B. Mifflin Hood Brick Company."</a></li>
+</ol>
+</div>
