@@ -1,10 +1,9 @@
 ---
-draft: true
 slug: ludowici-roof-tile-history
 image: assets/projects/st-louis-ludowici-tile/01.webp
 title: "Ludowici Clay Tile: A History"
 tag: Heritage
-date: 2026-07-29
+date: 2026-07-30
 author: Jack Cella
 targetKeyword: Ludowici roof tile history
 metaDescription: The oldest continuously operating clay roof tile maker in America, from a 19th-century German tileworks to the White House, Wrigley Field, and its Dallas showroom.
