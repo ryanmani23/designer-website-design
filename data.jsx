@@ -12,9 +12,9 @@
 // When `logo` is present, the cell renders the logo in place of the "01/04" stamp.
 // TODO(jack): Featured project image swaps requested 2026-05-29:
 //   Ludowici → Holy Trinity Catholic project photo
-//   La Escandella → new clay-tile project photo (~2 weeks out from 2026-05-29)
 //   Brava → Rachel Reed project photo
 //   Slate Valley Supply → closer-up slate photo
+// Done: La Escandella → S-tile project photo (assets/materials/la-escandella.webp, 2026-08-05).
 const MANUFACTURERS = [
   {
     name: "Ludowici",
@@ -41,7 +41,7 @@ const MANUFACTURERS = [
     name: "La Escandella",
     role: "Spain's Leading Clay Tile Manufacturer · European Certified",
     body: "La Escandella is the leading clay tile manufacturer in Spain and highly sought after throughout Europe. Their tiles have the highest ratings clay can earn and give the property a truly authentic European style.",
-    image: "assets/materials/clay.webp",
+    image: "assets/materials/la-escandella.webp",
     stamp: "04 / 04",
   },
 ];
