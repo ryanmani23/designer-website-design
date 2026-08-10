@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Nav, PageHero, Ethos, PhilosophySection, ServiceArea, Partners, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, PageHero, Ethos, PhilosophySection, ServiceArea, Partners, InstagramFeed, FinalCTA, Footer */
 function App() {
   return (
     <React.Fragment>
@@ -11,6 +11,7 @@ function App() {
       />
       <ServiceArea />
       <Ethos />
+      <InstagramFeed />
       <PhilosophySection />
       <Partners />
       <FinalCTA />

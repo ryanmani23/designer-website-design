@@ -58,6 +58,13 @@ const MailIcon = () =>
     <path d="M2.5 6.5 12 13l9.5-6.5" />
   </svg>;
 
+const InstagramGlyph = ({ size = 16 }) =>
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none" />
+  </svg>;
+
 
 function Nav({ onLight: forcedOnLight }) {
   const [scrolled, setScrolled] = useState(false);
@@ -1283,6 +1290,125 @@ function Partners() {
 
       <div className="partners-marquee-head">Our Affiliations</div>
       <PartnersMarquee items={all} showCategory={true} />
+    </section>);
+
+}
+
+// ── Instagram feed (About page) ────────────────────────────────
+// A curated square grid mirroring the Instagram profile grid, styled to the
+// site's design system. Images are downloaded/optimized copies (assets/social/
+// instagram/*.webp) rather than IG's signed CDN URLs, which expire — so this is
+// a hand-refreshed set, not a live API pull. Each tile links to the real post.
+// Tiles use LazyBg so their fetch holds until near-viewport (consistent with the
+// site's mobile-payload work). To refresh: drop new webp tiles in that folder
+// and update the entries below (image + url + caption).
+const INSTAGRAM_HANDLE = "prioritydesignerroofs";
+const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
+const INSTAGRAM_FEED = [
+  {
+    id: "Dbo1xQdzj7s",
+    url: "https://www.instagram.com/prioritydesignerroofs/p/Dbo1xQdzj7s/",
+    image: "assets/social/instagram/ig-Dbo1xQdzj7s.webp",
+    caption: "Slate & copper on a storybook cottage",
+    alt: "White-brick cottage with a natural slate roof and copper detailing, framed by crepe myrtle.",
+  },
+  {
+    id: "DYVo89gF3EB",
+    url: "https://www.instagram.com/prioritydesignerroofs/p/DYVo89gF3EB/",
+    image: "assets/social/instagram/ig-DYVo89gF3EB.webp",
+    caption: "Slate over a columned estate",
+    alt: "Aerial view of a columned estate roofed in gray natural slate.",
+  },
+  {
+    id: "DZd05REl17x",
+    url: "https://www.instagram.com/prioritydesignerroofs/p/DZd05REl17x/",
+    image: "assets/social/instagram/ig-DZd05REl17x.webp",
+    caption: "Copper valleys threading a slate roofline",
+    alt: "Overhead view of a slate roof laced with hand-formed copper valleys.",
+  },
+  {
+    id: "DYDf4N_jTsi",
+    url: "https://www.instagram.com/prioritydesignerroofs/p/DYDf4N_jTsi/",
+    image: "assets/social/instagram/ig-DYDf4N_jTsi.webp",
+    caption: "Graduated slate meeting a new copper gutter",
+    alt: "Close-up of a variegated slate roof meeting a freshly installed copper gutter.",
+  },
+  {
+    id: "DWaBhwFl-iP",
+    url: "https://www.instagram.com/prioritydesignerroofs/p/DWaBhwFl-iP/",
+    image: "assets/social/instagram/ig-DWaBhwFl-iP.webp",
+    caption: "Setting clay barrel tile by hand",
+    alt: "A roofer setting clay barrel tile on a roof in progress.",
+  },
+  {
+    id: "DWmYr36EZA0",
+    url: "https://www.instagram.com/prioritydesignerroofs/p/DWmYr36EZA0/",
+    image: "assets/social/instagram/ig-DWmYr36EZA0.webp",
+    caption: "Blue-gray slate on a historic gable",
+    alt: "Blue-gray slate covering the steep gable of a historic home.",
+  },
+];
+
+const PlayGlyph = ({ size = 18 }) =>
+<svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M8 5.5v13l11-6.5-11-6.5z" />
+  </svg>;
+
+// Live-aware: renders the cached Instagram manifest from /api/instagram (latest
+// posts, any media type) when available, otherwise the hand-curated
+// INSTAGRAM_FEED fallback baked into the build — so the section never renders
+// empty. Video/reel tiles use the post's thumbnail + a play badge. See the
+// Worker in worker/index.js and content/INSTAGRAM-LIVE-SETUP.md.
+function InstagramFeed() {
+  const [posts, setPosts] = useState(INSTAGRAM_FEED);
+  useEffect(() => {
+    let alive = true;
+    fetch("/api/instagram")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => {
+        if (!alive || !Array.isArray(data) || data.length === 0) return;
+        setPosts(data.slice(0, 6).map((p) => ({
+          id: p.id,
+          url: p.permalink,
+          image: p.image,
+          caption: p.caption || "View on Instagram",
+          alt: p.caption || "Recent roofing work from Priority Designer on Instagram",
+          video: p.media_type === "VIDEO",
+        })));
+      })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, []);
+
+  return (
+    <section className="ig-feed section-cream" id="instagram" data-screen-label="Instagram">
+      <div className="ig-inner">
+        <header className="ig-head">
+          <div className="ig-head-left">
+            <span className="eyebrow">From the Field</span>
+            <h2>Follow the work on <em>Instagram</em></h2>
+            <p className="ig-lede">Day to day, we post the roofs as they happen, slate, clay, and copper going up across Dallas&ndash;Fort Worth and beyond.</p>
+          </div>
+          <a className="ig-handle" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+            <InstagramGlyph /> @{INSTAGRAM_HANDLE}
+          </a>
+        </header>
+        <div className="ig-grid">
+          {posts.map((p) =>
+            <a className="ig-tile" key={p.id} href={p.url} target="_blank" rel="noopener noreferrer" aria-label={`View Instagram post: ${p.caption}`}>
+              <LazyBg className="ig-tile-img" image={p.image} role="img" aria-label={p.alt} />
+              {p.video && <span className="ig-tile-badge" aria-hidden="true"><PlayGlyph /></span>}
+              <span className="ig-tile-overlay" aria-hidden="true">
+                <InstagramGlyph size={22} />
+                <span className="ig-tile-cap">{p.caption}</span>
+              </span>
+            </a>
+          )}
+        </div>
+        <a className="ig-follow" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+          Follow @{INSTAGRAM_HANDLE} <ArrowRight size={14} />
+        </a>
+      </div>
     </section>);
 
 }

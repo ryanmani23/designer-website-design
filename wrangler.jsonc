@@ -2,7 +2,22 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "designer-website",
   "compatibility_date": "2026-06-18",
+  "main": "worker/index.js",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+  // Live Instagram feed (About page). See content/INSTAGRAM-LIVE-SETUP.md.
+  // Create these before deploying:
+  //   npx wrangler kv namespace create IG_KV     -> paste id below
+  //   npx wrangler r2 bucket create designer-ig-media
+  "kv_namespaces": [
+    { "binding": "IG_KV", "id": "5097dbb8436c41a0890fe806105f7a64" }
+  ],
+  "r2_buckets": [
+    { "binding": "IG_BUCKET", "bucket_name": "designer-ig-media" }
+  ],
+  "triggers": {
+    "crons": ["0 */6 * * *"]
   }
 }
