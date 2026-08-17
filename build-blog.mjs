@@ -149,6 +149,48 @@ const NAV_JS = `
   document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
 })();`;
 
+// Click-to-enlarge lightbox for .article-figure images. Builds one overlay per
+// page, opens on click/Enter/Space (images made keyboard-focusable), and closes
+// on Escape, backdrop click, or the close button. Styles live in styles.css
+// (.lightbox*). The enlarged view reuses the figure's own src (images are up to
+// ~1400px native, plenty of detail) so no separate hi-res asset is needed.
+const LIGHTBOX_JS = `
+(function(){
+  var figs=document.querySelectorAll('.article-figure img');
+  if(!figs.length) return;
+  var box=document.createElement('div');
+  box.className='lightbox';
+  box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true'); box.setAttribute('aria-hidden','true');
+  box.innerHTML='<button class="lightbox-close" type="button" aria-label="Close image">\\u00d7</button><img alt=""><figcaption></figcaption>';
+  document.body.appendChild(box);
+  var bimg=box.querySelector('img'), bcap=box.querySelector('figcaption'), bclose=box.querySelector('.lightbox-close');
+  var lastFocus=null;
+  function open(src,alt,cap){
+    lastFocus=document.activeElement;
+    bimg.src=src; bimg.alt=alt||'';
+    if(cap){bcap.textContent=cap; bcap.style.display='';} else {bcap.style.display='none';}
+    box.classList.add('is-open'); box.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden'; bclose.focus();
+  }
+  function close(){
+    box.classList.remove('is-open'); box.setAttribute('aria-hidden','true');
+    document.body.style.overflow=''; bimg.src='';
+    if(lastFocus&&lastFocus.focus)lastFocus.focus();
+  }
+  Array.prototype.forEach.call(figs,function(img){
+    img.setAttribute('role','button'); img.setAttribute('tabindex','0'); img.setAttribute('aria-label','Enlarge image');
+    function trigger(){
+      var fig=img.closest('.article-figure');
+      var capEl=fig?fig.querySelector('figcaption'):null;
+      open(img.currentSrc||img.src, img.alt, capEl?capEl.textContent.trim():'');
+    }
+    img.addEventListener('click',trigger);
+    img.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();trigger();}});
+  });
+  box.addEventListener('click',function(e){if(e.target!==bimg)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&box.classList.contains('is-open'))close();});
+})();`;
+
 function pageHtml(article, others) {
   // Article pages live under /blog/ (output to blog/<slug>.html; Cloudflare
   // serves that at the clean /blog/<slug> and 307-redirects the .html form to
@@ -260,6 +302,7 @@ ${article.html}
 </section>
 ${footerMarkup()}
 <script>${NAV_JS}</script>
+<script>${LIGHTBOX_JS}</script>
 </body>
 </html>`;
 }

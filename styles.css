@@ -5032,18 +5032,54 @@ a.btn-copper {
 .article-body sup.cite a { color: var(--copper-600); text-decoration: none; font-weight: 600; }
 .article-body sup.cite a:hover { text-decoration: underline; }
 
-/* Inline figure (e.g. Jack's Roman-slate line drawing). */
-.article-figure { margin: 2em auto; max-width: 460px; text-align: center; }
+/* Inline figure (e.g. Jack's Roman-slate line drawing).
+   width:auto + max-width:100% lets large photos fill the wider cap while small
+   source images render at their native size rather than upscaling to blur.
+   Images are click-to-enlarge (see the lightbox block + LIGHTBOX_JS). */
+.article-figure { margin: 2.4em auto; max-width: 640px; text-align: center; }
 .article-figure img {
-  display: block; width: 100%; height: auto; margin: 0 auto;
+  display: block; width: auto; max-width: 100%; height: auto; margin: 0 auto;
   background: #fff; padding: 20px; border: 1px solid var(--line, rgba(26,24,20,0.12));
+  cursor: zoom-in; transition: box-shadow .2s ease;
 }
+.article-figure img:hover { box-shadow: 0 8px 28px rgba(26,24,20,0.16); }
 .article-figure figcaption {
   font-family: var(--sans); font-size: 13px; line-height: 1.5;
   color: rgba(26,24,20,0.6); margin-top: 12px; font-style: normal;
 }
 .article-figure .fig-credit {
   display: block; margin-top: 4px; font-size: 11.5px; color: rgba(26,24,20,0.45);
+}
+
+/* Click-to-enlarge lightbox for article figures. Built + wired by LIGHTBOX_JS
+   in build-blog.mjs; a single overlay is appended to <body> per page. */
+.lightbox {
+  position: fixed; inset: 0; z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 4vmin; background: rgba(20,18,15,0.93);
+  opacity: 0; visibility: hidden; transition: opacity .22s ease, visibility .22s ease;
+  cursor: zoom-out;
+}
+.lightbox.is-open { opacity: 1; visibility: visible; }
+.lightbox img {
+  max-width: 92vw; max-height: 86vh; width: auto; height: auto;
+  display: block; cursor: default; box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+}
+.lightbox figcaption {
+  position: absolute; left: 0; right: 0; bottom: 18px; padding: 0 8vw;
+  text-align: center; color: rgba(255,255,255,0.82);
+  font-family: var(--sans); font-size: 13px; line-height: 1.5;
+}
+.lightbox-close {
+  position: absolute; top: 18px; right: 22px;
+  width: 42px; height: 42px; border: 0; border-radius: 50%;
+  background: rgba(255,255,255,0.14); color: #fff; font-size: 24px; line-height: 1;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s ease;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.26); }
+@media (prefers-reduced-motion: reduce) {
+  .lightbox, .article-figure img { transition: none; }
 }
 
 /* Sources / references list at the foot of the article. */
