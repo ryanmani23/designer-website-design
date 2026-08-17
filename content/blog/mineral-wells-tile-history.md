@@ -3,7 +3,7 @@ slug: mineral-wells-tile-history
 image: assets/projects/flower-mound-s-tile/01.webp
 title: "A Brief History of Mineral Wells Tile"
 tag: Heritage
-date: 2026-07-25
+date: 2026-08-17
 author: Jack Cella
 targetKeyword: Mineral Wells tile history
 metaDescription: The Mineral Wells Tile Company of Palo Pinto County, Texas fired local shale in bee-hive kilns, and its fire-flashed tile still roofs UT Austin's Main Building.
