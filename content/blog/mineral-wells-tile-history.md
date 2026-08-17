@@ -1,5 +1,4 @@
 ---
-draft: true
 slug: mineral-wells-tile-history
 image: assets/projects/flower-mound-s-tile/01.webp
 title: "A Brief History of Mineral Wells Tile"
