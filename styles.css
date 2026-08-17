@@ -5043,6 +5043,14 @@ a.btn-copper {
   cursor: zoom-in; transition: box-shadow .2s ease;
 }
 .article-figure img:hover { box-shadow: 0 8px 28px rgba(26,24,20,0.16); }
+/* Fallback for a bare markdown image (![alt](src)) that skips the <figure>
+   wrapper: marked emits it as <p><img></p>. Constrain it to the column and make
+   it click-to-enlarge like a figure, so the behavior is standard either way. */
+.article-body p > img {
+  display: block; max-width: 100%; height: auto; margin: 2.4em auto;
+  cursor: zoom-in; transition: box-shadow .2s ease;
+}
+.article-body p > img:hover { box-shadow: 0 8px 28px rgba(26,24,20,0.16); }
 .article-figure figcaption {
   font-family: var(--sans); font-size: 13px; line-height: 1.5;
   color: rgba(26,24,20,0.6); margin-top: 12px; font-style: normal;

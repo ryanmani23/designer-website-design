@@ -149,14 +149,19 @@ const NAV_JS = `
   document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
 })();`;
 
-// Click-to-enlarge lightbox for .article-figure images. Builds one overlay per
-// page, opens on click/Enter/Space (images made keyboard-focusable), and closes
-// on Escape, backdrop click, or the close button. Styles live in styles.css
-// (.lightbox*). The enlarged view reuses the figure's own src (images are up to
-// ~1400px native, plenty of detail) so no separate hi-res asset is needed.
+// Click-to-enlarge lightbox for article images. This is STANDARD for every post
+// automatically: it's injected into every article page below and the styles are
+// global, so any future post gets it with no extra work. Preferred authoring is
+// the <figure class="article-figure"> block (frame + caption + credit); a bare
+// markdown image (![alt](src), emitted as <p><img>) also gets sized and enlarged
+// via the fallback selector here + the .article-body p>img rule in styles.css.
+// Builds one overlay per page, opens on click/Enter/Space (images made
+// keyboard-focusable), closes on Escape, backdrop click, or the close button.
+// The enlarged view reuses the image's own src (natives are up to ~1400px,
+// plenty of detail) so no separate hi-res asset is needed.
 const LIGHTBOX_JS = `
 (function(){
-  var figs=document.querySelectorAll('.article-figure img');
+  var figs=document.querySelectorAll('.article-figure img, .article-body p > img');
   if(!figs.length) return;
   var box=document.createElement('div');
   box.className='lightbox';
