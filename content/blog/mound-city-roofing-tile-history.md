@@ -1,10 +1,9 @@
 ---
-draft: true
 slug: mound-city-roofing-tile-history
 image: assets/projects/dallas-parish-clay/01.webp
 title: "A Brief History of Mound City Roofing Tile"
 tag: Heritage
-date: 2026-07-24
+date: 2026-08-24
 author: Jack Cella
 targetKeyword: Mound City roofing tile history
 metaDescription: The Mound City Roofing Tile Company of St. Louis (1903 to the 1920s) fired its kilns with oil for a consistent red, and its tile still holds a century later.
@@ -61,7 +60,7 @@ The Mound City Roofing Tile Company did not have a single precisely recorded clo
 
 ## A Legacy Still on the Roof
 
-Though much of these roofs were just replaced in the 2025 tornado that hit St. Louis, discontinued or not, Mound City tile is still doing its job. A century-old roof holding its original Mound City tile is a quiet testament to the company's fuel-oil kilns and four-day aging cycle. Simply proof that some 1903 engineering decisions are still paying off today.
+Even after the 2025 tornado that hit St. Louis forced many of these roofs to be replaced, discontinued or not, Mound City tile is still doing its job. A century-old roof holding its original Mound City tile is a quiet testament to the company's fuel-oil kilns and four-day aging cycle — proof that some 1903 engineering decisions are still paying off today.
 
 That St. Louis tornado is exactly where a company like ours comes in: a Mound City "French tile" roof that loses a few hundred tiles is a sourcing problem, not a teardown. Matching a discontinued profile like this is [the kind of work we do](discontinued.html) rather than replacing a sound century-old roof wholesale.
 
