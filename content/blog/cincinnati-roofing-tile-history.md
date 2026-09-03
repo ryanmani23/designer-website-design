@@ -1,10 +1,9 @@
 ---
-draft: true
 slug: cincinnati-roofing-tile-history
 image: assets/blog/cincinnati-s-tile.webp
 title: "A Brief History of Cincinnati Roofing Tile"
 tag: Heritage
-date: 2026-07-27
+date: 2026-09-03
 author: Jack Cella
 targetKeyword: Cincinnati Roofing Tile and Terra Cotta history
 metaDescription: Founded in 1895 by German immigrant Jacob Freund, Cincinnati Roofing Tile and Terra Cotta outlasted a wave of short-lived Ohio tile plants by doing things differently.
