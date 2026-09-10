@@ -1,10 +1,9 @@
 ---
-draft: true
 slug: heinz-roofing-tile-history
 image: assets/projects/estate-clay-tile/01.webp
 title: "A Brief History of Heinz Roofing Tile"
 tag: Heritage
-date: 2026-07-26
+date: 2026-09-10
 author: Jack Cella
 targetKeyword: Heinz roofing tile history
 metaDescription: The Heinz Roofing Tile Company of Denver bet on craftsmanship and the illusion of age, and its founder became an unlikely patron of the arts in early Denver.
