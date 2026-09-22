@@ -1,10 +1,9 @@
 ---
-draft: true
 slug: b-mifflin-hood-tile-history
 image: assets/projects/holy-trinity-clay/01.webp
 title: "A Brief History of B. Mifflin Hood"
 tag: Heritage
-date: 2026-07-28
+date: 2026-09-22
 author: Jack Cella
 targetKeyword: B. Mifflin Hood tile history
 metaDescription: B. Mifflin Hood's company started in brick, took a public stand against convict labor, and only became a major name in Southern roof tile well after it was established.
