@@ -1,15 +1,16 @@
 {
-  // Staging deploy target — a SEPARATE Cloudflare Worker from production
-  // ("designer-website"), so deploying here never touches prioritydesigner.com.
-  // Production is deployed automatically from the `main` branch via Workers
-  // Builds (plain `npm run build`, so `draft: true` articles are excluded).
-  // This one is deployed manually for review, WITH drafts included:
-  //   INCLUDE_DRAFTS=1 npm run build && npx wrangler deploy -c wrangler.staging.jsonc
-  // It serves at https://designer-website-staging.<your-subdomain>.workers.dev
+  // Staging deploy for draft review only. Separate Worker name from prod
+  // ("designer-website"), so `wrangler deploy -c wrangler.staging.jsonc` never
+  // touches production. Assets-only + a tiny noindex worker (worker/staging.js);
+  // no KV/R2/cron (the IG feed isn't needed to review blog drafts).
+  // Build with INCLUDE_DRAFTS=1 before deploying so draft posts are included.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "designer-website-staging",
   "compatibility_date": "2026-06-18",
+  "main": "worker/staging.js",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": true
   }
 }
