@@ -2908,6 +2908,19 @@ a.cta-pill { text-decoration: none; color: inherit; }
   font-size: 14px;
   color: rgba(244,239,230,0.8);
 }
+.contact-detail a { color: inherit; text-decoration: none; transition: color .2s ease; }
+.contact-detail a:hover { color: var(--copper-300); }
+.contact-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--copper-300);
+  border: 1px solid rgba(232,196,154,0.4);
+  border-radius: 999px;
+  padding: 3px 9px;
+  margin-left: 4px;
+}
 .contact-label {
   font-size: 11px;
   font-weight: 500;

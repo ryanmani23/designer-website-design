@@ -52,6 +52,11 @@ const PhoneIcon = () =>
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
   </svg>;
 
+const ChatIcon = () =>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+  </svg>;
+
 const MailIcon = () =>
 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -1507,7 +1512,8 @@ function Footer() {
       <div className="footer-grid">
         <div className="footer-col">
           <span className="footer-head">Contact</span>
-          <a className="footer-link" href="tel:+16096681419">(609) 668-1419</a>
+          <a className="footer-link" href="tel:+12142144909">(214) 214-4909</a>
+          <a className="footer-link" href="sms:+12142144909">Text Us</a>
           <a className="footer-link" href="mailto:designer@priorityroofs.com">designer@priorityroofs.com</a>
           <a className="footer-link footer-cta" href="contact.html">Schedule a Consultation →</a>
         </div>
@@ -1629,10 +1635,11 @@ function ContactForm() {
         <div className="contact-text">
           <span className="eyebrow">Get in Touch</span>
           <h2>Schedule a <em>Consultation</em></h2>
-          <p>We review every inquiry personally. Expect a response within one business day. For urgent matters call us directly.</p>
+          <p>We review every inquiry personally. Expect a response within one business day. For urgent matters, call or text us directly.</p>
           <div className="contact-details">
-            <div className="contact-detail"><PhoneIcon /><span>(609) 668-1419</span></div>
-            <div className="contact-detail"><MailIcon /><span>designer@priorityroofs.com</span></div>
+            <div className="contact-detail"><PhoneIcon /><a href="tel:+12142144909">(214) 214-4909</a><span className="contact-tag">Call or Text</span></div>
+            <div className="contact-detail"><ChatIcon /><a href="sms:+12142144909">Send us a text</a></div>
+            <div className="contact-detail"><MailIcon /><a href="mailto:designer@priorityroofs.com">designer@priorityroofs.com</a></div>
           </div>
         </div>
         <div className="contact-form-wrap">

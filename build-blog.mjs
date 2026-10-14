@@ -19,8 +19,8 @@ const BRAND = "Priority Designer · Slate & Tile";
 const CONTENT_DIR = "content/blog";
 
 // Real NAP, mirrored from the Footer component in sections.jsx.
-const PHONE_DISPLAY = "(609) 668-1419";
-const PHONE_HREF = "+16096681419";
+const PHONE_DISPLAY = "(214) 214-4909";
+const PHONE_HREF = "+12142144909";
 const EMAIL = "designer@priorityroofs.com";
 
 const NAV_ITEMS = [
@@ -94,6 +94,7 @@ function footerMarkup() {
     <div class="footer-col">
       <span class="footer-head">Contact</span>
       <a class="footer-link" href="tel:${PHONE_HREF}">${PHONE_DISPLAY}</a>
+      <a class="footer-link" href="sms:${PHONE_HREF}">Text Us</a>
       <a class="footer-link" href="mailto:${EMAIL}">${EMAIL}</a>
       <a class="footer-link footer-cta" href="contact.html">Schedule a Consultation →</a>
     </div>
