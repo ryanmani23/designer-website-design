@@ -7,7 +7,7 @@ function Intro({ leaving, ready }) {
       <div className="intro-bg" />
       <div className="intro-veil" />
       <div className="intro-content">
-        <span className="intro-eyebrow">DALLAS · TEXAS · EST. 2016</span>
+        <span className="intro-eyebrow">EST. 2016</span>
         <div className="intro-mark">
           <span className="word one">Priority</span>
           <span className="word two">Designer</span>
