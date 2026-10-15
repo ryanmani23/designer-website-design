@@ -2723,7 +2723,7 @@ a.cta-pill { text-decoration: none; color: inherit; }
 .page-hero-eyebrow {
   display: block;
   margin-bottom: 16px;
-  color: var(--copper-400);
+  color: #fff;
 }
 .page-hero-title {
   font-family: var(--serif);
