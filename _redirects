@@ -4,3 +4,8 @@
 # flat URL, so it's the only one that needs a 301 to preserve its indexing.
 /a-brief-history-of-slate-roofing       /blog/a-brief-history-of-slate-roofing  301
 /a-brief-history-of-slate-roofing.html  /blog/a-brief-history-of-slate-roofing  301
+
+# The old site's homepage lived at /home; Google still crawls it (404 in GSC
+# since 2026-07-01) and prioritydesignerroofs.com/home forwards here.
+/home       /  301
+/home.html  /  301
