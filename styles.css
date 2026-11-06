@@ -5031,6 +5031,17 @@ a.btn-copper {
 }
 .article-body blockquote p { font-size: 1.05rem; line-height: 1.6; margin: 0; }
 
+/* Data tables in articles (GFM tables from marked). display:block lets wide
+   tables scroll sideways on phones instead of widening the page. */
+.article-body table {
+  display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  border-collapse: collapse; margin: 1.6em 0 2em; font-family: var(--sans); font-size: 0.95rem; line-height: 1.5;
+}
+.article-body th, .article-body td { padding: 11px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--cream-200); min-width: 120px; }
+.article-body th { font-weight: 600; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy-800); background: var(--cream-50); border-bottom: 2px solid var(--copper-400); }
+.article-body tr:last-child td { border-bottom: none; }
+.article-body td:first-child { font-weight: 600; color: var(--ink); }
+
 /* Author byline in the hero meta row (sits on the dark scrim). */
 .article-author {
   font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
