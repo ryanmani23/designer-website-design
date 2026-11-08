@@ -238,6 +238,13 @@ function pageHtml(article, others) {
   return `<!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (GTM-P6S9JRZZ) -->
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-P6S9JRZZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- Article pages are served from /blog/<slug>; resolve all relative nav/asset

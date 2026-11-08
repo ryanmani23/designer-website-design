@@ -1610,11 +1610,50 @@ function TeamSection() {
     </section>);
 }
 
+// Sends a lead to a GoHighLevel webhook. Resolves only when GHL answers with a
+// 2xx; rejects on an HTTP error, a network failure, or a 15s timeout, so the
+// form can never claim success for a lead that didn't arrive. One automatic
+// retry covers brief network blips. (GHL's webhook allows cross-origin
+// requests, so the response status is readable from the browser.)
+function sendLead(url, payload) {
+  const attempt = () => {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 15000);
+    return fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: ctrl.signal
+    }).then((res) => {
+      if (!res.ok) throw new Error("Lead webhook returned " + res.status);
+    }).finally(() => clearTimeout(timer));
+  };
+  return attempt().catch(() => new Promise((r) => setTimeout(r, 1500)).then(attempt));
+}
+
+// Tells Google Tag Manager a real lead was delivered (only called on success).
+function trackLead(form) {
+  try { (window.dataLayer = window.dataLayer || []).push({ event: "generate_lead", lead_form: form }); } catch (e) {}
+}
+
+function LeadSendError() {
+  return (
+    <p className="form-error" role="alert">
+      We couldn't send your message. Please try again, or reach us directly
+      at <a href="tel:+12142144909">(214) 214-4909</a> (call or text)
+      or <a href="mailto:designer@priorityroofs.com">designer@priorityroofs.com</a>.
+    </p>);
+}
+
 function ContactForm() {
-  const [sent, setSent] = useState(false);
+  // idle → sending → sent | error. The form stays mounted on error so the
+  // visitor's typed message is still there when they retry.
+  const [status, setStatus] = useState("idle");
+  const sent = status === "sent";
   const startedAt = useRef(Date.now());
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (status === "sending") return;
     const payload = Object.fromEntries(new FormData(e.target).entries());
     // Bot traps: a hidden honeypot field (real users never see it) plus a
     // minimum fill time. Bots auto-fill every field and submit instantly.
@@ -1622,12 +1661,12 @@ function ContactForm() {
     // gets no signal it was caught.
     const trapped = payload.company_url || (Date.now() - startedAt.current) < 2500;
     delete payload.company_url;
-    if (trapped) { setSent(true); return; }
+    if (trapped) { setStatus("sent"); return; }
     payload.source = "Designer site - Contact form";
-    fetch("https://services.leadconnectorhq.com/hooks/IttIHY385RavkfuxG6Mo/webhook-trigger/76d49395-2780-49a6-8ac2-cb7cc7d2b2e0",
-      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
-      .then(() => setSent(true))
-      .catch(() => setSent(true));
+    setStatus("sending");
+    sendLead("https://services.leadconnectorhq.com/hooks/IttIHY385RavkfuxG6Mo/webhook-trigger/76d49395-2780-49a6-8ac2-cb7cc7d2b2e0", payload)
+      .then(() => { setStatus("sent"); trackLead("contact"); })
+      .catch(() => setStatus("error"));
   };
   return (
     <section className="contact-section" id="contact" data-screen-label="Contact">
@@ -1688,8 +1727,9 @@ function ContactForm() {
                   <span>Message</span>
                   <textarea name="message" rows="5" placeholder="Describe your project or concern…" />
                 </label>
-                <button type="submit" className="btn-copper-solid form-submit">
-                  Request Assessment <ArrowRight size={14} />
+                {status === "error" && <LeadSendError />}
+                <button type="submit" className="btn-copper-solid form-submit" disabled={status === "sending"}>
+                  {status === "sending" ? "Sending…" : <React.Fragment>Request Assessment <ArrowRight size={14} /></React.Fragment>}
                 </button>
               </form>
           }
@@ -2004,21 +2044,24 @@ function LifecycleROI() {
 }
 
 function RequestSample() {
-  const [sent, setSent] = useState(false);
+  // Same idle → sending → sent | error flow as ContactForm.
+  const [status, setStatus] = useState("idle");
+  const sent = status === "sent";
   const startedAt = useRef(Date.now());
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (status === "sending") return;
     const payload = Object.fromEntries(new FormData(e.target).entries());
     // Bot traps: hidden honeypot field + minimum fill time. If either trips,
     // show success but skip the send (see ContactForm for rationale).
     const trapped = payload.company_url || (Date.now() - startedAt.current) < 2500;
     delete payload.company_url;
-    if (trapped) { setSent(true); return; }
+    if (trapped) { setStatus("sent"); return; }
     payload.source = "Designer site - Request a Sample";
-    fetch("https://services.leadconnectorhq.com/hooks/IttIHY385RavkfuxG6Mo/webhook-trigger/24032a72-5d4b-4092-a67d-8aa04a07d019",
-      { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }).
-    then(() => setSent(true)).
-    catch(() => setSent(true));
+    setStatus("sending");
+    sendLead("https://services.leadconnectorhq.com/hooks/IttIHY385RavkfuxG6Mo/webhook-trigger/24032a72-5d4b-4092-a67d-8aa04a07d019", payload)
+      .then(() => { setStatus("sent"); trackLead("sample_request"); })
+      .catch(() => setStatus("error"));
   };
   return (
     <section className="req-sample" id="request-sample" data-screen-label="Request a Sample">
@@ -2076,8 +2119,9 @@ function RequestSample() {
                   <input type="text" name="address" placeholder="City or ZIP" />
                 </label>
               </div>
-              <button type="submit" className="btn-copper-solid req-sample-submit">
-                Request a Sample <ArrowRight size={14} />
+              {status === "error" && <LeadSendError />}
+              <button type="submit" className="btn-copper-solid req-sample-submit" disabled={status === "sending"}>
+                {status === "sending" ? "Sending…" : <React.Fragment>Request a Sample <ArrowRight size={14} /></React.Fragment>}
               </button>
               <p className="req-sample-note">Brava and Slate Valley samples are coordinated directly through us. For Ludowici and La Escandella profiles, we'll confirm availability and follow up with options.</p>
             </form>
