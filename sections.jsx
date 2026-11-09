@@ -1515,6 +1515,7 @@ function Footer() {
           <a className="footer-link" href="tel:+12142144909">(214) 214-4909</a>
           <a className="footer-link" href="sms:+12142144909">Text Us</a>
           <a className="footer-link" href="mailto:designer@priorityroofs.com">designer@priorityroofs.com</a>
+          <a className="footer-link" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram @{INSTAGRAM_HANDLE}</a>
           <a className="footer-link footer-cta" href="contact.html">Schedule a Consultation →</a>
         </div>
         <div className="footer-col">

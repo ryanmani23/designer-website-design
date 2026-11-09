@@ -22,6 +22,7 @@ const CONTENT_DIR = "content/blog";
 const PHONE_DISPLAY = "(214) 214-4909";
 const PHONE_HREF = "+12142144909";
 const EMAIL = "designer@priorityroofs.com";
+const INSTAGRAM_HANDLE = "prioritydesignerroofs"; // keep in sync with sections.jsx
 
 const NAV_ITEMS = [
   { label: "About", href: "about.html" },
@@ -96,6 +97,7 @@ function footerMarkup() {
       <a class="footer-link" href="tel:${PHONE_HREF}">${PHONE_DISPLAY}</a>
       <a class="footer-link" href="sms:${PHONE_HREF}">Text Us</a>
       <a class="footer-link" href="mailto:${EMAIL}">${EMAIL}</a>
+      <a class="footer-link" href="https://www.instagram.com/${INSTAGRAM_HANDLE}/" target="_blank" rel="noopener noreferrer">Instagram @${INSTAGRAM_HANDLE}</a>
       <a class="footer-link footer-cta" href="contact.html">Schedule a Consultation →</a>
     </div>
     <div class="footer-col">
