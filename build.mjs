@@ -11,6 +11,7 @@
 import * as esbuild from "esbuild";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { buildBlog } from "./build-blog.mjs";
+import { buildMaterials } from "./build-materials.mjs";
 
 const OUT = "dist";
 const SITE = "https://prioritydesigner.com";
@@ -73,7 +74,7 @@ async function buildCss() {
 
 // Static sitemap covering the hand-authored pages plus every generated blog
 // article, so new articles appear in the sitemap automatically on build.
-async function buildSitemap(articles) {
+async function buildSitemap(articles, materials = []) {
   // Clean (extensionless) URLs: Cloudflare serves these directly and
   // 307-redirects the .html forms to them, so the sitemap lists the canonical
   // served URLs.
@@ -86,10 +87,13 @@ async function buildSitemap(articles) {
     { loc: `${SITE}/blog`, freq: "weekly", pri: "0.8" },
     { loc: `${SITE}/contact`, freq: "monthly", pri: "0.9" },
   ];
+  const mats = materials.map((slug) => ({
+    loc: `${SITE}/materials/${slug}`, freq: "monthly", pri: "0.8",
+  }));
   const arts = articles.map((a) => ({
     loc: `${SITE}/blog/${a.slug}`, freq: "yearly", pri: "0.7", lastmod: a.date,
   }));
-  const urls = [...base, ...arts].map((u) =>
+  const urls = [...base, ...mats, ...arts].map((u) =>
     `  <url>\n    <loc>${u.loc}</loc>\n${u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>\n` : ""}    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`).join("\n");
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
   await writeFile("sitemap.xml", xml);
@@ -105,9 +109,11 @@ async function buildAll() {
     buildCss().then((b) => console.log(`  dist/styles.css  ${(b / 1024).toFixed(1)} KB`)),
   );
   tasks.push(
-    buildBlog().then((articles) => {
+    Promise.all([buildBlog(), buildMaterials()]).then(([articles, materials]) => {
       articles.forEach((a) => console.log(`  blog/${a.slug}.html`));
-      return buildSitemap(articles).then(() => console.log(`  sitemap.xml  (${articles.length} articles)`));
+      materials.forEach((m) => console.log(`  materials/${m}.html`));
+      return buildSitemap(articles, materials).then(() =>
+        console.log(`  sitemap.xml  (${articles.length} articles, ${materials.length} material pages)`));
     }),
   );
   await Promise.all(tasks);
@@ -128,7 +134,7 @@ if (watch) {
       buildAll().then(() => console.log("rebuilt.")).catch((e) => console.error(e));
     }, 100);
   };
-  for (const f of [...new Set(Object.values(PAGES).flat()), "styles.css"]) {
+  for (const f of [...new Set(Object.values(PAGES).flat()), "styles.css", "build-materials.mjs"]) {
     fsWatch(f, rebuild);
   }
   fsWatch("content/blog", rebuild); // rebuild article pages on content edits

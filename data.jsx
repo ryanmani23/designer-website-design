@@ -29,6 +29,11 @@ const MANUFACTURERS = [
     body: "Slate isn't manufactured, it's farmed. The selection process of that slate is almost as important as its rating. Our partners were born and live right where the quarries are and have a depth of knowledge that give us and our customers full confidence in the quality of the product installed and some of the shortest lead times in the industry.",
     image: "assets/materials/slate.webp",
     stamp: "02 / 04",
+    // 2026-11-09 (Jack's website brief): each partner card opens its own static
+    // material page (build-materials.mjs). Cards without an href stay unlinked
+    // until their page is built.
+    href: "materials/natural-slate",
+    linkLabel: "See our eight slates",
   },
   {
     name: "Brava",
@@ -810,7 +815,14 @@ const TRUST = [
 const NAV_ITEMS = [
   { id: "about",        label: "About",                href: "about.html" },
   { id: "portfolio",    label: "Portfolio",            href: "portfolio.html" },
-  { id: "materials",    label: "Materials",            href: "materials.html" },
+  { id: "materials",    label: "Materials",            href: "materials.html",
+    // Dropdown under Materials (desktop) / sub-row in the mobile menu. Keep in
+    // sync with NAV_ITEMS in build-blog.mjs (static blog + material pages).
+    children: [
+      { label: "Natural Slate", desc: "Spanish, Vermont & New York slate", href: "materials/natural-slate" },
+      { label: "Copper",        desc: "16 oz flashing & architectural metal", href: "materials/copper" },
+      { label: "All Materials", desc: "Our partners & how they compare", href: "materials.html" },
+    ] },
   { id: "discontinued", label: "Discontinued Products", href: "discontinued.html" },
   { id: "blog",         label: "Blog",                 href: "blog.html" },
 ];

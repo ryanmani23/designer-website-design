@@ -149,7 +149,22 @@ function Nav({ onLight: forcedOnLight }) {
         <img src="assets/logo.png" alt="Priority Designer · Slate & Tile" className="logo-img" />
       </a>
       <div className="nav-links">
-        {NAV_ITEMS.map((n) =>
+        {NAV_ITEMS.map((n) => n.children ?
+        <div key={n.id} className="nav-item has-menu">
+            <a href={n.href} className={activeId === n.id ? "active" : ""} aria-haspopup="true">
+              {n.label}<svg className="nav-caret" width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" strokeWidth="1.3" /></svg>
+            </a>
+            <div className="nav-menu">
+              <div className="nav-menu-inner">
+                {n.children.map((c) =>
+                <a key={c.href} href={c.href}>
+                    <span className="nav-menu-label">{c.label}</span>
+                    <span className="nav-menu-desc">{c.desc}</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div> :
         <a key={n.id} href={n.href} className={activeId === n.id ? "active" : ""}>
             {n.label}
           </a>
@@ -184,13 +199,21 @@ function Nav({ onLight: forcedOnLight }) {
         <div className="nav-overlay-inner">
           <div className="nav-overlay-links">
             {NAV_ITEMS.map((n) =>
-              <a
-                key={n.id}
-                href={n.href}
-                className={activeId === n.id ? "active" : ""}
-                onClick={() => setMenuOpen(false)}>
-                {n.label}
-              </a>
+              <React.Fragment key={n.id}>
+                <a
+                  href={n.href}
+                  className={activeId === n.id ? "active" : ""}
+                  onClick={() => setMenuOpen(false)}>
+                  {n.label}
+                </a>
+                {n.children &&
+                <div className="nav-overlay-sub">
+                    {n.children.filter((c) => c.href !== n.href).map((c) =>
+                  <a key={c.href} href={c.href} onClick={() => setMenuOpen(false)}>{c.label}</a>
+                  )}
+                  </div>
+                }
+              </React.Fragment>
             )}
           </div>
           <a className="cta-pill nav-overlay-cta" href="contact.html" onClick={() => setMenuOpen(false)}>
@@ -644,8 +667,11 @@ function RoofReel() {
 function ManufacturerCell({ m, index }) {
   const [hasLogo, setHasLogo] = useState(Boolean(m.logo));
   const stamp = `${String(index + 1).padStart(2, "0")} / 04`;
+  // Linked cards (m.href) render as <a> so the whole card opens the material page.
+  const Tag = m.href ? "a" : "article";
+  const linkProps = m.href ? { href: m.href, "aria-label": `${m.name}: ${m.linkLabel || "learn more"}` } : {};
   return (
-    <article className={`mat-cell${hasLogo ? " has-logo" : ""}`}>
+    <Tag className={`mat-cell${hasLogo ? " has-logo" : ""}${m.href ? " is-link" : ""}`} {...linkProps}>
       <LazyBg className="mat-cell-grain" image={m.image} aria-hidden="true" />
       <div className="mat-cell-scrim" aria-hidden="true" />
       <div className="mat-cell-grit" aria-hidden="true" />
@@ -661,17 +687,33 @@ function ManufacturerCell({ m, index }) {
         }
         <h3 className="mat-cell-name">{m.name}</h3>
         <span className="mat-cell-role">{m.role}</span>
+        {m.href && <span className="mat-cell-link">{m.linkLabel || "Learn more"} →</span>}
       </div>
       <div className="mat-cell-hover">
         <span className="mat-cell-num is-light">{stamp}</span>
         <h3 className="mat-cell-name is-light">{m.name}</h3>
         <span className="mat-cell-role is-light">{m.role}</span>
         <p className="mat-cell-desc">{m.body}</p>
+        {m.href && <span className="mat-cell-link">{m.linkLabel || "Learn more"} →</span>}
       </div>
-    </article>);
+    </Tag>);
 }
 
-function Manufacturers({ banner = "partners" }) {
+// Copper medallion (Jack's 2026-11 brief): sits where the four partner cards
+// meet, the way copper flashing sits where every roof plane meets. Desktop:
+// absolutely centred over the 2x2 grid. Phones: its own row between cards 2 & 3
+// (it is rendered in that DOM position for exactly this reason).
+function CopperMedallion() {
+  return (
+    <a className="mat-medallion" href="materials/copper" aria-label="Copper: the thread through every roof">
+      <span className="mat-medallion-oz">16 oz</span>
+      <span className="mat-medallion-name">Copper</span>
+      <span className="mat-medallion-line">The thread through every roof</span>
+      <span className="mat-medallion-arrow" aria-hidden="true">→</span>
+    </a>);
+}
+
+function Manufacturers({ banner = "partners", medallion = false }) {
   return (
     <section className="section section-light materials" id="manufacturers" data-screen-label="Manufacturer Partnerships">
       <div className="section-head">
@@ -694,9 +736,12 @@ function Manufacturers({ banner = "partners" }) {
       </div>
       }
 
-      <div className="mat-grid">
+      <div className={`mat-grid${medallion ? " has-medallion" : ""}`}>
         {MANUFACTURERS.map((m, i) =>
-          <ManufacturerCell m={m} index={i} key={m.name} />
+          <React.Fragment key={m.name}>
+            <ManufacturerCell m={m} index={i} />
+            {medallion && i === 1 && <CopperMedallion />}
+          </React.Fragment>
         )}
       </div>
 

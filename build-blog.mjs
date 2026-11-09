@@ -26,7 +26,12 @@ const EMAIL = "designer@priorityroofs.com";
 const NAV_ITEMS = [
   { label: "About", href: "about.html" },
   { label: "Portfolio", href: "portfolio.html" },
-  { label: "Materials", href: "materials.html" },
+  { label: "Materials", href: "materials.html", children: [
+    // Keep in sync with NAV_ITEMS in data.jsx.
+    { label: "Natural Slate", desc: "Spanish, Vermont & New York slate", href: "materials/natural-slate" },
+    { label: "Copper", desc: "16 oz flashing & architectural metal", href: "materials/copper" },
+    { label: "All Materials", desc: "Our partners & how they compare", href: "materials.html" },
+  ] },
   { label: "Discontinued Products", href: "discontinued.html" },
   { label: "Blog", href: "blog.html" },
 ];
@@ -36,9 +41,9 @@ const AFFILIATIONS = [
   "Metal Roofing Consortium", "AIG & Chubb Preferred", "FORTIFIED",
 ];
 
-const ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+export const ARROW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
 
-const esc = (s = "") =>
+export const esc = (s = "") =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 // Minimal frontmatter parser: a leading `---` block of `key: value` lines.
@@ -66,11 +71,17 @@ function displayDate(iso) {
   return d.toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
 }
 
-function navMarkup(activeHref) {
-  const links = NAV_ITEMS.map((n) =>
-    `<a href="${n.href}"${n.href === activeHref ? ' class="active"' : ""}>${esc(n.label)}</a>`).join("");
+export function navMarkup(activeHref) {
+  const act = (n) => (n.href === activeHref ? ' class="active"' : "");
+  const caret = '<svg class="nav-caret" width="9" height="9" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>';
+  const links = NAV_ITEMS.map((n) => n.children
+    ? `<div class="nav-item has-menu"><a href="${n.href}"${act(n)} aria-haspopup="true">${esc(n.label)}${caret}</a><div class="nav-menu"><div class="nav-menu-inner">${n.children.map((c) =>
+        `<a href="${c.href}"><span class="nav-menu-label">${esc(c.label)}</span><span class="nav-menu-desc">${esc(c.desc)}</span></a>`).join("")}</div></div></div>`
+    : `<a href="${n.href}"${act(n)}>${esc(n.label)}</a>`).join("");
   const overlayLinks = NAV_ITEMS.map((n) =>
-    `<a href="${n.href}"${n.href === activeHref ? ' class="active"' : ""}>${esc(n.label)}</a>`).join("");
+    `<a href="${n.href}"${act(n)}>${esc(n.label)}</a>` + (n.children
+      ? `<div class="nav-overlay-sub">${n.children.filter((c) => c.href !== n.href).map((c) => `<a href="${c.href}">${esc(c.label)}</a>`).join("")}</div>`
+      : "")).join("");
   return `
 <nav class="nav">
   <a class="logo" href="index.html"><img src="assets/logo.png" alt="${esc(BRAND)}" class="logo-img" /></a>
@@ -86,7 +97,32 @@ function navMarkup(activeHref) {
 </div>`;
 }
 
-function footerMarkup() {
+// Mirrors <FinalCTA /> in sections.jsx (default variant), which every React page
+// renders above the footer. Background image lazy-loads via [data-bg] in NAV_JS.
+export function finalCtaMarkup() {
+  return `
+<section class="final-cta" id="contact">
+  <div class="final-cta-brand">
+    <span class="brand-rule"></span>
+    <div class="brand-mark"><img src="assets/logo.png" alt="${esc(BRAND)}" class="brand-logo-img" loading="lazy" /></div>
+    <span class="brand-rule"></span>
+  </div>
+  <div class="final-cta-card">
+    <div class="final-cta-img" data-bg="assets/cta-bg.webp" aria-hidden="true"></div>
+    <div class="final-cta-scrim"></div>
+    <div class="final-cta-inner">
+      <span class="final-cta-eyebrow">A Note on How Roofs Actually Work</span>
+      <h2>Roofs leak for three reasons:<br /><em>Felt, Fasteners, <span class="amp">and</span> Flashings.</em></h2>
+      <div class="final-cta-actions">
+        <a class="btn-copper-solid" href="contact.html">Request a System Assessment</a>
+        <a class="btn-navy-solid" href="portfolio.html">See Our Portfolio</a>
+      </div>
+    </div>
+  </div>
+</section>`;
+}
+
+export function footerMarkup() {
   const affs = AFFILIATIONS.map((a) => `<span class="footer-line-soft">${esc(a)}</span>`).join("");
   return `
 <footer class="footer">
@@ -122,10 +158,10 @@ function footerMarkup() {
 </footer>`;
 }
 
-const NAV_JS = `
+export const NAV_JS = `
 (function(){
   var nav=document.querySelector('.nav');
-  var hero=document.querySelector('.article-hero');
+  var hero=document.querySelector('.article-hero, .mp-hero');
   function onScroll(){
     var y=window.scrollY||window.pageYOffset;
     nav.classList.toggle('scrolled', y>80);
@@ -133,6 +169,11 @@ const NAV_JS = `
     nav.classList.toggle('on-light', y>t);
   }
   onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+  // Lazy background images (final CTA card), same idea as LazyBg in sections.jsx.
+  var lazy=document.querySelectorAll('[data-bg]');
+  function show(el){el.style.backgroundImage='url("/'+el.getAttribute('data-bg')+'")';}
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){show(e.target);io.unobserve(e.target);}});},{rootMargin:'400px 0px'});Array.prototype.forEach.call(lazy,function(el){io.observe(el);});}
+  else Array.prototype.forEach.call(lazy,show);
   var ham=document.querySelector('.nav-hamburger');
   var ov=document.getElementById('nav-overlay');
   function setMenu(open){

@@ -12,7 +12,7 @@ function App() {
         image="assets/hero/materials-showroom.webp"
       />
       <RequestSample />
-      <Manufacturers banner="none" />
+      <Manufacturers banner="none" medallion />
       <MaterialComparison />
       <FinalCTA />
       <Footer />

@@ -21,6 +21,7 @@ worker
 /package-lock.json
 /build.mjs
 /build-blog.mjs
+/build-materials.mjs
 /styles.css
 /*.jsx
 
