@@ -5159,3 +5159,29 @@ a.btn-copper {
 .rel-card:hover .rel-img { opacity: 0.88; }
 .rel-tag { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--copper-600); }
 .rel-title { font-family: var(--serif); font-size: 1.15rem; font-weight: 500; color: var(--ink); line-height: 1.35; margin: 8px 0 0; }
+
+/* ---------- footer: social icons + Google review button ---------- */
+.footer-social { display: flex; gap: 12px; margin-top: 10px; }
+.footer-social-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff; text-decoration: none;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.footer-social-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(13, 28, 48, 0.18); }
+.footer-social-btn.is-ig { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+.footer-social-btn.is-google { background: #fff; box-shadow: 0 0 0 1px rgba(13, 28, 48, 0.1); }
+.footer-social-btn.is-google:hover { box-shadow: 0 0 0 1px rgba(13, 28, 48, 0.1), 0 6px 16px rgba(13, 28, 48, 0.18); }
+.footer-review {
+  margin-top: 10px; align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 10px 16px 10px 10px; border-radius: 6px;
+  border: 1px solid rgba(13, 28, 48, 0.18); background: rgba(255, 255, 255, 0.55);
+  color: var(--navy-900); text-decoration: none;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+.footer-review:hover { border-color: var(--copper-500); background: #fff; }
+.footer-review-g { width: 38px; height: 38px; border-radius: 6px; background: #fff; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 1px rgba(13, 28, 48, 0.08); flex: none; }
+.footer-review-text { display: flex; flex-direction: column; gap: 2px; }
+.footer-review-title { font-family: var(--sans); font-size: 15px; font-weight: 500; line-height: 1.2; }
+.footer-review-sub { font-family: var(--serif-sc); font-size: 11px; letter-spacing: 0.16em; color: rgba(13, 28, 48, 0.6); }

@@ -70,6 +70,20 @@ const InstagramGlyph = ({ size = 16 }) =>
     <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none" />
   </svg>;
 
+// Google "G" mark for the footer Business Profile + review links.
+const GoogleGlyph = ({ size = 18 }) =>
+<svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
+    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+  </svg>;
+
+// Priority Designer - Slate & Tile Google Business Profile (place ID
+// ChIJnxj4nl2dToYR1IiFaP-XyiI). Keep in sync with build-blog.mjs.
+const GBP_URL = "https://maps.google.com/?cid=2506983265811138772";
+const GBP_REVIEW_URL = "https://search.google.com/local/writereview?placeid=ChIJnxj4nl2dToYR1IiFaP-XyiI";
+
 
 function Nav({ onLight: forcedOnLight }) {
   const [scrolled, setScrolled] = useState(false);
@@ -1515,13 +1529,27 @@ function Footer() {
           <a className="footer-link" href="tel:+12142144909">(214) 214-4909</a>
           <a className="footer-link" href="sms:+12142144909">Text Us</a>
           <a className="footer-link" href="mailto:designer@priorityroofs.com">designer@priorityroofs.com</a>
-          <a className="footer-link" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram @{INSTAGRAM_HANDLE}</a>
           <a className="footer-link footer-cta" href="contact.html">Schedule a Consultation →</a>
+          <div className="footer-social">
+            <a className="footer-social-btn is-ig" href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label={`Instagram @${INSTAGRAM_HANDLE}`} title={`@${INSTAGRAM_HANDLE}`}>
+              <InstagramGlyph size={20} />
+            </a>
+            <a className="footer-social-btn is-google" href={GBP_URL} target="_blank" rel="noopener noreferrer" aria-label="Priority Designer on Google" title="Google Business Profile">
+              <GoogleGlyph size={20} />
+            </a>
+          </div>
         </div>
         <div className="footer-col">
           <span className="footer-head">Visit</span>
           <span className="footer-line-soft">Dallas–Fort Worth Metroplex</span>
           <span className="footer-line-soft">Showroom by appointment</span>
+          <a className="footer-review" href={GBP_REVIEW_URL} target="_blank" rel="noopener noreferrer">
+            <span className="footer-review-g"><GoogleGlyph size={22} /></span>
+            <span className="footer-review-text">
+              <span className="footer-review-title">Review us on Google</span>
+              <span className="footer-review-sub">Priority Designer · Dallas</span>
+            </span>
+          </a>
         </div>
         <div className="footer-col">
           <span className="footer-head">Explore</span>
