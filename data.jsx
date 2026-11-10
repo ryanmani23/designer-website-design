@@ -33,11 +33,11 @@ const MANUFACTURERS = [
     // material page (build-materials.mjs). Cards without an href stay unlinked
     // until their page is built.
     href: "materials/natural-slate",
-    linkLabel: "See our eight slates",
+    linkLabel: "See the stone we install",
   },
   {
     name: "Brava",
-    role: "The Only Synthetic We Believe In",
+    role: "The Synthetic We Install and Stand Behind",
     body: "We are roofing snobs. We only install what we believe in and what we love. Typically, that's natural slate or authentic clay tile. But Brava is the one synthetic company we believe in. They have never had a product discontinued, and their offering of lightweight, Class 4, hurricane rated Tile, Slate and Shake is incredible. Truly a product that has earned our trust and recommendation.",
     image: "assets/materials/brava.webp",
     stamp: "03 / 04",

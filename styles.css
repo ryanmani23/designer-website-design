@@ -5242,7 +5242,7 @@ a.mat-cell:focus-visible { outline: 2px solid var(--copper-400); outline-offset:
 .mp-tab { min-height: 46px; padding: 0 22px; border: 1px solid var(--ink); background: var(--white); font-family: var(--serif-sc); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); transition: background 0.2s, color 0.2s; }
 .mp-tab[aria-pressed="true"] { background: var(--ink); color: var(--cream-50); }
 .mp-slates:not(.js) .mp-tabs { display: none; }
-.mp-swatches { display: grid; grid-template-columns: repeat(8, minmax(0,1fr)); gap: 12px; margin-bottom: 28px; }
+.mp-swatches { display: grid; grid-template-columns: repeat(9, minmax(0,1fr)); gap: 10px; margin-bottom: 28px; }
 .mp-swatch { display: flex; flex-direction: column; gap: 6px; padding: 8px 8px 12px; background: var(--white); border: 2px solid transparent; text-align: left; transition: border-color 0.2s, transform 0.2s; }
 .mp-swatch:hover { transform: translateY(-2px); }
 .mp-swatch[aria-pressed="true"] { border-color: var(--copper-500); }
@@ -5337,7 +5337,7 @@ a.mat-cell:focus-visible { outline: 2px solid var(--copper-400); outline-offset:
 .mp-patina-labels { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 8px; font-family: var(--serif-sc); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(26,24,20,0.65); }
 
 @media (max-width: 1100px) {
-  .mp-swatches { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .mp-swatches { grid-template-columns: repeat(5, minmax(0,1fr)); }
   .mp-standard { grid-template-columns: 1fr 1fr; }
   .mp-cards { grid-template-columns: 1fr 1fr; }
   .mp-partner-links { grid-template-columns: 1fr; }
@@ -5353,7 +5353,7 @@ a.mat-cell:focus-visible { outline: 2px solid var(--copper-400); outline-offset:
   .mp-head .right { max-width: none; }
 }
 @media (max-width: 600px) {
-  .mp-swatches { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
+  .mp-swatches { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
   .mp-swatch { padding: 4px 4px 8px; gap: 4px; }
   .mp-swatch-name { font-size: 14px; }
   .mp-swatch-origin { display: none; }
@@ -5429,3 +5429,8 @@ a.mat-cell:focus-visible { outline: 2px solid var(--copper-400); outline-offset:
 .footer-review-text { display: flex; flex-direction: column; gap: 2px; }
 .footer-review-title { font-family: var(--sans); font-size: 15px; font-weight: 500; line-height: 1.2; }
 .footer-review-sub { font-family: var(--serif-sc); font-size: 11px; letter-spacing: 0.16em; color: rgba(13, 28, 48, 0.6); }
+
+/* Natural Slate: phyllite label, roof-photo fallback (no studio shot yet) */
+.mp-spec-kind { display: block; font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--copper-600); margin-bottom: 8px; }
+.mp-swatch-img.is-roof { object-fit: cover; border-radius: 2px; }
+.mp-spec-slate.is-roof img { max-width: none; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; }

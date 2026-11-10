@@ -17,7 +17,10 @@ const BRAND = "Priority Designer · Slate & Tile";
 // ---------------------------------------------------------------------------
 // Slate data. Supplier figures as published by Be Natural / Slate Valley
 // Supply (benatural.es), supplied by Jack in the Nov 2026 website brief.
-// `photo` = one of our own roofs in that slate (portfolio slug), where we have one.
+// `roofs` = our own roofs in that stone (portfolio slugs), where we have them;
+//   `blend: true` marks a roof where the stone is one color of several.
+// `stone: "phyllite"` labels the two Galician phyllites (Jack, 2026-11-10).
+// Vermont names follow Slate Valley Supply (slatevalleysupply.com/traditionalslate).
 // ---------------------------------------------------------------------------
 const STD3 = [
   ["1/4 in. (7 to 8 mm)", "About 1,000 lb per square"],
@@ -46,7 +49,7 @@ const SLATES = [
     traits: ["Natural textured face", "Pyrite free", "Large sizes available"],
     weights: STD3, tests: tests("41.5 N/mm² transverse, 63.3 N/mm² longitudinal", "0.7%", "W1, 0.31%", "0.3%"),
     cert: "Certified to EN 12326-1 and ASTM C406.",
-    photo: { src: "assets/projects/university-park-galcar-slate/01.webp", slug: "university-park-galcar-slate", caption: "Clipped Galcar on one of our University Park roofs" },
+    roofs: [{ slug: "university-park-galcar-slate", caption: "Clipped Galcar on one of our University Park roofs" }],
   },
   {
     id: "franvisa", group: "spain", name: "Franvisa®", origin: "La Baña, Spain", swatch: "#1E2024",
@@ -56,7 +59,7 @@ const SLATES = [
     cert: "Certified to EN 12326-1 and ASTM C406.",
   },
   {
-    id: "sierra", group: "spain", name: "Sierra", origin: "Lugo, Spain", swatch: "#6C7178",
+    id: "sierra", group: "spain", stone: "phyllite", name: "Sierra", origin: "Lugo, Spain", swatch: "#6C7178",
     location: "Lugo, northwest Spain", color: "Unfading gray (also called Lugo Gray)", sizes: "12 x 8 in. to 24 x 12 in.",
     traits: ["Very uniform color", "Smooth natural texture"],
     weights: [["1/5 in. (5 mm)", "About 655 lb per square"], ["1/4 in. (6 to 7 mm)", "About 875 lb per square"]],
@@ -64,19 +67,33 @@ const SLATES = [
     cert: "Certified to EN 12326-1 and ASTM C406.",
   },
   {
-    id: "rande", group: "spain", name: "Rande®", origin: "Ortigueira, Spain", swatch: "#2B3340",
-    location: "Ortigueira, far northern Spain", color: "Unfading blue-black", sizes: "30 x 20 cm to 50 x 30 cm",
-    traits: ["Natural textured face", "Suited to traditional Galician-style roofs"],
-    weights: VT2, tests: tests("39.1 N/mm² transverse, 57.1 N/mm² longitudinal", "3.1%", "W1, 0.31%", "0.3%"),
-    cert: "Certified to EN 12326-1 (European). Ask us about ASTM documentation for your project.",
+    id: "lugo-green", group: "spain", stone: "phyllite", name: "Lugo Green", origin: "Lugo, Spain", swatch: "#4E5D55",
+    location: "Lugo, northwest Spain", color: "Unfading green", sizes: "12 x 8 in. to 24 x 12 in.",
+    traits: ["Named an IUGS Heritage Stone in 2024", "The only green roofing stone from Spain", "Very uniform color", "Also known as Bretoña"],
+    weights: [["1/4 in. (6 to 7 mm)", "About 875 lb per square"], ["3/8 in. (8 to 10 mm)", "About 1,275 lb per square"]],
+    tests: tests("40.4 N/mm² transverse, 39.0 N/mm² longitudinal", "0.40%", "W1, 0.19%", "0.00%"),
+    cert: "Certified to EN 12326-1 and ASTM C406.",
   },
   {
     id: "vermont-black", group: "us", name: "Vermont Black", origin: "Wells, Vermont", swatch: "#3E4246",
     location: "Wells, Vermont", color: "Medium to dark gray with darker linear markings", sizes: "12 x 8 in. to 24 x 14 in.",
     traits: ["Black with shades of gray", "Distinct linear markings"],
     weights: VT2, tests: tests("34.7 N/mm² transverse, 46.0 N/mm² longitudinal", "0.10%", "W1, 0.21%", "0.0%"),
-    cert: "Certified to ASTM C406.",
-    photo: { src: "assets/projects/highland-park-vermont-black-slate/01.webp", slug: "highland-park-vermont-black-slate", caption: "Vermont Black on one of our Highland Park roofs" },
+    cert: "Certified to EN 12326-1 and ASTM C406.",
+    roofs: [{ slug: "highland-park-vermont-black-slate", caption: "Vermont Black on one of our Highland Park roofs" }],
+  },
+  {
+    // Data and a studio photo are coming from Slate Valley Supply (Jack, 2026-11-10).
+    // Until then the card shows our own roofs and no spec or lab blocks.
+    id: "vermont-unfading-gray", group: "us", name: "Vermont Unfading Gray", origin: "Vermont", swatch: "#6E7175",
+    location: "Vermont", color: "Unfading gray",
+    traits: ["Holds its gray for the life of the roof", "Laid on its own or as the base of a blend"],
+    noStudio: true,
+    roofs: [
+      { slug: "highland-park-unfading-grey-slate", caption: "100% Vermont Unfading Gray on one of our Highland Park roofs" },
+      { slug: "fort-worth-unfading-grey-slate", caption: "100% Vermont Unfading Gray on one of our Fort Worth roofs" },
+      { slug: "westover-hills-slate", caption: "43% of a four-color blend in Westover Hills", blend: true },
+    ],
   },
   {
     id: "vermont-purple", group: "us", name: "Vermont Purple", origin: "Wells, Vermont", swatch: "#5A3E4A",
@@ -84,21 +101,22 @@ const SLATES = [
     traits: ["Close match for Welsh slate", "May show occasional green marks"],
     weights: VT2, tests: tests("34.7 N/mm² transverse, 46.0 N/mm² longitudinal", "0.10%", "W1, 0.21%", "0.0%"),
     cert: "Certified to EN 12326-1 and ASTM C406.",
-    photo: { src: "assets/projects/highland-park-full-range-purple-slate/01.webp", slug: "highland-park-full-range-purple-slate", caption: "Full-range Vermont Purple on one of our Highland Park roofs" },
+    roofs: [{ slug: "highland-park-full-range-purple-slate", caption: "Full-range Vermont Purple on one of our Highland Park roofs" }],
   },
   {
-    id: "vermont-green", group: "us", name: "Vermont Green", origin: "Wells, Vermont", swatch: "#56645A",
+    id: "vermont-green", group: "us", name: "Vermont Unfading Green", origin: "Wells, Vermont", swatch: "#56645A",
     location: "Wells, Vermont", color: "Unfading green, from bright green to gray-green", sizes: "12 x 8 in. to 24 x 14 in.",
     traits: ["A range of green tones", "Often blended with purple and gray"],
     weights: VT2, tests: tests("46.9 N/mm² transverse, 65.0 N/mm² longitudinal", "0.6%", "W1, 0.23%", "0.0%"),
     cert: "Certified to EN 12326-1 and ASTM C406.",
   },
   {
-    id: "new-york-red", group: "us", name: "New York Red", origin: "Slate Valley, NY and VT", swatch: "#8A4A3F",
+    id: "new-york-red", group: "us", name: "New York Unfading Red", origin: "Slate Valley, NY and VT", swatch: "#8A4A3F",
     location: "The Slate Valley on the New York and Vermont border", color: "Unfading red", sizes: "12 x 8 in. to 24 x 14 in.",
     traits: ["A rare true red slate", "Limited production", "Often used for patterns and accents"],
     weights: VT2, tests: tests("34.2 N/mm² transverse, 46.0 N/mm² longitudinal", "0.1%", "W1, 0.19%", "0.0%"),
     cert: "Certified to ASTM C406.",
+    roofs: [{ slug: "highland-park-lorraine-slate", caption: "New York Unfading Red in a seven-color blend on one of our Highland Park roofs", blend: true }],
   },
 ];
 
@@ -213,57 +231,67 @@ const nextLinks = (back, fwd) => `
 // ---------------------------------------------------------------------------
 // Natural Slate
 // ---------------------------------------------------------------------------
+const roofImg = (slug) => `assets/projects/${slug}/01.webp`;
+
 function slateSwatch(s, i) {
   return `<button type="button" class="mp-swatch" data-slate="${s.id}" data-group="${s.group}" aria-pressed="${i === 0}" aria-controls="slate-${s.id}">
-          <img class="mp-swatch-img" src="assets/materials/slate/${s.id}-tile.webp" width="480" height="480" alt="" loading="lazy" style="background-color:${s.swatch}" />
+          ${s.noStudio
+            ? `<img class="mp-swatch-img is-roof" src="${roofImg(s.roofs[0].slug)}" width="480" height="480" alt="" loading="lazy" style="background-color:${s.swatch}" />`
+            : `<img class="mp-swatch-img" src="assets/materials/slate/${s.id}-tile.webp" width="480" height="480" alt="" loading="lazy" style="background-color:${s.swatch}" />`}
           <span class="mp-swatch-name">${esc(s.name)}</span>
-          <span class="mp-swatch-origin">${esc(s.origin)}</span>
+          <span class="mp-swatch-origin">${s.stone === "phyllite" ? "Phyllite · " : ""}${esc(s.origin)}</span>
         </button>`;
 }
 
 function slatePanel(s, i) {
-  // Left column: the supplier's studio photo of a single slate (Be Natural), and,
-  // where we have one, one of our own roofs in that slate linked to the portfolio.
-  const onRoof = s.photo
-    ? `<a class="mp-onroof" href="portfolio?p=${s.photo.slug}">
-            <img src="${s.photo.src}" alt="" loading="lazy" />
-            <span><span class="mp-label">On our roofs</span>${esc(s.photo.caption)} →</span>
-          </a>`
-    : "";
+  // Left column: the supplier's studio photo of a single slate (Be Natural), and
+  // our own roofs in that stone, linked to the portfolio. Stones without a studio
+  // photo yet (Vermont Unfading Gray) lead with our first roof instead.
+  const roofs = s.roofs || [];
+  const onRoof = roofs.map((r) => `<a class="mp-onroof" href="portfolio?p=${r.slug}">
+            <img src="${roofImg(r.slug)}" alt="" loading="lazy" />
+            <span><span class="mp-label">${r.blend ? "In a blend on our roofs" : "On our roofs"}</span>${esc(r.caption)} →</span>
+          </a>`).join("\n          ");
+  const kind = s.stone === "phyllite" ? "phyllite" : "slate";
+  const figure = s.noStudio
+    ? `<figure class="mp-spec-slate is-roof"><img src="${roofImg(roofs[0].slug)}" alt="${esc(roofs[0].caption)}" loading="${i === 0 ? "eager" : "lazy"}" /></figure>`
+    : `<figure class="mp-spec-slate">
+            <img src="assets/materials/slate/${s.id}.webp" width="900" height="1200" alt="A single ${esc(s.name.replace("®", ""))} roofing ${kind}, ${esc(s.color.split(",")[0].split(" (")[0].toLowerCase())}" loading="${i === 0 ? "eager" : "lazy"}" />
+          </figure>`;
   const visual = `<div class="mp-spec-visual">
-          <figure class="mp-spec-slate">
-            <img src="assets/materials/slate/${s.id}.webp" width="900" height="1200" alt="A single ${esc(s.name.replace("®", ""))} roofing slate, ${esc(s.color.split(",")[0].split(" (")[0].toLowerCase())}" loading="${i === 0 ? "eager" : "lazy"}" />
-          </figure>
+          ${figure}
           ${onRoof}
         </div>`;
-  const weights = s.weights.map(([t, w]) => `<li><span>${t}</span><span>${w}</span></li>`).join("");
-  const rows = s.tests.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("");
+  const facts = [
+    ["Location", s.location], ["Color", s.color], ["Sizes", s.sizes], ["Standards", s.cert],
+  ].filter(([, v]) => v).map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("\n            ");
+  const weights = s.weights ? `
+          <div class="mp-spec-block">
+            <span class="mp-label">Thickness and weight</span>
+            <ul class="mp-spec-weights">${s.weights.map(([t, w]) => `<li><span>${t}</span><span>${w}</span></li>`).join("")}</ul>
+          </div>` : "";
+  const lab = s.tests ? `
+          <details class="mp-lab">
+            <summary>Laboratory results</summary>
+            <div class="mp-lab-scroll">
+              <table><thead><tr><th>Test</th><th>Result</th></tr></thead><tbody>${s.tests.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("")}</tbody></table>
+            </div>
+            <p class="mp-note">Results as published by the supplier. W1, T1 and S1 are European EN 12326-1 categories for water absorption, thermal cycling and sulfur dioxide exposure. They are separate from the S1 service-life grade in ASTM C406.</p>
+          </details>` : `
+          <p class="mp-note">Sizes, weights and laboratory results for this color are on their way from Slate Valley Supply. Ask us and we will send them as soon as we have them.</p>`;
   return `
       <article class="mp-spec${i === 0 ? " is-active" : ""}" id="slate-${s.id}" data-panel="${s.id}">
         ${visual}
         <div class="mp-spec-body">
+          <span class="mp-spec-kind">${s.stone === "phyllite" ? "Phyllite" : "Natural slate"}</span>
           <h3 class="mp-spec-name">${esc(s.name)}</h3>
           <dl class="mp-spec-facts">
-            <div><dt>Location</dt><dd>${esc(s.location)}</dd></div>
-            <div><dt>Color</dt><dd>${esc(s.color)}</dd></div>
-            <div><dt>Sizes</dt><dd>${esc(s.sizes)}</dd></div>
-            <div><dt>Standards</dt><dd>${esc(s.cert)}</dd></div>
+            ${facts}
           </dl>
           <div class="mp-spec-block">
             <span class="mp-label">Characteristics</span>
             <ul class="mp-spec-traits">${s.traits.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
-          </div>
-          <div class="mp-spec-block">
-            <span class="mp-label">Thickness and weight</span>
-            <ul class="mp-spec-weights">${weights}</ul>
-          </div>
-          <details class="mp-lab">
-            <summary>Laboratory results</summary>
-            <div class="mp-lab-scroll">
-              <table><thead><tr><th>Test</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table>
-            </div>
-            <p class="mp-note">Results as published by the supplier. W1, T1 and S1 are European EN 12326-1 categories for water absorption, thermal cycling and sulfur dioxide exposure. They are separate from the S1 service-life grade in ASTM C406.</p>
-          </details>
+          </div>${weights}${lab}
         </div>
       </article>`;
 }
@@ -320,6 +348,7 @@ function naturalSlatePage() {
     <span class="eyebrow mp-eyebrow">We Went to the Source</span>
     <h2 class="mp-h2">We have stood in the <em>quarries we buy from.</em></h2>
     <p>Our team traveled to the slate quarries of Galicia, in northwest Spain, to watch the stone come out of the mountain, split by hand and graded in the shed. We spent that time with geologist Dr. Víctor Cárdenes, learning what separates a roofing slate that lasts a century from one that fails in twenty years.</p>
+    <p>One of the stones we install comes from that same corner of Spain. Lugo Green Phyllite, quarried in Galicia since at least 1626, was named an <a href="https://iugs-geoheritage.org/geoheritage_stones/lugo-green-phyllite/" target="_blank" rel="noopener">IUGS Heritage Stone</a> in 2024, and the main study behind that designation is Dr. Cárdenes’s own.</p>
     <p>That trip is why every slate we install has published test results behind it: ASTM C406 for the American market and EN 12326 for European slate. Slate with no standards behind it, like the Chinese slate we tear off across DFW, Colorado, St. Louis and Wisconsin, is not something we will put on a roof.</p>
     <p class="mp-readmore">Read more: <a href="blog/what-makes-a-roofing-slate">What makes a roofing slate</a> · <a href="blog/do-slate-roofs-really-last-100-years">Do slate roofs really last 100 years?</a></p>
   </div>
@@ -333,9 +362,9 @@ function naturalSlatePage() {
 </section>
 
 <section class="mp-section mp-section-cream mp-slates" id="our-slate">
-  ${head("The Slate We Install", "Eight slates, <em>each with its own record</em>", "Spanish slate from Galicia through Be Natural, and American slate from Vermont and New York through Slate Valley Supply. Choose a slate to see where it comes from, its sizes and weights, and its laboratory results.")}
+  ${head("The Stone We Install", "Nine stones, <em>from quarries we know</em>", "Spanish slate and phyllite from Galicia through Be Natural, and American slate from Vermont and New York through Slate Valley Supply. Phyllite is slate taken further: the same rock under more heat and pressure, with a fine sheen. Choose a stone to see where it comes from, its sizes and weights, and its laboratory results.")}
   <div class="mp-tabs" role="group" aria-label="Filter by origin">
-    <button type="button" class="mp-tab" data-filter="all" aria-pressed="true">All slate</button>
+    <button type="button" class="mp-tab" data-filter="all" aria-pressed="true">All</button>
     <button type="button" class="mp-tab" data-filter="spain" aria-pressed="false">Spanish</button>
     <button type="button" class="mp-tab" data-filter="us" aria-pressed="false">Vermont &amp; New York</button>
   </div>
@@ -346,7 +375,7 @@ function naturalSlatePage() {
   </div>
   <p class="mp-credit">Slate photography courtesy of Be Natural.</p>
   <div class="mp-proof">
-    <span class="mp-label">Every slate on this page</span>
+    <span class="mp-label">What the laboratory results show</span>
     <ul class="mp-proof-grid">${PROOF.map((p) => `
       <li>${p.icon}<strong>${p.title}</strong><span>${p.text}</span></li>`).join("")}
     </ul>
@@ -376,12 +405,12 @@ function naturalSlatePage() {
     <a class="btn-copper-solid" href="materials#request-sample">Request a Sample ${ARROW}</a>
   </div>
 </section>
-${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Every slate roof we build is flashed in copper" })}`;
+${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Every slate roof deserves copper" })}`;
 
   return shell({
     slug: "natural-slate",
     title: "Natural Slate Roofing · Spanish & Vermont Slate · Priority Designer",
-    description: "The natural slate we install in Dallas–Fort Worth: Spanish slate from Galicia and American slate from Vermont and New York, with sizes, weights and laboratory results for each.",
+    description: "The natural slate and phyllite we install in Dallas–Fort Worth: Spanish stone from Galicia and American slate from Vermont and New York, with sizes, weights and laboratory results for each.",
     heroImage: "assets/materials/quarry/quarry-canyon.webp",
     heroMobile: "assets/materials/quarry/quarry-canyon-mobile.webp",
     crumb: "Natural Slate",
@@ -399,7 +428,7 @@ ${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/co
 function copperPage() {
   const where = [
     ["Valleys", "Open or closed, where the most water on the roof runs."],
-    ["Step and counter flashing", "At every wall, dormer and chimney. Never reused galvanized."],
+    ["Step and counter flashing", "At walls, dormers and chimneys, in place of galvanized steel that rusts out first."],
     ["Chimney crickets", "Soldered saddles that move water around the chimney instead of relying on caulk."],
     ["Penetrations", "Copper jacks in place of plastic boots that crack over a hot deck."],
     ["Drip edge and eaves", "The edge that carries water off the roof and into the gutter."],
@@ -425,12 +454,12 @@ function copperPage() {
   </div>
   <div class="mp-why-text">
     <p>On a slate or tile roof, the flashing usually fails long before the field does. Galvanized steel rusts through while the slate or clay above it still has decades left, and replacing it means taking a sound roof apart to reach it.</p>
-    <p>Copper lasts as long as the material above it. That is why we hand-form it at every wall, chimney, valley and penetration, whichever roof we install.</p>
+    <p>Copper lasts as long as the material above it. That is why we recommend it at every wall, chimney, valley and penetration, whichever roof you choose, and hand-form it on site when we install it.</p>
   </div>
 </section>
 
 <section class="mp-section mp-section-cream">
-  ${head("Where It Goes", "Copper on <em>every roof we build</em>")}
+  ${head("Where It Goes", "Where copper <em>belongs on a roof</em>")}
   <div class="mp-cards">${where.map(([h, p]) => `
     <div class="mp-card"><h3>${h}</h3><p>${p}</p></div>`).join("")}
   </div>
@@ -441,14 +470,14 @@ function copperPage() {
 </section>
 
 <section class="mp-section mp-section-dark">
-  ${head("Our Standard", "Sixteen-ounce, <em>custom fabricated, soldered</em>")}
+  ${head("Our Standard", "Sixteen-ounce, <em>custom fabricated, soldered</em>", "When we install copper, this is how we build it.")}
   <div class="mp-standard">${standard.map(([h, p]) => `
     <div class="mp-std"><h3>${h}</h3><p>${p}</p></div>`).join("")}
   </div>
 </section>
 
 <section class="mp-section">
-  ${head("Copper With Every Partner", "The field changes. <em>The copper does not.</em>")}
+  ${head("Copper With Every Partner", "The field changes. <em>The case for copper does not.</em>")}
   <div class="mp-partner-links">${partners.map(([href, h, p]) => `
     <a class="mp-plink" href="${href}"><span class="mp-plink-name">${h}</span><span class="mp-plink-text">${p}</span><span class="mp-plink-arrow">→</span></a>`).join("")}
   </div>
@@ -485,13 +514,13 @@ ${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/na
   return shell({
     slug: "copper",
     title: "Copper Roofing & Flashing · 16 oz Copper · Priority Designer",
-    description: "Why every roof we build in Dallas–Fort Worth is detailed in copper: 16 oz copper valleys, flashing, crickets, gutters, domes and turrets, soldered and formed for each condition.",
+    description: "Why copper belongs on every slate and tile roof: 16 oz copper valleys, flashing, crickets, gutters, domes and turrets, soldered and formed for each condition, from Priority Designer in Dallas–Fort Worth.",
     heroImage: "assets/projects/highland-park-variegated-slate-copper/02.webp",
     heroPos: "center 40%",
     crumb: "Copper",
     eyebrow: "Copper · The Thread Through Every Roof",
     h1: "The thread through <em>every roof.</em>",
-    sub: "Slate, Ludowici, La Escandella or Brava: the field material changes, but our standard for the metal that holds it together does not. A roof meant to last a century cannot depend on flashing that lasts twenty years.",
+    sub: "Slate, Ludowici, La Escandella or Brava: the field material changes, but the case for copper does not. A roof meant to last a century should not depend on flashing that lasts twenty years.",
     body,
   });
 }
