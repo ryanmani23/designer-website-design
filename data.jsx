@@ -317,7 +317,7 @@ const PROJECTS = [
     type: "Slate",
     blend: "Brava Light Arendale",
     desc: "Brava Multi-Width composite slate in Light Arendale over a Dallas residence, with copper detailing at the eaves and valleys.",
-    longDesc: "A Dallas residence finished in Brava Multi-Width composite slate, Light Arendale. Brava is the one synthetic we install: a Class 4, color-stable slate look milled from molds of real stone. We coursed the multi-width tiles for a natural, hand-laid field over a high-temperature ice-and-water membrane and detailed the eaves and valleys in copper.",
+    longDesc: "A Dallas residence finished in Brava Multi-Width composite slate, Light Arendale. Brava is the synthetic we install and stand behind: a Class 4, color-stable slate look milled from molds of real stone. We coursed the multi-width tiles for a natural, hand-laid field over a high-temperature ice-and-water membrane and detailed the eaves and valleys in copper.",
     image: "assets/projects/dallas-brava-slate/01.webp",
     gallery: [
       "assets/projects/dallas-brava-slate/01.webp",
