@@ -57,6 +57,7 @@ const SLATES = [
     traits: ["Structured vertical lines", "Pyrite free", "Exported since 1995"],
     weights: STD3, tests: tests("27.9 N/mm² transverse, 70.6 N/mm² longitudinal", "0.3%", "W1, 0.32%", "0.7%"),
     cert: "Certified to EN 12326-1 and ASTM C406.",
+    roofs: [{ slug: "madison-franvisa-slate", caption: "100% Franvisa on one of our Madison, Wisconsin roofs" }],
   },
   {
     id: "sierra", group: "spain", stone: "phyllite", name: "Sierra", origin: "Lugo, Spain", swatch: "#6C7178",
@@ -108,6 +109,7 @@ const SLATES = [
     traits: ["A range of green tones", "Often blended with purple and gray"],
     weights: VT2, tests: tests("46.9 N/mm² transverse, 65.0 N/mm² longitudinal", "0.6%", "W1, 0.23%", "0.0%"),
     cert: "Certified to EN 12326-1 and ASTM C406.",
+    roofs: [{ slug: "dallas-vermont-green-slate", caption: "Vermont Unfading Green on one of our Dallas roofs" }],
   },
   {
     id: "new-york-red", group: "us", name: "New York Unfading Red", origin: "Slate Valley, NY and VT", swatch: "#8A4A3F",

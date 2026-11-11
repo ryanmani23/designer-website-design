@@ -94,6 +94,32 @@ const PROJECTS = [
     ],
   },
   {
+    // Jack's "Cain roof" (Priority CAM job 1469), photos Aug–Sep 2026. Madison, WI.
+    name: "Madison Residence · Franvisa Slate",
+    slug: "madison-franvisa-slate",
+    loc: "Madison, WI",
+    tag: "Natural Slate · Franvisa",
+    type: "Slate",
+    blend: "100% Franvisa Spanish Black",
+    desc: "Franvisa natural slate from northwest Spain over a Madison residence, with copper valleys and flashings throughout.",
+    longDesc: "A Madison, Wisconsin residence re-roofed in Franvisa, a deep black Spanish slate with structured vertical lines. The field is detailed in copper at the valleys, walls and penetrations, on a slate that has passed thermal cycling for northern freeze and thaw.",
+    image: "assets/projects/madison-franvisa-slate/01.webp",
+    gallery: [1,2,3,4,5,6,7].map((n) => `assets/projects/madison-franvisa-slate/0${n}.webp`),
+  },
+  {
+    // Jack's "Baxter roof" (CompanyCam 44635558), finished Oct 2025. Dallas 75205.
+    name: "Dallas Residence · Vermont Green Slate",
+    slug: "dallas-vermont-green-slate",
+    loc: "Dallas, TX",
+    tag: "Natural Slate · Vermont Unfading Green",
+    type: "Slate",
+    blend: "Vermont Unfading Green",
+    desc: "Vermont Unfading Green natural slate over a Dallas residence beneath a canopy of live oaks.",
+    longDesc: "A Dallas residence finished in Vermont Unfading Green natural slate from Slate Valley Supply, a color that holds its soft gray-green for the life of the roof.",
+    image: "assets/projects/dallas-vermont-green-slate/01.webp",
+    gallery: [1,2,3,4,5,6].map((n) => `assets/projects/dallas-vermont-green-slate/0${n}.webp`),
+  },
+  {
     name: "Highland Park Residence · Vermont Black Slate",
     slug: "highland-park-vermont-black-slate",
     loc: "Highland Park, TX",
@@ -466,7 +492,8 @@ const MAP_PROJECTS = [
   // (popup shows the badge instead of a thumbnail + deep-link). x/y from the same affine lat/lng
   // fit as the rest (see comment above; residuals <3px on all anchors). KC client name omitted per
   // no-client-names rule; the Cheyenne cathedral is an institutional landmark name and is retained.
-  { name: "Wisconsin Estate · Natural Slate",                city: "Madison", state: "WI", metro: "Wisconsin",            x: 601, y: 174, coming: true, system: "Natural Slate",            scope: "Full Slate Restoration",   blurb: "An upcoming natural-slate estate restoration in Wisconsin, scheduled for August 2026." },
+  { name: "Madison Residence · Franvisa Slate",              city: "Madison", state: "WI", metro: "Wisconsin",            x: 601, y: 174, slug: "madison-franvisa-slate",               system: "Natural Slate · Franvisa",          scope: "Full Slate Re-Roof",       blurb: "Franvisa Spanish slate over a Madison residence, detailed in copper at the valleys and flashings.", image: "assets/projects/madison-franvisa-slate/01.webp" },
+  { name: "Dallas Residence · Vermont Green Slate",          city: "Dallas", state: "TX", metro: "Dallas–Fort Worth, TX",   x: 461, y: 419, slug: "dallas-vermont-green-slate",           system: "Natural Slate · Vermont Green",     scope: "Full Slate Roof",          blurb: "Vermont Unfading Green natural slate over a Dallas residence beneath live oaks.", image: "assets/projects/dallas-vermont-green-slate/01.webp" },
   { name: "Kansas City Residence · Natural Slate",           city: "Kansas City", state: "MO", metro: "Kansas City, MO",   x: 508, y: 263, coming: true, system: "Natural Slate",            scope: "Full Slate Restoration",   blurb: "An upcoming natural-slate residence in the Kansas City metro." },
   { name: "St. Joseph's Catholic Cathedral · Cheyenne, WY",  city: "Cheyenne", state: "WY", metro: "Cheyenne, WY",         x: 340, y: 190, coming: true, system: "Specialty · Cathedral Roofing", scope: "Cathedral Restoration",    blurb: "An upcoming cathedral restoration at St. Joseph's in Cheyenne, Wyoming." },
 ];
