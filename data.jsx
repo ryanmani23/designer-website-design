@@ -22,6 +22,8 @@ const MANUFACTURERS = [
     body: "Ludowici is the oldest and most renowned clay roof tile manufacturer in America. They can remake any mold dating back to their conception as well as match discontinued tile molds such as Heinz tile or Mineral Wells tile to keep the exact historic charm the home previously had.",
     image: "assets/projects/estate-clay-tile/01.webp",
     stamp: "01 / 04",
+    href: "materials/ludowici",
+    linkLabel: "See the history",
   },
   {
     name: "Slate Valley Supply / Be Natural",
@@ -41,6 +43,8 @@ const MANUFACTURERS = [
     body: "We are roofing snobs. We only install what we believe in and what we love. Typically, that's natural slate or authentic clay tile. But Brava is the synthetic we install and stand behind. They have never had a product discontinued, and their offering of lightweight, Class 4, hurricane rated Tile, Slate and Shake is incredible. Truly a product that has earned our trust and recommendation.",
     image: "assets/materials/brava.webp",
     stamp: "03 / 04",
+    href: "materials/brava",
+    linkLabel: "Why we trust Brava",
   },
   {
     name: "La Escandella",
@@ -48,6 +52,8 @@ const MANUFACTURERS = [
     body: "La Escandella is the leading clay tile manufacturer in Spain and highly sought after throughout Europe. Their tiles have the highest ratings clay can earn and give the property a truly authentic European style.",
     image: "assets/materials/la-escandella.webp",
     stamp: "04 / 04",
+    href: "materials/la-escandella",
+    linkLabel: "See the profiles",
   },
 ];
 
@@ -917,6 +923,9 @@ const NAV_ITEMS = [
     // sync with NAV_ITEMS in build-blog.mjs (static blog + material pages).
     children: [
       { label: "Natural Slate", desc: "Spanish, Vermont & New York slate", href: "materials/natural-slate" },
+      { label: "Ludowici",      desc: "America's oldest clay roof tile", href: "materials/ludowici" },
+      { label: "La Escandella", desc: "Mediterranean clay tile from Spain", href: "materials/la-escandella" },
+      { label: "Brava",         desc: "The synthetic we stand behind", href: "materials/brava" },
       { label: "Copper",        desc: "16 oz flashing & architectural metal", href: "materials/copper" },
       { label: "All Materials", desc: "Our partners & how they compare", href: "materials.html" },
     ] },

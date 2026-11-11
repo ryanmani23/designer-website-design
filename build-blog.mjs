@@ -35,6 +35,9 @@ const NAV_ITEMS = [
   { label: "Materials", href: "materials.html", children: [
     // Keep in sync with NAV_ITEMS in data.jsx.
     { label: "Natural Slate", desc: "Spanish, Vermont & New York slate", href: "materials/natural-slate" },
+    { label: "Ludowici", desc: "America's oldest clay roof tile", href: "materials/ludowici" },
+    { label: "La Escandella", desc: "Mediterranean clay tile from Spain", href: "materials/la-escandella" },
+    { label: "Brava", desc: "The synthetic we stand behind", href: "materials/brava" },
     { label: "Copper", desc: "16 oz flashing & architectural metal", href: "materials/copper" },
     { label: "All Materials", desc: "Our partners & how they compare", href: "materials.html" },
   ] },

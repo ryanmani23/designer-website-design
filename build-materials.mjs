@@ -460,9 +460,9 @@ function copperPage() {
   ];
   const partners = [
     ["materials/natural-slate", "Natural slate", "Copper valleys, step flashing and nails beneath Spanish and Vermont slate."],
-    ["blog/ludowici-roof-tile-history", "Ludowici", "Copper woven through historic clay tile, as on the roofs it was first made for."],
-    ["portfolio?p=st-louis-la-escandella-tile", "La Escandella", "Hand-formed copper on Mediterranean clay tile in St. Louis."],
-    ["portfolio?p=dallas-brava-slate", "Brava", "A composite field with copper at the eaves and valleys."],
+    ["materials/ludowici", "Ludowici", "Copper woven through historic clay tile, as on the roofs it was first made for."],
+    ["materials/la-escandella", "La Escandella", "Hand-formed copper on Mediterranean clay tile in St. Louis."],
+    ["materials/brava", "Brava", "A composite field with copper at the eaves and valleys."],
   ];
   const body = `
 <section class="mp-section mp-why">
@@ -543,12 +543,311 @@ ${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/na
   });
 }
 
+
+// ---------------------------------------------------------------------------
+// Partner pages (Phase 2 of Jack's Nov 2026 brief + decisions reply).
+// Rules from Jack: we install every profile from each partner but stock none,
+// so say "the full line", never "inventory"; no client names or addresses.
+// Facts checked 2026-11-11: Ludowici dates follow our published history post;
+// ESR-2727 (ICC-ES) covers La Escandella's Large S-Tile and 50 Mission; Brava's
+// 1 in. profile, Class 4 and 50-year warranty are Brava's own published figures.
+// ---------------------------------------------------------------------------
+const showcase = (items) => `
+  <div class="mp-blend-grid mp-show-${items.length}">${items.map((r) => `
+    <a class="mp-blend" href="portfolio?p=${r.slug}">
+      <span class="mp-blend-img" style="background-image:url('/${r.image || roofImg(r.slug)}')"></span>
+      <span class="mp-blend-body">
+        <span class="mp-label">${esc(r.place)}</span>
+        <span class="mp-blend-list">${esc(r.title)}</span>
+        <span class="mp-blend-link">See the project →</span>
+      </span>
+    </a>`).join("")}
+  </div>`;
+
+const profiles = (list, note) => `
+  <ul class="mp-profiles">${list.map(([h, p]) => `
+    <li><strong>${h}</strong><span>${p}</span></li>`).join("")}
+  </ul>${note ? `
+  <p class="mp-note">${note}</p>` : ""}`;
+
+const band = (h, p, href = "contact.html", label = "Schedule a Consultation") => `
+<section class="mp-band">
+  <div class="mp-band-inner">
+    <div>
+      <h2>${h}</h2>
+      <p>${p}</p>
+    </div>
+    <a class="btn-copper-solid" href="${href}">${label} ${ARROW}</a>
+  </div>
+</section>`;
+
+function ludowiciPage() {
+  const timeline = [
+    ["Four centuries ago", "The Ludovisi family of Rome is known for its clay roof tile. The family later settles in Germany, where the name becomes Ludowici."],
+    ["1857", "Carl Ludowici buys a roof tile works in Ensheim, Germany. The firm later moves its main works to Jockgrim."],
+    ["1888", "The Celadon Terra Cotta Company is formed in Alfred, New York, and soon turns to roof tile."],
+    ["1905", "Celadon buys a three-year-old tile plant in New Lexington, Ohio."],
+    ["1906", "Celadon and the American Ludowici company merge to form Ludowici-Celadon."],
+    ["World War II", "With building at a standstill, the plants make pottery, including cookie jars, to keep the kilns running."],
+    ["1956", "New Lexington becomes the company's only plant, as it remains today."],
+    ["1989 to 1994", "CertainTeed buys the company and renames it Ludowici Roof Tile."],
+    ["2019", "Ludowici opens a showroom in Dallas for architects and designers."],
+    ["2021", "The historic core of the New Lexington works is listed on the National Register of Historic Places."],
+  ];
+  const why = [
+    ["Matching the original roof", "Ludowici has made clay tile in Ohio for well over a century, and can remake its own historic molds. When a roof needs repair, the new tile can match the old."],
+    ["Recreating lost profiles", "Heinz, Mound City, Cincinnati and Mineral Wells tile are no longer made. Ludowici can match profiles like these, so a historic roof keeps its character."],
+    ["Built for a century", "Dense, kiln-fired clay that does not fade, burn or rot. Installed and flashed correctly, a Ludowici roof lasts a century or more."],
+  ];
+  const body = `
+<section class="mp-section mp-why">
+  <div>
+    <span class="eyebrow mp-eyebrow">Why We Build With Ludowici</span>
+    <h2 class="mp-h2">The tile that is <em>already on the roof.</em></h2>
+  </div>
+  <div class="mp-why-text">
+    <p>Many of the historic clay roofs we restore were built with Ludowici, or with tile from makers that have since closed. Ludowici is still making tile in the same Ohio works, which means a damaged roof can be repaired to match instead of replaced.</p>
+    <p>We install the full Ludowici line, and every order is made for the roof it goes on.</p>
+  </div>
+</section>
+
+<section class="mp-section mp-section-cream">
+  ${head("What It Solves", "Three reasons <em>we reach for Ludowici</em>")}
+  <div class="mp-cards">${why.map(([h, p]) => `
+    <div class="mp-card"><h3>${h}</h3><p>${p}</p></div>`).join("")}
+  </div>
+  <p class="mp-readmore">Matching a tile that is no longer made? <a href="discontinued.html">See discontinued products</a>.</p>
+</section>
+
+<section class="mp-section">
+  ${head("The History", "From Rome to <em>New Lexington, Ohio</em>", "America's oldest clay roof tile maker, in ten dates.")}
+  <ol class="mp-timeline">${timeline.map(([y, t]) => `
+    <li><span class="mp-tl-year">${y}</span><span class="mp-tl-text">${t}</span></li>`).join("")}
+  </ol>
+  <p class="mp-readmore"><a href="blog/ludowici-roof-tile-history">Read the full history of Ludowici</a>, with sources.</p>
+</section>
+
+<section class="mp-section mp-section-dark">
+  ${head("Profiles We Install", "The full Ludowici line, <em>made to order</em>", "Every Ludowici profile, in its standard colors, blends and custom matches.")}
+  ${profiles([
+    ["Spanish", "The classic S-curve barrel."],
+    ["Mission", "Two-piece pan and cover."],
+    ["French", "Interlocking, with a strong vertical rib."],
+    ["Classic", "An interlocking flat tile."],
+    ["Williamsburg", "An interlocking flat shingle tile."],
+    ["Flat shingle", "Flat tiles laid like slate."],
+  ])}
+</section>
+
+<section class="mp-section">
+  ${head("On Our Roofs", "Ludowici, <em>installed by us</em>")}
+  ${showcase([
+    { slug: "dallas-parish-clay", place: "Dallas", title: "Holy Trinity Catholic Church, clay tile reset by hand over new underlayment" },
+    { slug: "st-louis-ludowici-tile", place: "St. Louis", title: "Ludowici S-tile in Summer Rose and Clay Red, with copper at every transition" },
+  ])}
+</section>
+${band("Restoring a historic clay roof?", "We assess the tile on the roof, identify the maker and profile, and tell you what can be saved and what needs to be matched.")}
+${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Copper with every roof" })}`;
+
+  return shell({
+    slug: "ludowici",
+    title: "Ludowici Clay Roof Tile · Installed by Priority Designer · Dallas",
+    description: "Ludowici clay roof tile, made in New Lexington, Ohio since 1906. Priority Designer installs the full Ludowici line in Dallas–Fort Worth and matches historic and discontinued tile.",
+    heroImage: "assets/projects/holy-trinity-clay/01.webp",
+    heroMobile: "assets/projects/holy-trinity-clay/01-mobile.webp",
+    crumb: "Ludowici",
+    eyebrow: "Ludowici · Clay Roof Tile",
+    h1: "America's oldest clay roof tile, <em>still made in Ohio.</em>",
+    sub: "Ludowici has fired clay roof tile in New Lexington, Ohio for more than a century. We install the full line, and use it to match historic roofs that no other tile can.",
+    body,
+  });
+}
+
+function laEscandellaPage() {
+  // TODO(jack): founding details from the La Escandella rep go in the company section.
+  const trust = [
+    ["Certified in Europe", "Made to EN 1304, the European standard for clay roof tile, with the French NF mark across its range."],
+    ["Evaluated in the US", "ICC-ES evaluation report ESR-2727 covers its Large S-Tile and 50 Mission tile for use under US building codes."],
+    ["Traceable", "Each tile is stamped with its plant and production date code."],
+    ["Clay all the way through", "Fired clay color that does not fade, and a tile that is fully recyclable at the end of its life."],
+  ];
+  const body = `
+<section class="mp-section mp-why">
+  <div>
+    <span class="eyebrow mp-eyebrow">The Company</span>
+    <h2 class="mp-h2">Clay from the hills <em>above Alicante.</em></h2>
+  </div>
+  <div class="mp-why-text">
+    <p>La Escandella makes clay roof tile in Agost, in the province of Alicante, a short drive inland from the Mediterranean coast. It is one of the largest roof tile makers in Europe, with roofs on five continents.</p>
+    <p>We install the full La Escandella line, from its Spanish S-tile to its flat and French tile, ordered for each roof.</p>
+  </div>
+</section>
+
+<section class="mp-section mp-section-cream">
+  ${head("Why We Trust It", "European standards, <em>tested in the US</em>")}
+  <div class="mp-cards mp-cards-4">${trust.map(([h, p]) => `
+    <div class="mp-card"><h3>${h}</h3><p>${p}</p></div>`).join("")}
+  </div>
+</section>
+
+<section class="mp-section">
+  ${head("Ludowici or La Escandella", "Two clay tiles, <em>two different jobs</em>")}
+  <div class="mp-choose">
+    <a class="mp-choose-card" href="materials/ludowici">
+      <span class="mp-label">Choose Ludowici</span>
+      <h3>When an American historic roof must be matched.</h3>
+      <p>Ludowici can remake its own historic profiles and match tile that is no longer made.</p>
+      <span class="mp-blend-link">The Ludowici page →</span>
+    </a>
+    <div class="mp-choose-card is-current">
+      <span class="mp-label">Choose La Escandella</span>
+      <h3>For Spanish, Mediterranean and French Norman character.</h3>
+      <p>Old-world color and texture on a new roof, or a new home designed in a European style.</p>
+    </div>
+  </div>
+</section>
+
+<section class="mp-section mp-section-dark">
+  ${head("Profiles We Install", "The full La Escandella line", "Every profile, in its standard and H-Selection finishes.")}
+  ${profiles([
+    ["Large S-Tile", "The Spanish S-curve barrel."],
+    ["Mission and curved", "Two-piece pan and cover, and the traditional curved tile."],
+    ["French", "Interlocking tile with a strong vertical rib."],
+    ["Flat", "A clean, flat clay tile for modern and Norman roofs."],
+    ["H-Selection", "La Escandella's premium finishes, such as Provence."],
+  ])}
+</section>
+
+<section class="mp-section">
+  ${head("On Our Roofs", "La Escandella, <em>installed by us</em>")}
+  ${showcase([
+    { slug: "st-louis-la-escandella-tile", place: "St. Louis", title: "Spanish S-tile in H-Selection Provence, with hand-formed copper" },
+    { slug: "st-louis-central-west-end-clay", place: "St. Louis", title: "French tile in Jaspee Red on a historic home, with copper at the dormers and turret" },
+  ])}
+</section>
+${band("Designing a Mediterranean roof?", "We bring samples to the house and lay the colors out against your stucco, stone and trim before anything is ordered.")}
+${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Copper with every roof" })}`;
+
+  return shell({
+    slug: "la-escandella",
+    title: "La Escandella Clay Roof Tile · Installed by Priority Designer · Dallas",
+    description: "La Escandella clay roof tile from Agost, Spain: Spanish S-tile, mission, French and flat profiles, certified to European standards. Installed by Priority Designer in Dallas–Fort Worth and St. Louis.",
+    heroImage: "assets/projects/st-louis-central-west-end-clay/02.webp",
+    heroPos: "center 45%",
+    crumb: "La Escandella",
+    eyebrow: "La Escandella · Clay Roof Tile from Spain",
+    h1: "Mediterranean clay, <em>fired to European standards.</em>",
+    sub: "Spanish, Mediterranean and French Norman roofs in fired clay from the south of Spain. We install the full line.",
+    body,
+  });
+}
+
+function bravaPage() {
+  const vs = [
+    ["Thin pieces cracking at the corners through freeze and thaw", "A 1 in. profile, molded from real slate"],
+    ["Rubber slates curling and exposing the nails", "Rigid, recycled polyethylene that holds its shape"],
+    ["Surfaces thinning as UV stabilizers fail", "UV inhibitors, with the color mixed all the way through"],
+    ["Hail damage", "A Class 4 impact rating"],
+    ["Pieces breaking in shipping, on install or underfoot", "Built to resist breakage from the truck to the roof"],
+  ];
+  const stats = [
+    ["1 in.", "Profile at the butt, molded from real slate"],
+    ["Class 4", "Impact rating under UL 2218"],
+    ["50 years", "Limited, transferable warranty"],
+    ["USA", "Made in the United States from recycled material"],
+  ];
+  const body = `
+<section class="mp-section mp-why">
+  <div>
+    <span class="eyebrow mp-eyebrow">Why Brava</span>
+    <h2 class="mp-h2">We are roofing snobs. <em>Brava earned its place.</em></h2>
+  </div>
+  <div class="mp-why-text">
+    <p>We install what we believe in, and that is usually natural slate or authentic clay tile. When a roof calls for a synthetic, Brava is the one we install and stand behind.</p>
+    <p>Brava has never discontinued a product, so a roof can be repaired with matching tile years from now. Its slate, tile and shake are lightweight and Class 4 rated, and we install the full line.</p>
+  </div>
+</section>
+
+<section class="mp-section mp-section-cream">
+  ${head("What Brava Solves", "What we see fail <em>on other synthetics</em>")}
+  <div class="mp-vs">
+    <div class="mp-vs-row mp-vs-head"><span>What we see fail</span><span>How Brava is built</span></div>${vs.map(([a, b]) => `
+    <div class="mp-vs-row"><span>${a}</span><span>${b}</span></div>`).join("")}
+  </div>
+</section>
+
+<section class="mp-section mp-section-dark">
+  ${head("By the Numbers", "What the specs <em>actually say</em>")}
+  <ul class="mp-stats">${stats.map(([n, t]) => `
+    <li><strong>${n}</strong><span>${t}</span></li>`).join("")}
+  </ul>
+  <p class="mp-note mp-note-dark">Ratings and warranty as published by Brava.</p>
+</section>
+
+<section class="mp-section">
+  ${head("Our Honest Advice", "When we recommend it, <em>and when we will say no</em>")}
+  <div class="mp-choose">
+    <div class="mp-choose-card">
+      <span class="mp-label">We recommend Brava</span>
+      <ul class="mp-spec-traits">
+        <li>When the framing cannot carry the weight of slate or clay</li>
+        <li>Where hail is a real risk and a Class 4 rating matters</li>
+        <li>For a slate or tile look on a new home or addition</li>
+      </ul>
+    </div>
+    <div class="mp-choose-card">
+      <span class="mp-label">We will say no</span>
+      <ul class="mp-spec-traits">
+        <li>When the original slate or clay is sound and can be repaired</li>
+        <li>On a historic roof that should be matched in its original material</li>
+        <li>When natural slate or clay fits the house and the budget</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="mp-section mp-section-cream">
+  ${head("Profiles We Install", "The full Brava line")}
+  ${profiles([
+    ["Old World Slate", "Composite slate, including multi-width, in Brava's full range of colors."],
+    ["Spanish barrel tile", "A composite S-tile, including custom colors."],
+    ["Cedar shake", "The look of hand-split shake without the upkeep."],
+  ])}
+</section>
+
+<section class="mp-section">
+  ${head("On Our Roofs", "Brava, <em>installed by us</em>")}
+  ${showcase([
+    { slug: "dallas-brava-slate", place: "Dallas", title: "Multi-width slate in Light Arendale, with copper at the eaves and valleys" },
+    { slug: "nichols-hills-brava-slate", place: "Nichols Hills, Oklahoma", title: "Slate in Washington, with copper chimney caps" },
+    { slug: "sherman-brava-tile", place: "Sherman", title: "Spanish barrel tile in a custom brown" },
+  ])}
+</section>
+${band("Weighing slate against Brava?", "We will show you both on your house and give you an honest answer about which one it needs.")}
+${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Copper with every roof" })}`;
+
+  return shell({
+    slug: "brava",
+    title: "Brava Composite Slate & Tile · Installed by Priority Designer · Dallas",
+    description: "Brava composite slate, tile and shake: a 1 in. profile molded from real slate, Class 4 impact rated, made in the USA. The synthetic Priority Designer installs and stands behind in Dallas–Fort Worth.",
+    heroImage: "assets/projects/nichols-hills-brava-slate/01.webp",
+    crumb: "Brava",
+    eyebrow: "Brava · Composite Slate, Tile & Shake",
+    h1: "The synthetic we install <em>and stand behind.</em>",
+    sub: "Natural slate and clay come first. When a roof calls for a synthetic, Brava is the one we trust.",
+    body,
+  });
+}
+
 // ---------------------------------------------------------------------------
 export async function buildMaterials() {
   await mkdir("materials", { recursive: true });
   const pages = [
     { slug: "natural-slate", html: naturalSlatePage() },
     { slug: "copper", html: copperPage() },
+    { slug: "ludowici", html: ludowiciPage() },
+    { slug: "la-escandella", html: laEscandellaPage() },
+    { slug: "brava", html: bravaPage() },
   ];
   for (const p of pages) await writeFile(`materials/${p.slug}.html`, p.html);
   return pages.map((p) => p.slug);
