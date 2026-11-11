@@ -94,7 +94,7 @@ function App() {
         </React.Fragment>
       )}
       {heroVariant !== "reel" && <TrustBar />}
-      <Manufacturers />
+      <Manufacturers medallion />
       <JobsMap />
       <Discontinued onJump={(id) => window.location.href = `contact.html`} />
       <SystemsNote />

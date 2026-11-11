@@ -742,8 +742,7 @@ function laEscandellaPage() {
     ["st-louis-la-escandella-tile", "03", "The S-tile field around the chimneys"],
   ];
   const body = `
-<section class="mp-origin">
-  <figure class="mp-origin-photo"><img src="assets/projects/st-louis-central-west-end-clay/05.webp" alt="The round turret of a historic St. Louis home in La Escandella French clay tile, capped in copper" loading="lazy" /></figure>
+<section class="mp-section mp-section-cream mp-origin">
   <div class="mp-origin-text">
     <span class="eyebrow mp-eyebrow">The Company</span>
     <h2 class="mp-h2">Clay from the hills <em>above Alicante.</em></h2>
@@ -755,6 +754,7 @@ function laEscandellaPage() {
       <span><strong>St. Louis</strong>Missouri</span>
     </div>
   </div>
+  <figure class="mp-origin-photo"><img src="assets/projects/st-louis-central-west-end-clay/05.webp" alt="The round turret of a historic St. Louis home in La Escandella French clay tile, capped in copper" loading="lazy" /></figure>
 </section>
 
 <section class="mp-section">
