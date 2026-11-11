@@ -842,75 +842,69 @@ function bravaPage() {
   const stats = [
     ["1 in.", "Profile at the butt, molded from real slate"],
     ["Class 4", "Impact rating under UL 2218"],
-    ["50 years", "Limited, transferable warranty"],
+    ["50 yr", "Limited, transferable warranty"],
     ["USA", "Made in the United States from recycled material"],
   ];
+  const yes = [
+    "When the framing cannot carry the weight of slate or clay",
+    "Where hail is a real risk and a Class 4 rating matters",
+    "For a slate or tile look on a new home or addition",
+  ];
+  const no = [
+    "When the original slate or clay is sound and can be repaired",
+    "On a historic roof that should be matched in its original material",
+    "When natural slate or clay fits the house and the budget",
+  ];
+  const tile = (slug, n, profile, place, text, cls = "") => `
+    <a class="mp-mosaic-tile ${cls}" href="portfolio?p=${slug}" style="background-image:url('/assets/projects/${slug}/${n}.webp')">
+      <span class="mp-mosaic-cap"><span class="mp-label">${profile} · ${place}</span>${text} →</span>
+    </a>`;
   const body = `
-<section class="mp-section mp-why">
-  <div>
-    <span class="eyebrow mp-eyebrow">Why Brava</span>
-    <h2 class="mp-h2">We are roofing snobs. <em>Brava earned its place.</em></h2>
-  </div>
-  <div class="mp-why-text">
-    <p>We install what we believe in, and that is usually natural slate or authentic clay tile. When a roof calls for a synthetic, Brava is the one we install and stand behind.</p>
-    <p>Brava has never discontinued a product, so a roof can be repaired with matching tile years from now. Its slate, tile and shake are lightweight and Class 4 rated, and we install the full line.</p>
-  </div>
-</section>
-
 <section class="mp-section mp-section-cream">
-  ${head("What Brava Solves", "What we see fail <em>on other synthetics</em>")}
-  <div class="mp-vs">
-    <div class="mp-vs-row mp-vs-head"><span>What we see fail</span><span>How Brava is built</span></div>${vs.map(([a, b]) => `
-    <div class="mp-vs-row"><span>${a}</span><span>${b}</span></div>`).join("")}
-  </div>
+  <figure class="ethos-quote mp-quote">
+    <div class="ethos-quote-img"><img src="assets/projects/nichols-hills-brava-slate/04.webp" alt="Brava slate in Washington with a copper chimney cap, on one of our Oklahoma roofs" loading="lazy" /></div>
+    <div class="ethos-quote-body">
+      <blockquote>We are roofing snobs. Brava earned its place.</blockquote>
+      <figcaption>Why we install Brava</figcaption>
+      <p>We install what we believe in, and that is usually natural slate or authentic clay tile. When a roof calls for a synthetic, Brava is the one we install and stand behind.</p>
+      <p>Brava has never discontinued a product, so a roof can be repaired with matching tile years from now. Its slate, tile and shake are lightweight and Class 4 rated, and we install the full line.</p>
+    </div>
+  </figure>
 </section>
 
-<section class="mp-section mp-section-dark">
-  ${head("By the Numbers", "What the specs <em>actually say</em>")}
-  <ul class="mp-stats">${stats.map(([n, t]) => `
+<section class="mp-section mp-section-dark mp-bignums">
+  <h2 class="mp-statement-h">What the specs actually say</h2>
+  <ul class="mp-bignum-row">${stats.map(([n, t]) => `
     <li><strong>${n}</strong><span>${t}</span></li>`).join("")}
   </ul>
-  <p class="mp-note mp-note-dark">Ratings and warranty as published by Brava.</p>
+  <p class="mp-note mp-note-dark mp-center">Ratings and warranty as published by Brava.</p>
 </section>
 
 <section class="mp-section">
-  ${head("Our Honest Advice", "When we recommend it, <em>and when we will say no</em>")}
-  <div class="mp-choose">
-    <div class="mp-choose-card">
-      <span class="mp-label">We recommend Brava</span>
-      <ul class="mp-spec-traits">
-        <li>When the framing cannot carry the weight of slate or clay</li>
-        <li>Where hail is a real risk and a Class 4 rating matters</li>
-        <li>For a slate or tile look on a new home or addition</li>
-      </ul>
-    </div>
-    <div class="mp-choose-card">
-      <span class="mp-label">We will say no</span>
-      <ul class="mp-spec-traits">
-        <li>When the original slate or clay is sound and can be repaired</li>
-        <li>On a historic roof that should be matched in its original material</li>
-        <li>When natural slate or clay fits the house and the budget</li>
-      </ul>
-    </div>
+  ${head("What Brava Solves", "What we see fail <em>on other synthetics</em>")}
+  <div class="mp-xv">
+    <div class="mp-xv-row mp-xv-head"><span>On other synthetics</span><span>How Brava is built</span></div>${vs.map(([a, b]) => `
+    <div class="mp-xv-row"><span class="mp-xv-x"><i aria-hidden="true">✕</i>${a}</span><span class="mp-xv-v"><i aria-hidden="true">✓</i>${b}</span></div>`).join("")}
   </div>
 </section>
 
-<section class="mp-section mp-section-cream">
-  ${head("Profiles We Install", "The full Brava line")}
-  ${profiles([
-    ["Old World Slate", "Composite slate, including multi-width, in Brava's full range of colors."],
-    ["Spanish barrel tile", "A composite S-tile, including custom colors."],
-    ["Cedar shake", "The look of hand-split shake without the upkeep."],
-  ])}
+<section class="mp-advice" aria-label="Our honest advice">
+  <div class="mp-advice-half is-yes">
+    <span class="mp-label">Our Honest Advice</span>
+    <h2>When we recommend it</h2>
+    <ul>${yes.map((t) => `<li>${t}</li>`).join("")}</ul>
+  </div>
+  <div class="mp-advice-half is-no">
+    <span class="mp-label">And the other side</span>
+    <h2>When we will say no</h2>
+    <ul>${no.map((t) => `<li>${t}</li>`).join("")}</ul>
+  </div>
 </section>
 
 <section class="mp-section">
-  ${head("On Our Roofs", "Brava, <em>installed by us</em>")}
-  ${showcase([
-    { slug: "dallas-brava-slate", place: "Dallas", title: "Multi-width slate in Light Arendale, with copper at the eaves and valleys" },
-    { slug: "nichols-hills-brava-slate", place: "Nichols Hills, Oklahoma", title: "Slate in Washington, with copper chimney caps" },
-    { slug: "sherman-brava-tile", place: "Sherman", title: "Spanish barrel tile in a custom brown" },
-  ])}
+  ${head("Profiles We Install", "The full Brava line, <em>on our roofs</em>", "Old World Slate, including multi-width, in Brava's full range of colors; Spanish barrel tile, including custom colors; and cedar shake, with the look of hand-split shake and none of the upkeep.")}
+  <div class="mp-mosaic">${tile("dallas-brava-slate", "01", "Old World Slate", "Dallas", "Multi-width slate in Light Arendale, with copper at the eaves and valleys", "is-big")}${tile("sherman-brava-tile", "06", "Spanish Barrel Tile", "Sherman", "Barrel tile in a custom brown")}${tile("nichols-hills-brava-slate", "05", "Old World Slate", "Nichols Hills, Oklahoma", "Slate in Washington, with copper chimney caps")}
+  </div>
 </section>
 ${band("Weighing slate against Brava?", "We will show you both on your house and give you an honest answer about which one it needs.")}
 ${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Copper with every roof" })}`;
