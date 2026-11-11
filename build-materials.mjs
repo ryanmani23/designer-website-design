@@ -704,67 +704,114 @@ ${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/co
   });
 }
 
+const STRIP_JS = `(function(){
+  document.querySelectorAll(".mp-strip-section").forEach(function(sec){
+    var strip = sec.querySelector(".mp-strip");
+    sec.querySelectorAll(".mp-strip-nav button").forEach(function(b){
+      b.addEventListener("click", function(){ strip.scrollBy({ left: Number(b.dataset.dir) * strip.clientWidth * 0.8, behavior: "smooth" }); });
+    });
+  });
+})();`;
+
 function laEscandellaPage() {
   // TODO(jack): founding details from the La Escandella rep go in the company section.
   const trust = [
-    ["Certified in Europe", "Made to EN 1304, the European standard for clay roof tile, with the French NF mark across its range."],
-    ["Evaluated in the US", "ICC-ES evaluation report ESR-2727 covers its Large S-Tile and 50 Mission tile for use under US building codes."],
-    ["Traceable", "Each tile is stamped with its plant and production date code."],
-    ["Clay all the way through", "Fired clay color that does not fade, and a tile that is fully recyclable at the end of its life."],
+    { title: "Certified in Europe", text: "Made to EN 1304, the European standard for clay roof tile, with the French NF mark across its range.",
+      icon: icon('<circle cx="16" cy="13" r="8"/><path d="m12.5 13 2.5 2.5 4.5-5"/><path d="m11 20-2 9 7-3 7 3-2-9"/>') },
+    { title: "Evaluated in the US", text: "ICC-ES evaluation report ESR-2727 covers its Large S-Tile and 50 Mission tile for use under US building codes.",
+      icon: icon('<path d="M16 3 6 7v8c0 7 4.5 11.5 10 14 5.5-2.5 10-7 10-14V7z"/><path d="m11.5 16 3 3 6-6.5"/>') },
+    { title: "Traceable", text: "Each tile is stamped with its plant and production date code.",
+      icon: icon('<rect x="5" y="9" width="22" height="14" rx="2"/><path d="M9 14h8M9 18h5"/><circle cx="22" cy="16" r="2.5"/>') },
+    { title: "Clay all the way through", text: "Fired clay color that does not fade, and a tile that is fully recyclable at the end of its life.",
+      icon: icon('<path d="M4 22c4-8 20-8 24 0"/><path d="M4 22c0 3 5 5 12 5s12-2 12-5"/><path d="M10 17c1-6 11-6 12 0"/>') },
   ];
-  const body = `
-<section class="mp-section mp-why">
-  <div>
-    <span class="eyebrow mp-eyebrow">The Company</span>
-    <h2 class="mp-h2">Clay from the hills <em>above Alicante.</em></h2>
-  </div>
-  <div class="mp-why-text">
-    <p>La Escandella makes clay roof tile in Agost, in the province of Alicante, a short drive inland from the Mediterranean coast. It is one of the largest roof tile makers in Europe, with roofs on five continents.</p>
-    <p>We install the full La Escandella line, from its Spanish S-tile to its flat and French tile, ordered for each roof.</p>
-  </div>
-</section>
-
-<section class="mp-section mp-section-cream">
-  ${head("Why We Trust It", "European standards, <em>tested in the US</em>")}
-  <div class="mp-cards mp-cards-4">${trust.map(([h, p]) => `
-    <div class="mp-card"><h3>${h}</h3><p>${p}</p></div>`).join("")}
-  </div>
-</section>
-
-<section class="mp-section">
-  ${head("Ludowici or La Escandella", "Two clay tiles, <em>two different jobs</em>")}
-  <div class="mp-choose">
-    <a class="mp-choose-card" href="materials/ludowici">
-      <span class="mp-label">Choose Ludowici</span>
-      <h3>When an American historic roof must be matched.</h3>
-      <p>Ludowici can remake its own historic profiles and match tile that is no longer made.</p>
-      <span class="mp-blend-link">The Ludowici page →</span>
-    </a>
-    <div class="mp-choose-card is-current">
-      <span class="mp-label">Choose La Escandella</span>
-      <h3>For Spanish, Mediterranean and French Norman character.</h3>
-      <p>Old-world color and texture on a new roof, or a new home designed in a European style.</p>
-    </div>
-  </div>
-</section>
-
-<section class="mp-section mp-section-dark">
-  ${head("Profiles We Install", "The full La Escandella line", "Every profile, in its standard and H-Selection finishes.")}
-  ${profiles([
+  const profileList = [
     ["Large S-Tile", "The Spanish S-curve barrel."],
     ["Mission and curved", "Two-piece pan and cover, and the traditional curved tile."],
     ["French", "Interlocking tile with a strong vertical rib."],
     ["Flat", "A clean, flat clay tile for modern and Norman roofs."],
     ["H-Selection", "La Escandella's premium finishes, such as Provence."],
-  ])}
+  ];
+  const strip = [
+    ["st-louis-central-west-end-clay", "04", "A copper dormer roof set into French tile in Jaspee Red"],
+    ["st-louis-la-escandella-tile", "01", "Spanish S-tile in H-Selection Provence, with a copper vent"],
+    ["st-louis-central-west-end-clay", "06", "The whole French tile roof from above"],
+    ["st-louis-central-west-end-clay", "01", "French tile in Jaspee Red across hips and dormers"],
+    ["st-louis-la-escandella-tile", "04", "Spanish S-tile in H-Selection Provence"],
+    ["st-louis-central-west-end-clay", "03", "Hips, valleys and dormers from above"],
+    ["st-louis-la-escandella-tile", "03", "The S-tile field around the chimneys"],
+  ];
+  const body = `
+<section class="mp-origin">
+  <figure class="mp-origin-photo"><img src="assets/projects/st-louis-central-west-end-clay/05.webp" alt="The round turret of a historic St. Louis home in La Escandella French clay tile, capped in copper" loading="lazy" /></figure>
+  <div class="mp-origin-text">
+    <span class="eyebrow mp-eyebrow">The Company</span>
+    <h2 class="mp-h2">Clay from the hills <em>above Alicante.</em></h2>
+    <p>La Escandella makes clay roof tile in Agost, in the province of Alicante, a short drive inland from the Mediterranean coast. It is one of the largest roof tile makers in Europe, with roofs on five continents.</p>
+    <p>We install the full La Escandella line, from its Spanish S-tile to its flat and French tile, ordered for each roof.</p>
+    <div class="mp-route" aria-label="From Agost, Spain to our roofs in St. Louis">
+      <span><strong>Agost</strong>Alicante, Spain</span>
+      <span class="mp-route-line" aria-hidden="true"></span>
+      <span><strong>St. Louis</strong>Missouri</span>
+    </div>
+  </div>
 </section>
 
 <section class="mp-section">
-  ${head("On Our Roofs", "La Escandella, <em>installed by us</em>")}
-  ${showcase([
-    { slug: "st-louis-la-escandella-tile", place: "St. Louis", title: "Spanish S-tile in H-Selection Provence, with hand-formed copper" },
-    { slug: "st-louis-central-west-end-clay", place: "St. Louis", title: "French tile in Jaspee Red on a historic home, with copper at the dormers and turret" },
-  ])}
+  <h2 class="mp-statement-h">European standards, tested in the US</h2>
+  <ul class="mp-proof-grid mp-trust-grid">${trust.map((t) => `
+    <li>${t.icon}<strong>${t.title}</strong><span>${t.text}</span></li>`).join("")}
+  </ul>
+</section>
+
+<section class="mp-section mp-section-dark mp-versus">
+  <div class="mp-archive-head">
+    <span class="eyebrow">Ludowici or La Escandella</span>
+    <h2>Two clay tiles, two different jobs</h2>
+  </div>
+  <div class="mp-versus-grid">
+    <a class="mp-versus-card" href="materials/ludowici">
+      <span class="mp-versus-img" style="background-image:url('/assets/projects/st-louis-ludowici-tile/02.webp')"></span>
+      <span class="mp-versus-body">
+        <span class="mp-label">Choose Ludowici</span>
+        <span class="mp-versus-h">When an American historic roof must be matched.</span>
+        <span class="mp-versus-p">Ludowici can remake its own historic profiles and match tile that is no longer made.</span>
+        <span class="mp-blend-link">The Ludowici page →</span>
+      </span>
+    </a>
+    <div class="mp-versus-card is-current">
+      <span class="mp-versus-img" style="background-image:url('/assets/projects/st-louis-la-escandella-tile/02.webp')"></span>
+      <span class="mp-versus-body">
+        <span class="mp-label">Choose La Escandella</span>
+        <span class="mp-versus-h">For Spanish, Mediterranean and French Norman character.</span>
+        <span class="mp-versus-p">Old-world color and texture on a new roof, or a new home designed in a European style.</span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<section class="mp-section">
+  <div class="mp-banner-photo" style="background-image:url('/assets/projects/st-louis-la-escandella-tile/01.webp')">
+    <div class="mp-banner-photo-text">
+      <span class="eyebrow">Profiles We Install</span>
+      <h2>The full La Escandella line</h2>
+    </div>
+  </div>
+  <ul class="mp-profile-cols">${profileList.map(([h, p]) => `
+    <li><strong>${h}</strong><span>${p}</span></li>`).join("")}
+  </ul>
+  <p class="mp-note">Every profile, in its standard and H-Selection finishes.</p>
+</section>
+
+<section class="mp-section mp-section-cream mp-strip-section">
+  <div class="mp-strip-head">
+    <span class="mp-label">On Our Roofs · St. Louis</span>
+    <p>Two La Escandella roofs we installed: <a href="portfolio?p=st-louis-central-west-end-clay">French tile in Jaspee Red</a> on a historic home, and <a href="portfolio?p=st-louis-la-escandella-tile">Spanish S-tile in H-Selection Provence</a>.</p>
+    <div class="mp-strip-nav"><button type="button" data-dir="-1" aria-label="Previous photos">←</button><button type="button" data-dir="1" aria-label="More photos">→</button></div>
+  </div>
+  <div class="mp-strip" tabindex="0" aria-label="Photos of La Escandella roofs we installed">${strip.map(([slug, n, cap]) => `
+    <a class="mp-strip-item" href="portfolio?p=${slug}"><img src="assets/projects/${slug}/${n}.webp" alt="${esc(cap)}" width="1600" height="${slug === "st-louis-la-escandella-tile" ? 900 : 1199}" loading="lazy" /><span>${esc(cap)}</span></a>`).join("")}
+  </div>
 </section>
 ${band("Designing a Mediterranean roof?", "We bring samples to the house and lay the colors out against your stucco, stone and trim before anything is ordered.")}
 ${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Copper with every roof" })}`;
@@ -775,6 +822,7 @@ ${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/co
     description: "La Escandella clay roof tile from Agost, Spain: Spanish S-tile, mission, French and flat profiles, certified to European standards. Installed by Priority Designer in Dallas–Fort Worth and St. Louis.",
     heroImage: "assets/projects/st-louis-central-west-end-clay/02.webp",
     heroPos: "center 45%",
+    extraJs: STRIP_JS,
     crumb: "La Escandella",
     eyebrow: "La Escandella · Clay Roof Tile from Spain",
     h1: "Mediterranean clay, <em>fired to European standards.</em>",
