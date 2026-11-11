@@ -582,12 +582,18 @@ const band = (h, p, href = "contact.html", label = "Schedule a Consultation") =>
 </section>`;
 
 function ludowiciPage() {
+  // Archive figures sit opposite the dates they belong to; images come from
+  // our published Ludowici history post (assets/blog/).
   const timeline = [
-    ["Four centuries ago", "The Ludovisi family of Rome is known for its clay roof tile. The family later settles in Germany, where the name becomes Ludowici."],
-    ["1857", "Carl Ludowici buys a roof tile works in Ensheim, Germany. The firm later moves its main works to Jockgrim."],
+    ["Four centuries ago", "The Ludovisi family of Rome is known for its clay roof tile. The family later settles in Germany, where the name becomes Ludowici.",
+      { src: "assets/blog/ludowici-terracotta-ornament.webp", alt: "Sculpted terra-cotta portrait medallions and ornamental tilework beneath a red tiled roof", cap: "Terra-cotta ornament of the kind the Ludowici firm was known for." }],
+    ["1857", "Carl Ludowici buys a roof tile works in Ensheim, Germany. The firm later moves its main works to Jockgrim.",
+      { src: "assets/blog/ludowici-jubilee-catalog.webp", alt: "The green cloth cover of Ludowici's 1907 jubilee catalog, with the dates 1857 to 1907", cap: "The 1907 jubilee catalog, marking fifty years of the firm." }],
     ["1888", "The Celadon Terra Cotta Company is formed in Alfred, New York, and soon turns to roof tile."],
-    ["1905", "Celadon buys a three-year-old tile plant in New Lexington, Ohio."],
-    ["1906", "Celadon and the American Ludowici company merge to form Ludowici-Celadon."],
+    ["1905", "Celadon buys a three-year-old tile plant in New Lexington, Ohio.",
+      { src: "assets/blog/ludowici-tiler-laying.webp", alt: "A black-and-white photograph of a roofer hand-laying interlocking clay tile on battens", cap: "Hand-laying interlocking clay tile, from the company's early decades." }],
+    ["1906", "Celadon and the American Ludowici company merge to form Ludowici-Celadon.",
+      { src: "assets/blog/ludowici-celadon-chicago-sign.webp", alt: "Five men seated atop a works sign reading Ludowici Celadon Co. of Chicago, Roofing Tile", cap: "A works sign for the newly merged Ludowici-Celadon Co. of Chicago.", small: true }],
     ["World War II", "With building at a standstill, the plants make pottery, including cookie jars, to keep the kilns running."],
     ["1956", "New Lexington becomes the company's only plant, as it remains today."],
     ["1989 to 1994", "CertainTeed buys the company and renames it Ludowici Roof Tile."],
@@ -599,52 +605,87 @@ function ludowiciPage() {
     ["Recreating lost profiles", "Heinz, Mound City, Cincinnati and Mineral Wells tile are no longer made. Ludowici can match profiles like these, so a historic roof keeps its character."],
     ["Built for a century", "Dense, kiln-fired clay that does not fade, burn or rot. Installed and flashed correctly, a Ludowici roof lasts a century or more."],
   ];
-  const body = `
-<section class="mp-section mp-why">
-  <div>
-    <span class="eyebrow mp-eyebrow">Why We Build With Ludowici</span>
-    <h2 class="mp-h2">The tile that is <em>already on the roof.</em></h2>
-  </div>
-  <div class="mp-why-text">
-    <p>Many of the historic clay roofs we restore were built with Ludowici, or with tile from makers that have since closed. Ludowici is still making tile in the same Ohio works, which means a damaged roof can be repaired to match instead of replaced.</p>
-    <p>We install the full Ludowici line, and every order is made for the roof it goes on.</p>
-  </div>
-</section>
-
-<section class="mp-section mp-section-cream">
-  ${head("What It Solves", "Three reasons <em>we reach for Ludowici</em>")}
-  <div class="mp-cards">${why.map(([h, p]) => `
-    <div class="mp-card"><h3>${h}</h3><p>${p}</p></div>`).join("")}
-  </div>
-  <p class="mp-readmore">Matching a tile that is no longer made? <a href="discontinued.html">See discontinued products</a>.</p>
-</section>
-
-<section class="mp-section">
-  ${head("The History", "From Rome to <em>New Lexington, Ohio</em>", "America's oldest clay roof tile maker, in ten dates.")}
-  <ol class="mp-timeline">${timeline.map(([y, t]) => `
-    <li><span class="mp-tl-year">${y}</span><span class="mp-tl-text">${t}</span></li>`).join("")}
-  </ol>
-  <p class="mp-readmore"><a href="blog/ludowici-roof-tile-history">Read the full history of Ludowici</a>, with sources.</p>
-</section>
-
-<section class="mp-section mp-section-dark">
-  ${head("Profiles We Install", "The full Ludowici line, <em>made to order</em>", "Every Ludowici profile, in its standard colors, blends and custom matches.")}
-  ${profiles([
+  const profileList = [
     ["Spanish", "The classic S-curve barrel."],
     ["Mission", "Two-piece pan and cover."],
     ["French", "Interlocking, with a strong vertical rib."],
     ["Classic", "An interlocking flat tile."],
     ["Williamsburg", "An interlocking flat shingle tile."],
     ["Flat shingle", "Flat tiles laid like slate."],
-  ])}
+  ];
+  const fig = (f) => f ? `<figure class="mp-arc-fig${f.small ? " is-small" : ""}"><img src="${f.src}" alt="${esc(f.alt)}" loading="lazy" /><figcaption>${f.cap}</figcaption></figure>` : "";
+  const body = `
+<section class="mp-section mp-source">
+  <div class="mp-source-text">
+    <span class="eyebrow mp-eyebrow">Why We Build With Ludowici</span>
+    <h2 class="mp-h2">The tile that is <em>already on the roof.</em></h2>
+    <p>Many of the historic clay roofs we restore were built with Ludowici, or with tile from makers that have since closed. Ludowici is still making tile in the same Ohio works, which means a damaged roof can be repaired to match instead of replaced.</p>
+    <p>We install the full Ludowici line, and every order is made for the roof it goes on.</p>
+  </div>
+  <div class="mp-source-photos">
+    <figure class="mp-ph mp-ph-wide"><img src="assets/projects/st-louis-ludowici-tile/03.webp" alt="Ludowici tile meeting hand-formed copper below a sunroom on one of our St. Louis roofs" loading="lazy" /></figure>
+    <figure class="mp-ph"><img src="assets/projects/st-louis-ludowici-tile/01.webp" alt="Ludowici S-tile and a brick chimney on one of our St. Louis roofs" loading="lazy" /></figure>
+    <figure class="mp-ph"><img src="assets/projects/dallas-parish-clay/04.webp" alt="Clay tile hips and valleys on Holy Trinity Catholic Church in Dallas" loading="lazy" /></figure>
+  </div>
+</section>
+
+<section class="mp-section mp-section-cream">
+  <h2 class="mp-statement-h">Three reasons we reach for Ludowici</h2>
+  <ol class="mp-reasons">${why.map(([h, p], i) => `
+    <li><span class="mp-reason-num">0${i + 1}</span><h3>${h}</h3><p>${p}</p></li>`).join("")}
+  </ol>
+  <p class="mp-readmore mp-center">Matching a tile that is no longer made? <a href="discontinued.html">See discontinued products</a>.</p>
+</section>
+
+<section class="mp-section mp-section-dark mp-archive">
+  <div class="mp-archive-head">
+    <span class="eyebrow">The History</span>
+    <h2>From Rome to New Lexington, Ohio</h2>
+    <p>America's oldest clay roof tile maker, in ten dates.</p>
+  </div>
+  <ol class="mp-arc">${timeline.map(([y, t, f], i) => `
+    <li class="mp-arc-row ${i % 2 ? "is-right" : "is-left"}">
+      <div class="mp-arc-entry"><span class="mp-arc-year">${y}</span><p>${t}</p></div>
+      <span class="mp-arc-dot" aria-hidden="true"></span>
+      <div class="mp-arc-side">${fig(f)}</div>
+    </li>`).join("")}
+  </ol>
+  <p class="mp-readmore mp-center"><a href="blog/ludowici-roof-tile-history">Read the full history of Ludowici</a>, with sources.</p>
+</section>
+
+<section class="mp-section mp-statement">
+  <p>A damaged clay roof rarely needs a new roof. <em>It needs the right tile.</em></p>
+</section>
+
+<section class="mp-section mp-section-cream mp-profile-split">
+  <figure class="mp-profile-photo">
+    <img src="assets/projects/st-louis-ludowici-tile/02.webp" alt="A St. Louis home roofed by us in Ludowici S-tile" loading="lazy" />
+    <figcaption>Ludowici Spanish tile in Summer Rose and Clay Red, St. Louis.</figcaption>
+  </figure>
+  <div>
+    <span class="eyebrow mp-eyebrow">Profiles We Install</span>
+    <h2 class="mp-h2">Every profile Ludowici fires, <em>made to order.</em></h2>
+    <p>Every Ludowici profile, in its standard colors, blends and custom matches.</p>
+    <ul class="mp-profile-list">${profileList.map(([h, p]) => `
+      <li><strong>${h}</strong><span>${p}</span></li>`).join("")}
+    </ul>
+  </div>
 </section>
 
 <section class="mp-section">
-  ${head("On Our Roofs", "Ludowici, <em>installed by us</em>")}
-  ${showcase([
-    { slug: "dallas-parish-clay", place: "Dallas", title: "Holy Trinity Catholic Church, clay tile reset by hand over new underlayment" },
-    { slug: "st-louis-ludowici-tile", place: "St. Louis", title: "Ludowici S-tile in Summer Rose and Clay Red, with copper at every transition" },
-  ])}
+  <div class="mp-feature">
+    <a class="mp-feature-img" href="portfolio?p=dallas-parish-clay" style="background-image:url('/assets/projects/dallas-parish-clay/03.webp')" aria-label="See the Holy Trinity Catholic Church project"></a>
+    <div class="mp-feature-body">
+      <span class="mp-label">On Our Roofs · Dallas</span>
+      <h2>Holy Trinity Catholic Church</h2>
+      <p>Clay tile taken up, salvaged and re-laid by hand over new underlayment, with every flashing rebuilt in copper, while the building stayed open.</p>
+      <a class="mp-blend-link" href="portfolio?p=dallas-parish-clay">See the project →</a>
+      <a class="mp-onroof" href="portfolio?p=st-louis-ludowici-tile">
+        <img src="${roofImg("st-louis-ludowici-tile")}" alt="" loading="lazy" />
+        <span><span class="mp-label">Also on our roofs · St. Louis</span>Ludowici S-tile in Summer Rose and Clay Red, with copper at every transition →</span>
+      </a>
+    </div>
+  </div>
 </section>
 ${band("Restoring a historic clay roof?", "We assess the tile on the roof, identify the maker and profile, and tell you what can be saved and what needs to be matched.")}
 ${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Copper with every roof" })}`;
