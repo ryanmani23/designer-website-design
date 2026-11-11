@@ -352,14 +352,15 @@ const PROJECTS = [
     ],
   },
   {
-    // Jack's "Elkins roof" (CompanyCam 106188759), Jun 2026. Brava color not confirmed yet, so no Blend row.
+    // Jack's "Elkins roof" (CompanyCam 106188759), Jun 2026. Color = Brava Slate, Washington (Ryan, 2026-11-11).
     name: "Nichols Hills Residence · Brava Composite Slate",
     slug: "nichols-hills-brava-slate",
     loc: "Nichols Hills, OK",
     tag: "Composite Slate · Brava",
     type: "Slate",
-    desc: "Brava composite slate over a Nichols Hills, Oklahoma residence, with copper chimney caps and ridge details.",
-    longDesc: "A Nichols Hills, Oklahoma residence finished in Brava composite slate, the synthetic we install and stand behind: a Class 4, color-stable slate look milled from molds of real stone. The chimneys are capped in copper and the ridges are detailed in copper to match.",
+    blend: "Brava Slate, Washington",
+    desc: "Brava composite slate in Washington over a Nichols Hills, Oklahoma residence, with copper chimney caps and ridge details.",
+    longDesc: "A Nichols Hills, Oklahoma residence finished in Brava composite slate in Washington, the synthetic we install and stand behind: a Class 4, color-stable slate look milled from molds of real stone. The chimneys are capped in copper and the ridges are detailed in copper to match.",
     image: "assets/projects/nichols-hills-brava-slate/01.webp",
     gallery: [1,2,3,4,5,6].map((n) => `assets/projects/nichols-hills-brava-slate/0${n}.webp`),
   },
@@ -561,7 +562,7 @@ const MAP_PROJECTS = [
   // x/y from an affine lat/lng fit against the existing pins (residuals <=1px).
   { name: "Dallas Residence · Five-Color Vermont Blend",       city: "Dallas", state: "TX", metro: "Dallas–Fort Worth, TX",   x: 460, y: 420, slug: "dallas-custom-slate-blend",            system: "Natural Slate · Custom Vermont Blend", scope: "Full Slate Roof",       blurb: "A five-color Vermont slate blend over a Dallas residence, with open copper valleys and half-round copper gutters.", image: "assets/projects/dallas-custom-slate-blend/01.webp" },
   { name: "St. Louis Residence · La Escandella French Tile",  city: "St. Louis", state: "MO", metro: "St. Louis, MO",           x: 579, y: 285, slug: "st-louis-central-west-end-clay",       system: "Clay Tile · La Escandella French Tile", scope: "Clay Tile Roof",       blurb: "La Escandella French clay tile in Jaspee Red over a historic St. Louis home, with copper at the dormers and turret.", image: "assets/projects/st-louis-central-west-end-clay/01.webp" },
-  { name: "Nichols Hills Residence · Brava Composite Slate",  city: "Nichols Hills", state: "OK", metro: "Oklahoma City, OK", x: 452, y: 346, slug: "nichols-hills-brava-slate",            system: "Composite Slate · Brava",           scope: "Composite Slate Re-Roof",  blurb: "Brava composite slate over a Nichols Hills residence, with copper chimney caps and ridge details.", image: "assets/projects/nichols-hills-brava-slate/01.webp" },
+  { name: "Nichols Hills Residence · Brava Composite Slate",  city: "Nichols Hills", state: "OK", metro: "Oklahoma City, OK", x: 452, y: 346, slug: "nichols-hills-brava-slate",            system: "Composite Slate · Brava",           scope: "Composite Slate Re-Roof",  blurb: "Brava composite slate in Washington over a Nichols Hills residence, with copper chimney caps and ridge details.", image: "assets/projects/nichols-hills-brava-slate/01.webp" },
   { name: "Sherman Residence · Brava S-Tile",                 city: "Sherman", state: "TX", metro: "Sherman, TX",             x: 464, y: 396, slug: "sherman-brava-tile",                   system: "Composite Tile · Brava S-Tile",     scope: "Composite Tile Re-Roof",   blurb: "Brava composite S-tile in a custom brown over a Sherman, Texas residence.", image: "assets/projects/sherman-brava-tile/01.webp" },
   { name: "Kansas City Residence · Natural Slate",           city: "Kansas City", state: "MO", metro: "Kansas City, MO",   x: 508, y: 263, coming: true, system: "Natural Slate",            scope: "Full Slate Restoration",   blurb: "An upcoming natural-slate residence in the Kansas City metro." },
   { name: "St. Joseph's Catholic Cathedral · Cheyenne, WY",  city: "Cheyenne", state: "WY", metro: "Cheyenne, WY",         x: 340, y: 190, coming: true, system: "Specialty · Cathedral Roofing", scope: "Cathedral Restoration",    blurb: "An upcoming cathedral restoration at St. Joseph's in Cheyenne, Wyoming." },
