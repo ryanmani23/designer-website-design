@@ -85,14 +85,24 @@ const SLATES = [
   },
   {
     // Studio photo + quarry town from Slate Valley Supply (Lucas Severance, 2026-11-11).
-    // Sizes, weights and lab data still to come, so those blocks are omitted.
+    // Lab data from Slate Valley's product data sheet (Jack forwarded, 2026-11-11):
+    // ASTM-only values, so its own rows and note. Sizes and weights not on the sheet.
     id: "vermont-unfading-gray", group: "us", name: "Vermont Unfading Gray", origin: "Poultney, Vermont", swatch: "#5E6164",
-    location: "Poultney, Vermont", color: "Unfading gray",
+    location: "Poultney, Vermont", color: "Unfading gray, from light, almost clear tones to darker grays with black markings",
+    cert: "S1 grade, ASTM C406.",
     traits: ["Holds its gray for the life of the roof", "Laid on its own or as the base of a blend"],
+    tests: [
+      ["Grade (ASTM C406)", "S1"],
+      ["Breaking load", "913 lb at 0.284 in. thick"],
+      ["Water absorption", "0.207%"],
+      ["Depth of softening", "0.0007 in."],
+    ],
+    labNote: "Results as published by Slate Valley Supply. S1 is the highest service-life grade in ASTM C406. Sizes and weights for this color are on their way; ask us and we will send them.",
     roofs: [
       { slug: "highland-park-unfading-grey-slate", caption: "100% Vermont Unfading Gray on one of our Highland Park roofs" },
       { slug: "fort-worth-unfading-grey-slate", caption: "100% Vermont Unfading Gray on one of our Fort Worth roofs" },
       { slug: "westover-hills-slate", caption: "43% of a four-color blend in Westover Hills", blend: true },
+      { slug: "dallas-custom-slate-blend", caption: "20% of a five-color blend in Dallas", blend: true },
     ],
   },
   {
@@ -101,7 +111,10 @@ const SLATES = [
     traits: ["Close match for Welsh slate", "May show occasional green marks"],
     weights: VT2, tests: tests("34.7 N/mm² transverse, 46.0 N/mm² longitudinal", "0.10%", "W1, 0.21%", "0.0%"),
     cert: "Certified to EN 12326-1 and ASTM C406.",
-    roofs: [{ slug: "highland-park-full-range-purple-slate", caption: "Full-range Vermont Purple on one of our Highland Park roofs" }],
+    roofs: [
+      { slug: "highland-park-full-range-purple-slate", caption: "Full-range Vermont Purple on one of our Highland Park roofs" },
+      { slug: "dallas-custom-slate-blend", caption: "10% of a five-color blend in Dallas", blend: true },
+    ],
   },
   {
     id: "vermont-green", group: "us", name: "Vermont Unfading Green", origin: "Wells, Vermont", swatch: "#56645A",
@@ -117,7 +130,10 @@ const SLATES = [
     traits: ["A rare true red slate", "Limited production", "Often used for patterns and accents"],
     weights: VT2, tests: tests("34.2 N/mm² transverse, 46.0 N/mm² longitudinal", "0.1%", "W1, 0.19%", "0.0%"),
     cert: "Certified to ASTM C406.",
-    roofs: [{ slug: "highland-park-lorraine-slate", caption: "New York Unfading Red in a seven-color blend on one of our Highland Park roofs", blend: true }],
+    roofs: [
+      { slug: "highland-park-lorraine-slate", caption: "New York Unfading Red in a seven-color blend on one of our Highland Park roofs", blend: true },
+      { slug: "dallas-custom-slate-blend", caption: "15% of a five-color blend in Dallas", blend: true },
+    ],
   },
 ];
 
@@ -126,6 +142,7 @@ const BLENDS = [
   { slug: "highland-park-variegated-slate-copper", image: "assets/projects/highland-park-variegated-slate-copper/03.webp", place: "Highland Park", blend: ["55% Vermont Purple", "35% Unfading Gray", "10% Unfading Green"] },
   { slug: "westover-hills-slate", image: "assets/projects/westover-hills-slate/01.webp", place: "Westover Hills", blend: ["43% Unfading Vermont Gray", "42% Spanish Black", "10% Vermont Purple", "5% New York Red"] },
   { slug: "highland-park-lorraine-slate", image: "assets/projects/highland-park-lorraine-slate/01.webp", place: "Highland Park", blend: ["Seven colors: Vermont Purple, Fading and Unfading Gray, Fading and Unfading Green, Spanish Black, New York Red"] },
+  { slug: "dallas-custom-slate-blend", image: "assets/projects/dallas-custom-slate-blend/01.webp", place: "Dallas", blend: ["30% Semi-Weathering Gray", "25% Unfading Gray/Green", "20% Unfading Gray", "15% New York Red", "10% Vermont Purple"] },
 ];
 
 // ---------------------------------------------------------------------------
@@ -277,7 +294,7 @@ function slatePanel(s, i) {
             <div class="mp-lab-scroll">
               <table><thead><tr><th>Test</th><th>Result</th></tr></thead><tbody>${s.tests.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("")}</tbody></table>
             </div>
-            <p class="mp-note">Results as published by the supplier. W1, T1 and S1 are European EN 12326-1 categories for water absorption, thermal cycling and sulfur dioxide exposure. They are separate from the S1 service-life grade in ASTM C406.</p>
+            <p class="mp-note">${s.labNote || "Results as published by the supplier. W1, T1 and S1 are European EN 12326-1 categories for water absorption, thermal cycling and sulfur dioxide exposure. They are separate from the S1 service-life grade in ASTM C406."}</p>
           </details>` : `
           <p class="mp-note">Sizes, weights and laboratory results for this color are on their way from Slate Valley Supply. Ask us and we will send them as soon as we have them.</p>`;
   return `

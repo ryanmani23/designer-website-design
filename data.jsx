@@ -120,6 +120,31 @@ const PROJECTS = [
     gallery: [1,2,3,4,5,6].map((n) => `assets/projects/dallas-vermont-green-slate/0${n}.webp`),
   },
   {
+    // Jack's "McWay roof" (CompanyCam 48844515), finished Jul 2024. Blend recipe from Jack, 2026-11-11.
+    name: "Dallas Residence · Five-Color Vermont Blend",
+    slug: "dallas-custom-slate-blend",
+    loc: "Dallas, TX",
+    tag: "Natural Slate · Custom Vermont Blend",
+    type: "Slate",
+    blend: "30% Semi-Weathering Gray · 25% Unfading Gray/Green · 20% Unfading Gray · 15% New York Red · 10% Vermont Purple",
+    desc: "A five-color Vermont slate blend over a Dallas residence, with open copper valleys, copper flashings and six-inch half-round copper gutters.",
+    longDesc: "A Dallas residence finished in standard multi-width Vermont slate, blended by percentage from five colors so the field reads evenly from every side of the house. The valleys are open copper, every flashing is copper, and the roof drains into six-inch half-round copper gutters.",
+    image: "assets/projects/dallas-custom-slate-blend/01.webp",
+    gallery: [1,2,3,4,5,6].map((n) => `assets/projects/dallas-custom-slate-blend/0${n}.webp`),
+  },
+  {
+    // Jack's "Reniger roof" (CompanyCam 44790854), 2023-24. Blend recipe not on file (Jack, 2026-11-11), so no Blend row.
+    name: "Dallas Residence · Multicolor Natural Slate",
+    slug: "dallas-multicolor-slate",
+    loc: "Dallas, TX",
+    tag: "Natural Slate · Multicolor",
+    type: "Slate",
+    desc: "A multicolor natural slate field of grays, greens and reds over a Dallas Tudor, with copper ridges and flashings.",
+    longDesc: "A Dallas Tudor finished in a multicolor natural slate field of grays, greens and reds, including the curved entry roof over the front door. The ridges, flashings and penetrations are detailed in copper.",
+    image: "assets/projects/dallas-multicolor-slate/01.webp",
+    gallery: [1,2,3,4,5].map((n) => `assets/projects/dallas-multicolor-slate/0${n}.webp`),
+  },
+  {
     name: "Highland Park Residence · Vermont Black Slate",
     slug: "highland-park-vermont-black-slate",
     loc: "Highland Park, TX",
@@ -327,6 +352,31 @@ const PROJECTS = [
     ],
   },
   {
+    // Jack's "Elkins roof" (CompanyCam 106188759), Jun 2026. Brava color not confirmed yet, so no Blend row.
+    name: "Nichols Hills Residence · Brava Composite Slate",
+    slug: "nichols-hills-brava-slate",
+    loc: "Nichols Hills, OK",
+    tag: "Composite Slate · Brava",
+    type: "Slate",
+    desc: "Brava composite slate over a Nichols Hills, Oklahoma residence, with copper chimney caps and ridge details.",
+    longDesc: "A Nichols Hills, Oklahoma residence finished in Brava composite slate, the synthetic we install and stand behind: a Class 4, color-stable slate look milled from molds of real stone. The chimneys are capped in copper and the ridges are detailed in copper to match.",
+    image: "assets/projects/nichols-hills-brava-slate/01.webp",
+    gallery: [1,2,3,4,5,6].map((n) => `assets/projects/nichols-hills-brava-slate/0${n}.webp`),
+  },
+  {
+    // Rehmet (CompanyCam 56239092), Feb 2024. Brava S tile, custom brown, per the Designer Brochure sheet.
+    name: "Sherman Residence · Brava S-Tile",
+    slug: "sherman-brava-tile",
+    loc: "Sherman, TX",
+    tag: "Composite Tile · Brava S-Tile",
+    type: "Clay Tile",
+    blend: "Brava S-Tile, custom brown",
+    desc: "Brava composite S-tile in a custom brown over a Sherman, Texas residence.",
+    longDesc: "A Sherman, Texas residence finished in Brava composite S-tile in a custom brown, a lightweight, Class 4 composite tile. We laid it around the home's arched dormers and parapet walls for a clean Spanish-tile field.",
+    image: "assets/projects/sherman-brava-tile/01.webp",
+    gallery: [1,2,3,4,5,6].map((n) => `assets/projects/sherman-brava-tile/0${n}.webp`),
+  },
+  {
     name: "Colleyville Residence · CertainTeed Grand Manor",
     slug: "colleyville-grand-manor",
     loc: "Colleyville, TX",
@@ -418,6 +468,19 @@ const PROJECTS = [
     ],
   },
   {
+    // Jack's "Zelch roof" (CompanyCam 86043266), Jun 2026, Central West End. Tile per Jack, 2026-11-11.
+    name: "St. Louis Residence · La Escandella French Tile",
+    slug: "st-louis-central-west-end-clay",
+    loc: "St. Louis, MO",
+    tag: "Clay Tile · La Escandella French Tile",
+    type: "Clay Tile",
+    blend: "La Escandella Jaspee Red",
+    desc: "La Escandella French clay tile in Jaspee Red over a historic St. Louis home, with copper at the dormers, turret and flashings.",
+    longDesc: "A historic St. Louis home finished in La Escandella French clay tile in Jaspee Red. The interlocking tile runs across a roof of dormers, hips and a round turret, with copper at the dormer roofs, the turret cap and every flashing.",
+    image: "assets/projects/st-louis-central-west-end-clay/01.webp",
+    gallery: [1,2,3,4,5,6].map((n) => `assets/projects/st-louis-central-west-end-clay/0${n}.webp`),
+  },
+  {
     name: "St. Louis Residence · Ludowici Clay Tile",
     slug: "st-louis-ludowici-tile",
     loc: "St. Louis, MO",
@@ -494,6 +557,12 @@ const MAP_PROJECTS = [
   // no-client-names rule; the Cheyenne cathedral is an institutional landmark name and is retained.
   { name: "Madison Residence · Franvisa Slate",              city: "Madison", state: "WI", metro: "Wisconsin",            x: 601, y: 174, slug: "madison-franvisa-slate",               system: "Natural Slate · Franvisa",          scope: "Full Slate Re-Roof",       blurb: "Franvisa Spanish slate over a Madison residence, detailed in copper at the valleys and flashings.", image: "assets/projects/madison-franvisa-slate/01.webp" },
   { name: "Dallas Residence · Vermont Green Slate",          city: "Dallas", state: "TX", metro: "Dallas–Fort Worth, TX",   x: 461, y: 419, slug: "dallas-vermont-green-slate",           system: "Natural Slate · Vermont Green",     scope: "Full Slate Roof",          blurb: "Vermont Unfading Green natural slate over a Dallas residence beneath live oaks.", image: "assets/projects/dallas-vermont-green-slate/01.webp" },
+  // 2026-11-11: four more finished jobs (McWay, Zelch, Elkins, Rehmet). Sherman and Nichols Hills
+  // x/y from an affine lat/lng fit against the existing pins (residuals <=1px).
+  { name: "Dallas Residence · Five-Color Vermont Blend",       city: "Dallas", state: "TX", metro: "Dallas–Fort Worth, TX",   x: 460, y: 420, slug: "dallas-custom-slate-blend",            system: "Natural Slate · Custom Vermont Blend", scope: "Full Slate Roof",       blurb: "A five-color Vermont slate blend over a Dallas residence, with open copper valleys and half-round copper gutters.", image: "assets/projects/dallas-custom-slate-blend/01.webp" },
+  { name: "St. Louis Residence · La Escandella French Tile",  city: "St. Louis", state: "MO", metro: "St. Louis, MO",           x: 579, y: 285, slug: "st-louis-central-west-end-clay",       system: "Clay Tile · La Escandella French Tile", scope: "Clay Tile Roof",       blurb: "La Escandella French clay tile in Jaspee Red over a historic St. Louis home, with copper at the dormers and turret.", image: "assets/projects/st-louis-central-west-end-clay/01.webp" },
+  { name: "Nichols Hills Residence · Brava Composite Slate",  city: "Nichols Hills", state: "OK", metro: "Oklahoma City, OK", x: 452, y: 346, slug: "nichols-hills-brava-slate",            system: "Composite Slate · Brava",           scope: "Composite Slate Re-Roof",  blurb: "Brava composite slate over a Nichols Hills residence, with copper chimney caps and ridge details.", image: "assets/projects/nichols-hills-brava-slate/01.webp" },
+  { name: "Sherman Residence · Brava S-Tile",                 city: "Sherman", state: "TX", metro: "Sherman, TX",             x: 464, y: 396, slug: "sherman-brava-tile",                   system: "Composite Tile · Brava S-Tile",     scope: "Composite Tile Re-Roof",   blurb: "Brava composite S-tile in a custom brown over a Sherman, Texas residence.", image: "assets/projects/sherman-brava-tile/01.webp" },
   { name: "Kansas City Residence · Natural Slate",           city: "Kansas City", state: "MO", metro: "Kansas City, MO",   x: 508, y: 263, coming: true, system: "Natural Slate",            scope: "Full Slate Restoration",   blurb: "An upcoming natural-slate residence in the Kansas City metro." },
   { name: "St. Joseph's Catholic Cathedral · Cheyenne, WY",  city: "Cheyenne", state: "WY", metro: "Cheyenne, WY",         x: 340, y: 190, coming: true, system: "Specialty · Cathedral Roofing", scope: "Cathedral Restoration",    blurb: "An upcoming cathedral restoration at St. Joseph's in Cheyenne, Wyoming." },
 ];

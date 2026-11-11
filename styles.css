@@ -5290,7 +5290,8 @@ a.mat-cell:focus-visible { outline: 2px solid var(--copper-400); outline-offset:
 .mp-lab td { padding: 10px 10px 10px 0; border-bottom: 1px solid #efe9df; vertical-align: top; }
 
 /* blends */
-.mp-blend-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; }
+.mp-blend-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 24px; }
+@media (max-width: 1100px) { .mp-blend-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
 .mp-blend { display: flex; flex-direction: column; background: var(--cream-50); border-radius: 3px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
 .mp-blend:hover { transform: translateY(-3px); box-shadow: 0 24px 44px -26px rgba(13,28,48,0.4); }
 .mp-blend-img { display: block; aspect-ratio: 3/2; background-size: cover; background-position: center; }
