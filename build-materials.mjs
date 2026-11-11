@@ -83,12 +83,11 @@ const SLATES = [
     roofs: [{ slug: "highland-park-vermont-black-slate", caption: "Vermont Black on one of our Highland Park roofs" }],
   },
   {
-    // Data and a studio photo are coming from Slate Valley Supply (Jack, 2026-11-10).
-    // Until then the card shows our own roofs and no spec or lab blocks.
-    id: "vermont-unfading-gray", group: "us", name: "Vermont Unfading Gray", origin: "Vermont", swatch: "#6E7175",
-    location: "Vermont", color: "Unfading gray",
+    // Studio photo + quarry town from Slate Valley Supply (Lucas Severance, 2026-11-11).
+    // Sizes, weights and lab data still to come, so those blocks are omitted.
+    id: "vermont-unfading-gray", group: "us", name: "Vermont Unfading Gray", origin: "Poultney, Vermont", swatch: "#5E6164",
+    location: "Poultney, Vermont", color: "Unfading gray",
     traits: ["Holds its gray for the life of the roof", "Laid on its own or as the base of a blend"],
-    noStudio: true,
     roofs: [
       { slug: "highland-park-unfading-grey-slate", caption: "100% Vermont Unfading Gray on one of our Highland Park roofs" },
       { slug: "fort-worth-unfading-grey-slate", caption: "100% Vermont Unfading Gray on one of our Fort Worth roofs" },
@@ -373,7 +372,7 @@ function naturalSlatePage() {
   </div>
   <div class="mp-specs">${SLATES.map(slatePanel).join("")}
   </div>
-  <p class="mp-credit">Slate photography courtesy of Be Natural.</p>
+  <p class="mp-credit">Slate photography courtesy of Be Natural and Slate Valley Supply.</p>
   <div class="mp-proof">
     <span class="mp-label">What the laboratory results show</span>
     <ul class="mp-proof-grid">${PROOF.map((p) => `
