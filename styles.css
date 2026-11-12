@@ -5648,7 +5648,7 @@ a.mp-versus-card:hover { border-color: var(--copper-400); background: rgba(244,2
 .mp-bignum-row { list-style: none; margin: 0 auto; padding: 0; max-width: 1280px; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); }
 .mp-bignum-row li { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; padding: 8px 24px; border-left: 1px solid rgba(232,196,154,0.3); }
 .mp-bignum-row li:first-child { border-left: 0; }
-.mp-bignum-row strong { font-variant-numeric: lining-nums; font-family: var(--serif); font-weight: 400; font-size: clamp(60px,7.5vw,116px); line-height: 0.95; color: var(--copper-300); white-space: nowrap; }
+.mp-bignum-row strong { font-family: var(--serif-sc); font-weight: 400; font-size: clamp(44px,4.8vw,80px); line-height: 0.95; color: var(--copper-300); white-space: nowrap; }
 .mp-bignum-row span { font-family: var(--sans); font-size: 15px; line-height: 1.55; color: rgba(244,239,230,0.74); max-width: 230px; }
 
 .mp-xv { max-width: 1120px; border-top: 1px solid rgba(26,24,20,0.14); }
@@ -5682,9 +5682,11 @@ a.mp-versus-card:hover { border-color: var(--copper-400); background: rgba(244,2
 .mp-mosaic-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 20px 22px; font-family: var(--serif); font-size: 19px; line-height: 1.35; color: var(--cream-50); }
 .mp-mosaic-cap .mp-label { color: var(--copper-300); }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .mp-bignum-row { grid-template-columns: 1fr 1fr; row-gap: 40px; }
   .mp-bignum-row li:nth-child(3) { border-left: 0; }
+}
+@media (max-width: 900px) {
   .mp-advice { grid-template-columns: 1fr; }
   .mp-mosaic { grid-template-columns: 1fr; grid-template-rows: none; }
   .mp-mosaic-tile, .mp-mosaic-tile.is-big { grid-row: auto; aspect-ratio: 4 / 3; }
@@ -5695,5 +5697,5 @@ a.mp-versus-card:hover { border-color: var(--copper-400); background: rgba(244,2
   .mp-xv-head { display: none; }
   .mp-xv-row > span { padding: 14px 16px; }
   .mp-bignum-row li { padding: 8px 10px; }
-  .mp-bignum-row strong { font-size: 44px; }
+  .mp-bignum-row strong { font-size: 38px; }
 }
