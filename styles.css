@@ -5185,6 +5185,23 @@ a.mat-cell:focus-visible { outline: 2px solid var(--copper-400); outline-offset:
 .mat-medallion-name { font-family: var(--serif); font-size: 44px; line-height: 1; margin: 6px 0 8px; }
 .mat-medallion-line { font-family: var(--serif); font-style: italic; font-size: 15px; line-height: 1.3; max-width: 150px; opacity: 0.92; }
 .mat-medallion-arrow { margin-top: 8px; font-size: 16px; }
+/* Decorative copper seal between the homepage partner grid and the jobs map */
+.copper-seal-wrap { position: relative; height: 0; z-index: 5; }
+.copper-seal { position: absolute; left: 50%; top: 0; width: 280px; height: 280px; transform: translate(-50%, -50%); display: block; border-radius: 50%; filter: drop-shadow(0 26px 34px rgba(13,28,48,0.35)); transition: transform 0.5s ease; }
+.copper-seal:hover { transform: translate(-50%, -50%) scale(1.04); }
+.copper-seal:focus-visible { outline: 2px solid var(--copper-300); outline-offset: 6px; }
+.copper-seal svg { display: block; width: 100%; height: 100%; }
+.cs-spin { transform-box: view-box; transform-origin: 150px 150px; animation: cs-spin 70s linear infinite; }
+.copper-seal:hover .cs-spin { animation-duration: 18s; }
+@keyframes cs-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .cs-spin { animation: none; } }
+.section.materials:has(+ .copper-seal-wrap) { padding-bottom: 180px; }
+.copper-seal-wrap + .jobsmap { padding-top: 180px; }
+@media (max-width: 720px) {
+  .copper-seal { width: 200px; height: 200px; }
+  .section.materials:has(+ .copper-seal-wrap) { padding-bottom: 130px; }
+  .copper-seal-wrap + .jobsmap { padding-top: 130px; }
+}
 /* Keep the top two cards' text clear of the medallion, which reaches ~130px into
    each card's inner bottom corner. DOM order is cell, cell, medallion, cell, cell. */
 @media (min-width: 721px) {

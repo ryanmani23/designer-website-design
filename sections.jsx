@@ -727,6 +727,42 @@ function CopperMedallion() {
     </a>);
 }
 
+// Decorative copper seal (Jack, Nov 2026: "something decorative"). Homepage
+// only, straddling the line between the partner grid and the jobs map. The
+// ring text turns slowly (stops for prefers-reduced-motion).
+function CopperSeal() {
+  return (
+    <div className="copper-seal-wrap">
+      <a className="copper-seal" href="materials/copper" aria-label="Copper: the thread through every roof">
+        <svg viewBox="0 0 300 300" aria-hidden="true">
+          <defs>
+            <radialGradient id="cs-cu" cx="36%" cy="30%" r="78%">
+              <stop offset="0" stopColor="#dc9a66" />
+              <stop offset=".5" stopColor="#b06a3b" />
+              <stop offset="1" stopColor="#83491f" />
+            </radialGradient>
+            <path id="cs-ring" d="M150,150 m-117,0 a117,117 0 1,1 234,0 a117,117 0 1,1 -234,0" />
+          </defs>
+          <circle cx="150" cy="150" r="147" fill="#f5f2ec" stroke="#5f8a78" strokeWidth="2.5" />
+          <circle cx="150" cy="150" r="139" fill="none" stroke="#b06a3b" strokeWidth=".8" />
+          <circle cx="150" cy="150" r="100" fill="none" stroke="#b06a3b" strokeWidth=".8" />
+          <g className="cs-spin">
+            <text fontFamily="Cormorant SC, serif" fontSize="15.5" fontWeight="500" fill="#a0622a" letterSpacing="3">
+              <textPath href="#cs-ring" textLength="728" lengthAdjust="spacing">Sixteen ounce copper ✦ Formed for the condition ✦ Soldered, not sealed ✦</textPath>
+            </text>
+          </g>
+          <circle cx="150" cy="150" r="92" fill="url(#cs-cu)" />
+          <circle cx="150" cy="150" r="84" fill="none" stroke="rgba(245,242,236,.5)" strokeWidth="1" />
+          <text x="150" y="104" textAnchor="middle" fontFamily="Cormorant SC, serif" fontSize="11" letterSpacing="4" fill="rgba(245,242,236,.9)">16 OZ</text>
+          <path d="M112 152 L150 122 L188 152" fill="none" stroke="#f5f2ec" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+          <path d="M124 152 L150 132 L176 152" fill="none" stroke="rgba(245,242,236,.55)" strokeWidth="1" strokeLinejoin="round" />
+          <text x="150" y="186" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontSize="34" fill="#f5f2ec">Copper</text>
+          <text x="150" y="206" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontStyle="italic" fontSize="10.5" fill="rgba(245,242,236,.85)">the thread through every roof</text>
+        </svg>
+      </a>
+    </div>);
+}
+
 function Manufacturers({ banner = "partners", medallion = false }) {
   return (
     <section className="section section-light materials" id="manufacturers" data-screen-label="Manufacturer Partnerships">
@@ -2760,6 +2796,7 @@ function Testimonials() {
 }
 
 Object.assign(window, {
+  CopperSeal,
   Nav, Hero, TrustBar, Manufacturers, JobsMap, Discontinued, SystemsNote, Partners, FinalCTA, Footer,
   PageHero, DiscontinuedTeaser, TeamSection, ContactForm,
   ProjectGrid, ProcessSection, ProjectDetail,

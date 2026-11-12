@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Nav, Hero, HeroMosaic, HeroSlides, TrustBar, RoofReel, Manufacturers, JobsMap, Discontinued, SystemsNote, EthosEcho, Partners, Journal, FinalCTA, Footer */
+/* global React, ReactDOM, CopperSeal, Nav, Hero, HeroMosaic, HeroSlides, TrustBar, RoofReel, Manufacturers, JobsMap, Discontinued, SystemsNote, EthosEcho, Partners, Journal, FinalCTA, Footer */
 const { useState, useEffect, useRef } = React;
 
 function Intro({ leaving, ready }) {
@@ -95,6 +95,7 @@ function App() {
       )}
       {heroVariant !== "reel" && <TrustBar />}
       <Manufacturers medallion />
+      <CopperSeal />
       <JobsMap />
       <Discontinued onJump={(id) => window.location.href = `contact.html`} />
       <SystemsNote />
