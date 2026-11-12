@@ -880,8 +880,11 @@ function bravaPage() {
   <p class="mp-note mp-note-dark mp-center">Ratings and warranty as published by Brava.</p>
 </section>
 
-<section class="mp-section">
-  ${head("What Brava Solves", "What we see fail <em>on other synthetics</em>")}
+<section class="mp-section mp-xv-section">
+  <div class="mp-xv-intro">
+    <span class="eyebrow mp-eyebrow">What Brava Solves</span>
+    <h2 class="mp-h2">What we see fail <em>on other synthetics</em></h2>
+  </div>
   <div class="mp-xv">
     <div class="mp-xv-row mp-xv-head"><span>On other synthetics</span><span>How Brava is built</span></div>${vs.map(([a, b]) => `
     <div class="mp-xv-row"><span class="mp-xv-x"><i aria-hidden="true">✕</i>${a}</span><span class="mp-xv-v"><i aria-hidden="true">✓</i>${b}</span></div>`).join("")}

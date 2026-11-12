@@ -5651,7 +5651,9 @@ a.mp-versus-card:hover { border-color: var(--copper-400); background: rgba(244,2
 .mp-bignum-row strong { font-family: var(--serif-sc); font-weight: 400; font-size: clamp(44px,4.8vw,80px); line-height: 0.95; color: var(--copper-300); white-space: nowrap; }
 .mp-bignum-row span { font-family: var(--sans); font-size: 15px; line-height: 1.55; color: rgba(244,239,230,0.74); max-width: 230px; }
 
-.mp-xv { max-width: 1120px; border-top: 1px solid rgba(26,24,20,0.14); }
+.mp-xv-section { display: grid; grid-template-columns: minmax(0,0.75fr) minmax(0,1.9fr); gap: clamp(32px,5vw,80px); align-items: start; max-width: 1440px; margin: 0 auto; }
+.mp-xv-intro .mp-h2 { margin-bottom: 0; }
+.mp-xv { border-top: 1px solid rgba(26,24,20,0.14); }
 .mp-xv-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid rgba(26,24,20,0.14); }
 .mp-xv-row > span { display: flex; gap: 14px; align-items: baseline; padding: 20px 26px; font-family: var(--sans); font-size: 16px; line-height: 1.55; }
 .mp-xv-row i { font-style: normal; flex: none; width: 18px; font-size: 15px; }
@@ -5688,6 +5690,7 @@ a.mp-versus-card:hover { border-color: var(--copper-400); background: rgba(244,2
 }
 @media (max-width: 900px) {
   .mp-advice { grid-template-columns: 1fr; }
+  .mp-xv-section { grid-template-columns: 1fr; }
   .mp-mosaic { grid-template-columns: 1fr; grid-template-rows: none; }
   .mp-mosaic-tile, .mp-mosaic-tile.is-big { grid-row: auto; aspect-ratio: 4 / 3; }
   .mp-quote .ethos-quote-img { min-height: 260px; }
