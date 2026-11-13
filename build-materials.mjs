@@ -240,11 +240,36 @@ const head = (eyebrow, h2, right = "") => `
       <div class="right">${right}</div>` : ""}
     </div>`;
 
-const nextLinks = (back, fwd) => `
-<nav class="mp-next" aria-label="More materials">
-  <a href="${back.href}">← ${back.label}</a>
-  ${fwd ? `<a href="${fwd.href}">${fwd.label} →</a>` : ""}
-</nav>`;
+// "Keep exploring": photo cards for the other material pages (replaced the
+// plain back/next link row, Ryan 2026-11-13).
+const MATERIAL_PAGES = [
+  { slug: "natural-slate", kind: "Stone", name: "Natural Slate", line: "Spanish, Vermont and New York slate", image: "assets/materials/quarry/quarry-canyon.webp", pos: "center 60%" },
+  { slug: "ludowici", kind: "Clay Tile", name: "Ludowici", line: "America's oldest clay roof tile", image: "assets/projects/holy-trinity-clay/01.webp", pos: "center 70%" },
+  { slug: "la-escandella", kind: "Clay Tile", name: "La Escandella", line: "Mediterranean clay tile from Spain", image: "assets/projects/st-louis-central-west-end-clay/02.webp", pos: "center 45%" },
+  { slug: "brava", kind: "Composite", name: "Brava", line: "The synthetic we install and stand behind", image: "assets/projects/nichols-hills-brava-slate/04.webp", pos: "center" },
+  { slug: "copper", kind: "Metal", name: "Copper", line: "The thread through every roof", image: "assets/projects/highland-park-variegated-slate-copper/02.webp", pos: "center 40%" },
+];
+const moreMaterials = (current) => `
+<section class="mp-explore" aria-label="More materials">
+  <div class="mp-explore-head">
+    <div>
+      <span class="mp-label">Keep Exploring</span>
+      <h2>More of the materials we install</h2>
+    </div>
+    <a class="mp-explore-all" href="materials">All materials →</a>
+  </div>
+  <div class="mp-explore-row">${MATERIAL_PAGES.filter((m) => m.slug !== current).map((m) => `
+    <a class="mp-explore-card" href="materials/${m.slug}">
+      <span class="mp-explore-img" style="background-image:url('/${m.image}');background-position:${m.pos}"></span>
+      <span class="mp-explore-text">
+        <span class="mp-explore-kind">${m.kind}</span>
+        <span class="mp-explore-name">${m.name}</span>
+        <span class="mp-explore-line">${m.line}</span>
+      </span>
+      <span class="mp-explore-arrow" aria-hidden="true">→</span>
+    </a>`).join("")}
+  </div>
+</section>`;
 
 // ---------------------------------------------------------------------------
 // Natural Slate
@@ -436,7 +461,7 @@ function naturalSlatePage() {
     <a class="btn-copper-solid" href="materials#request-sample">Request a Sample ${ARROW}</a>
   </div>
 </section>
-${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Every slate roof deserves copper" })}`;
+${moreMaterials("natural-slate")}`;
 
   return shell({
     slug: "natural-slate",
@@ -552,7 +577,7 @@ function copperPage() {
     <a class="btn-copper-solid" href="contact.html">Schedule a Consultation ${ARROW}</a>
   </div>
 </section>
-${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/natural-slate", label: "The natural slate we install" })}`;
+${moreMaterials("copper")}`;
 
   return shell({
     slug: "copper",
@@ -714,7 +739,7 @@ function ludowiciPage() {
   </div>
 </section>
 ${band("Restoring a historic clay roof?", "We assess the tile on the roof, identify the maker and profile, and tell you what can be saved and what needs to be matched.")}
-${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Copper with every roof" })}`;
+${moreMaterials("ludowici")}`;
 
   return shell({
     slug: "ludowici",
@@ -840,7 +865,7 @@ function laEscandellaPage() {
   </div>
 </section>
 ${band("Designing a Mediterranean roof?", "We bring samples to the house and lay the colors out against your stucco, stone and trim before anything is ordered.")}
-${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Copper with every roof" })}`;
+${moreMaterials("la-escandella")}`;
 
   return shell({
     slug: "la-escandella",
@@ -936,7 +961,7 @@ function bravaPage() {
   </div>
 </section>
 ${band("Weighing slate against Brava?", "We will show you both on your house and give you an honest answer about which one it needs.")}
-${nextLinks({ href: "materials", label: "All materials" }, { href: "materials/copper", label: "Copper with every roof" })}`;
+${moreMaterials("brava")}`;
 
   return shell({
     slug: "brava",

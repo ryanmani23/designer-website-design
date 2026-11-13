@@ -5303,9 +5303,6 @@ a.mat-cell:focus-visible { outline: 2px solid var(--copper-400); outline-offset:
 .mp-band h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(30px,3.4vw,44px); margin: 0 0 10px; color: var(--cream-100); }
 .mp-band p { font-family: var(--sans); font-size: 16px; font-weight: 300; line-height: 1.6; color: rgba(244,239,230,0.72); margin: 0; max-width: 640px; }
 .mp-band .btn-copper-solid { gap: 10px; }
-.mp-next { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; padding: clamp(40px,7vh,64px) clamp(20px,6vw,80px); font-family: var(--serif); font-size: clamp(18px,1.8vw,22px); border-top: 1px solid var(--cream-200); }
-.mp-next a { color: var(--ink); border-bottom: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
-.mp-next a:hover { color: var(--copper-600); border-color: var(--copper-500); }
 
 /* copper page */
 .mp-why { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: clamp(28px,5vw,72px); align-items: start; }
@@ -5560,6 +5557,31 @@ a.mp-choose-card:hover { background: var(--cream-100); }
   .mp-arc-row.is-left .mp-arc-entry p { margin-left: 0; }
   .mp-arc-side:not(:empty) { margin-top: 16px; }
   .mp-profile-list { grid-template-columns: 1fr; }
+}
+
+/* Keep exploring: other material pages as photo cards */
+.mp-explore { padding: clamp(56px,9vh,96px) clamp(20px,6vw,80px); background: var(--white); }
+.mp-explore-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 32px; max-width: 1280px; margin: 0 auto 28px; }
+.mp-explore-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px,3vw,40px); line-height: 1.1; margin: 4px 0 0; }
+.mp-explore-all { font-family: var(--serif-sc); font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper-600); border-bottom: 1px solid rgba(160,98,42,0.35); padding-bottom: 3px; }
+.mp-explore-all:hover { color: var(--copper-500); }
+.mp-explore-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; max-width: 1280px; margin: 0 auto; }
+.mp-explore-card { position: relative; display: block; aspect-ratio: 4 / 5; border-radius: 3px; overflow: hidden; color: var(--cream-50); background: var(--navy-900); }
+.mp-explore-img { position: absolute; inset: 0; background-size: cover; transition: transform 0.7s ease; }
+.mp-explore-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.25) 50%, rgba(10,10,10,0.05) 100%); }
+.mp-explore-card:hover .mp-explore-img { transform: scale(1.06); }
+.mp-explore-text { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; display: flex; flex-direction: column; gap: 4px; padding: 22px 22px 24px; }
+.mp-explore-kind { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--copper-300); }
+.mp-explore-name { font-family: var(--serif); font-size: clamp(26px,2.4vw,34px); line-height: 1.05; }
+.mp-explore-line { font-family: var(--sans); font-size: 14px; line-height: 1.45; color: rgba(244,239,230,0.78); max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.4s ease; }
+.mp-explore-card:hover .mp-explore-line, .mp-explore-card:focus-visible .mp-explore-line { max-height: 60px; opacity: 1; }
+.mp-explore-arrow { position: absolute; top: 18px; right: 18px; z-index: 1; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(244,239,230,0.5); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background 0.3s, border-color 0.3s; }
+.mp-explore-card:hover .mp-explore-arrow { background: var(--copper-500); border-color: var(--copper-500); }
+@media (hover: none) { .mp-explore-line { max-height: none; opacity: 1; } }
+@media (max-width: 900px) {
+  .mp-explore-row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 0 calc(-1 * clamp(20px,6vw,80px)); padding: 0 clamp(20px,6vw,80px) 8px; scroll-padding-left: clamp(20px,6vw,80px); }
+  .mp-explore-card { flex: 0 0 68%; scroll-snap-align: start; }
+  .mp-explore-line { max-height: none; opacity: 1; }
 }
 
 /* Material reference additions (Jack's reference docs, 2026-11-13) */
