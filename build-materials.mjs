@@ -397,6 +397,15 @@ function naturalSlatePage() {
     <ul class="mp-proof-grid">${PROOF.map((p) => `
       <li>${p.icon}<strong>${p.title}</strong><span>${p.text}</span></li>`).join("")}
     </ul>
+    <details class="mp-lab mp-key">
+      <summary>How to read these results</summary>
+      <dl class="mp-key-list">
+        <div><dt>W, water absorption</dt><dd>European slate is tested to EN 12326. W1 is the best class: the stone takes up less than 0.6% of its weight in water.</dd></div>
+        <div><dt>T, thermal cycling</dt><dd>Repeated soaking and heating. T1 means a slight color change at most, T2 means rust spotting with no structural effect, and T3 means the metal minerals in the stone have broken down far enough to pierce it.</dd></div>
+        <div><dt>S, sulfur dioxide exposure</dt><dd>A test against polluted, acidic air. S1 is the best of three classes. Slate with more than 20% carbonate goes through a stricter version of the test.</dd></div>
+        <div><dt>ASTM C406 grade</dt><dd>American slate is graded on its own scale. S1 means an expected service life of more than 75 years, S2 40 to 75, and S3 20 to 40. It is a separate scale from the European S classes above.</dd></div>
+      </dl>
+    </details>
   </div>
 </section>
 
@@ -411,6 +420,10 @@ function naturalSlatePage() {
         <span class="mp-blend-link">See the project →</span>
       </span>
     </a>`).join("")}
+  </div>
+  <div class="mp-blend-note">
+    <span class="mp-label">Unfading and weathering</span>
+    <p>Slate color comes from the stone itself: chlorite for green, iron oxide for purple and red, carbon for gray and black. Unfading slates hold their color for the life of the roof. Weathering and semi-weathering slates soften toward buff and tan over the years. We plan a blend for how it will look in twenty years, not only on the day it goes on.</p>
   </div>
 </section>
 
@@ -456,7 +469,7 @@ function copperPage() {
     ["16 oz copper", "Sheet copper is specified by weight per square foot. Sixteen-ounce copper to ASTM B370 is stiff enough to hold its shape and heavy enough to outlast the roof."],
     ["Formed for the condition", "Every piece is shaped for the detail it serves, and matched to the original where the house is historic, not pulled from stock shapes."],
     ["Soldered, not sealed", "Joints are soldered, so the seal is metal to metal rather than a sealant that dries out."],
-    ["Lead-coated copper", "Where a soft gray finish suits the house better than a copper patina."],
+    ["Lead-coated copper", "Where a soft gray finish suits the house better than a copper patina, or where runoff from bright copper would stain light stone or stucco."],
   ];
   const partners = [
     ["materials/natural-slate", "Natural slate", "Copper valleys, step flashing and nails beneath Spanish and Vermont slate."],
@@ -494,6 +507,18 @@ function copperPage() {
   </div>
 </section>
 
+<section class="mp-section mp-section-cream mp-move">
+  <h2 class="mp-statement-h">Copper has to be built to move</h2>
+  <p class="mp-move-intro">Copper grows and shrinks with every change in temperature. A ten-foot length moves about an eighth of an inch between a cold morning and a summer afternoon, and a Texas roof sees swings like that all year. Copper that cannot move cracks at its fasteners and seams, one of the most common reasons a copper roof fails early.</p>
+  <ol class="mp-reasons">${[
+    ["Held by cleats, not nailed through", "Copper clips folded into the seams hold each sheet down while letting it slide. A nail driven through the metal pins it in place, and the copper fatigues around it."],
+    ["Room at the joints", "Long runs, gutters and flat-seam roofs get expansion joints, so the movement has somewhere to go instead of tearing a seam."],
+    ["Seams that lock, then solder", "On flat-seam work, panels lock into each other before they are soldered, so the joint carries the load and the solder only seals it."],
+  ].map(([h, p], i) => `
+    <li><span class="mp-reason-num">0${i + 1}</span><h3>${h}</h3><p>${p}</p></li>`).join("")}
+  </ol>
+</section>
+
 <section class="mp-section">
   ${head("Copper With Every Partner", "The field changes. <em>The case for copper does not.</em>")}
   <div class="mp-partner-links">${partners.map(([href, h, p]) => `
@@ -509,7 +534,7 @@ function copperPage() {
     <div class="mp-patina" aria-label="How copper weathers over time">
       <div class="mp-patina-row"><span style="background:#c8834f"></span><span style="background:#94573a"></span><span style="background:#5b4235"></span><span style="background:#5f8a78"></span></div>
       <div class="mp-patina-labels"><span>New</span><span>Months</span><span>Years</span><span>Decades</span></div>
-      <p class="mp-note">Copper weathers from bright metal through brown to the green patina of historic roofs, a protective layer that forms on its own.</p>
+      <p class="mp-note">Copper weathers from bright metal through brown toward green, a protective layer that forms on its own. In the dry inland air of Dallas–Fort Worth that last step is slow: expect a brown roof for many years, and green that may come in only partly. Pre-patinated copper is available for owners who want the green from the start.</p>
     </div>
   </div>
   <figure class="mp-arch-photo">
@@ -604,6 +629,7 @@ function ludowiciPage() {
     ["Matching the original roof", "Ludowici has made clay tile in Ohio for well over a century, and can remake its own historic molds. When a roof needs repair, the new tile can match the old."],
     ["Recreating lost profiles", "Heinz, Mound City, Cincinnati and Mineral Wells tile are no longer made. Ludowici can match profiles like these, so a historic roof keeps its character."],
     ["Built for a century", "Dense, kiln-fired clay that does not fade, burn or rot. Installed and flashed correctly, a Ludowici roof lasts a century or more."],
+    ["Clay that fires hard and true", "New Lexington sits on Ohio underclay that is rich in kaolinite and low in iron. It fires harder than ordinary surface clay, and glazes come out cleaner and truer. Ludowici still digs its clay a few miles from the plant, and by 1910 Ohio made about a third of the roofing tile in the country."],
   ];
   const profileList = [
     ["Spanish", "The classic S-curve barrel."],
@@ -630,7 +656,7 @@ function ludowiciPage() {
 </section>
 
 <section class="mp-section mp-section-cream">
-  <h2 class="mp-statement-h">Three reasons we reach for Ludowici</h2>
+  <h2 class="mp-statement-h">Four reasons we reach for Ludowici</h2>
   <ol class="mp-reasons">${why.map(([h, p], i) => `
     <li><span class="mp-reason-num">0${i + 1}</span><h3>${h}</h3><p>${p}</p></li>`).join("")}
   </ol>
