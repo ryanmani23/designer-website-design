@@ -1,6 +1,7 @@
 ---
 slug: mineral-wells-tile-history
-image: assets/projects/flower-mound-s-tile/01.webp
+image: assets/blog/st-johns-fort-worth-roof.webp
+imagePosition: center 40%
 title: "A Brief History of Mineral Wells Tile"
 tag: Heritage
 date: 2026-08-17

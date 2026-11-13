@@ -1,6 +1,7 @@
 ---
 slug: mound-city-roofing-tile-history
-image: assets/projects/dallas-parish-clay/01.webp
+image: assets/projects/st-louis-la-escandella-tile/02.webp
+imagePosition: center 45%
 title: "A Brief History of Mound City Roofing Tile"
 tag: Heritage
 date: 2026-08-24

@@ -1,6 +1,6 @@
 ---
 slug: heinz-roofing-tile-history
-image: assets/projects/estate-clay-tile/01.webp
+image: assets/projects/flower-mound-s-tile/01.webp
 title: "A Brief History of Heinz Roofing Tile"
 tag: Heritage
 date: 2026-09-10
