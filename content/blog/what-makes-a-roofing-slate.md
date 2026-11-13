@@ -1,5 +1,4 @@
 ---
-draft: true
 slug: what-makes-a-roofing-slate
 image: assets/projects/university-park-galcar-slate/01.webp
 imagePosition: center 20%

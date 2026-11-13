@@ -46,6 +46,27 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://prioritydesigner.com/materials/ludowici</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prioritydesigner.com/materials/la-escandella</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prioritydesigner.com/materials/brava</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://prioritydesigner.com/blog/what-makes-a-roofing-slate</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://prioritydesigner.com/blog/do-slate-roofs-really-last-100-years</loc>
     <lastmod>2026-11-06</lastmod>
     <changefreq>yearly</changefreq>
