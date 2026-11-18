@@ -472,8 +472,8 @@ ${moreMaterials("natural-slate")}`;
     heroMobile: "assets/materials/quarry/quarry-canyon-mobile.webp",
     crumb: "Natural Slate",
     eyebrow: "Slate Valley Supply · Be Natural",
-    h1: "Slate isn’t manufactured. <em>It’s farmed.</em>",
-    sub: "Choosing the slate matters almost as much as its rating. Our partners live where the quarries are, and every order is selected at the quarry before it ships.",
+    h1: "Slate is a natural resource, <em>still cut and split by hand.</em>",
+    sub: "Slate is one of the few roofing materials still taken straight from the ground, almost entirely untouched aside from being cut and split. Our partners live where the quarries are, and every order is picked out at the quarry before it ships.",
     body,
     extraJs: SLATE_JS,
   });
