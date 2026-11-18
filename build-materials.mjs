@@ -244,6 +244,7 @@ const head = (eyebrow, h2, right = "") => `
 // plain back/next link row, Ryan 2026-11-13).
 const MATERIAL_PAGES = [
   { slug: "natural-slate", kind: "Stone", name: "Natural Slate", line: "Spanish, Vermont and New York slate", image: "assets/materials/quarry/quarry-canyon.webp", pos: "center 60%" },
+  { slug: "lightweight-slate", kind: "Stone", name: "Lightweight Slate", line: "Real S1 slate at a fraction of the weight", image: "assets/materials/lightweight/hero.webp", pos: "center 40%" },
   { slug: "ludowici", kind: "Clay Tile", name: "Ludowici", line: "America's oldest clay roof tile", image: "assets/projects/holy-trinity-clay/01.webp", pos: "center 70%" },
   { slug: "la-escandella", kind: "Clay Tile", name: "La Escandella", line: "Mediterranean clay tile from Spain", image: "assets/projects/st-louis-central-west-end-clay/02.webp", pos: "center 45%" },
   { slug: "brava", kind: "Composite", name: "Brava", line: "The synthetic we install and stand behind", image: "assets/projects/nichols-hills-brava-slate/04.webp", pos: "center" },
@@ -1014,11 +1015,230 @@ ${moreMaterials("brava")}`;
   });
 }
 
+
+// ---------------------------------------------------------------------------
+// Lightweight Slate (Jack, 2026-11-18: "can pretty much look like the attachment",
+// his 4-page Lightweight Slate brochure). Copy, figures, diagrams and photos are
+// from that brochure; diagrams/photos extracted to assets/materials/lightweight/.
+// ---------------------------------------------------------------------------
+const dots = (n) => `<span class="mp-dots" aria-label="${n} of 5">${[1,2,3,4,5].map((i) => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</span>`;
+
+function lightweightSlatePage() {
+  const fit = [
+    ["Buildings not engineered for full-weight slate", "Homes never framed to carry a traditional slate roof can still have real stone, often with little or no added structure."],
+    ["An upgrade from lesser roofs", "A step up from asphalt shingle, cedar shake or synthetic slate to a roof of natural stone."],
+    ["A lighter load for long-standing slate roofs", "Buildings that have carried heavy slate for decades can move to a lighter load and protect the structure."],
+  ];
+  const specs = [
+    ["Slate length", "12 in. or 14 in."],
+    ["Exposure (12 in. slate)", "8 in."],
+    ["Overlap", "4 in."],
+    ["Fastening", "2 slating nails per slate"],
+    ["Interlayment", "21 in. HDPE, every course"],
+    ["1/4 to 3/8 in. slate", "under 6 lb / sq ft"],
+    ["3/8 to 1/2 in. slate", "under 9 lb / sq ft"],
+  ];
+  const pieces = [["12 × 6", 300, "14 × 7", 206], ["12 × 7", 257, "14 × 8", 180], ["12 × 8", 225, "14 × 9", 160], ["12 × 9", 200, "14 × 10", 144], ["12 × 10", 180, "14 × 11", 131], ["12 × 11", 164, "14 × 12", 120], ["12 × 12", 150, "", ""]];
+  const ratings = [
+    ["Hail · FM 4473", "Class 3 to Class 4", "Class 3 for 1/4 to 3/8 in. slate; Class 4 for 3/8 to 1/2 in. Some insurers discount premiums at these ratings."],
+    ["Wind-driven rain · TAS 100(A)", "Passed at 110 mph", "Tested to the Miami-Dade wind-driven rain protocol."],
+    ["Fire · UL 790", "Class A", "The highest fire rating available, for 1/4 in. natural slate."],
+  ];
+  const rocks = [
+    { name: "Metalutite", abs: 5, flex: 2, sheen: 1, cleave: "Irregular, weak", ex: '<span class="mp-rock-no">Most Brazilian “slate.”</span> Not installed by Priority.' },
+    { name: "Slate", abs: 3, flex: 5, sheen: 2, cleave: "Thin, flat, even", ex: "Galcar®, Franvisa®, Vermont", on: true },
+    { name: "Phyllite", abs: 2, flex: 4, sheen: 4, cleave: "Good, lustrous", ex: "Sierra and Lugo", on: true },
+    { name: "Mica schist", abs: 1, flex: 2, sheen: 5, cleave: "Thick, flaky", ex: "Not a roofing stone" },
+  ];
+  const minerals = [["Muscovite mica", 35, "#1a2233"], ["Chlorite", 30, "#4f6b5c"], ["Quartz", 25, "#c9a660"], ["Feldspar", 8, "#8a5a2b"], ["Accessory", 2, "#a9adb5"]];
+  const colors = [
+    ["#3b3f47", "Black-gray", "Deposited where the sea floor had no oxygen; carbon and iron sulfides darken the stone."],
+    ["#6d8a6d", "Green", "Chlorite-rich clay with little oxygen; iron stays in reduced form."],
+    ["#7a3d4b", "Red-purple", "Oxygen-rich water oxidized the iron into hematite."],
+  ];
+  const roofs = [
+    ["galcar-dallas", "Clipped Galcar® with copper, Dallas, TX"],
+    ["vermont-black-nichols-hills", "Vermont Black, Nichols Hills, OK"],
+    ["lightweight-dallas", "Lightweight slate, Dallas, TX"],
+  ];
+  const fibers = (aligned) => {
+    let out = "";
+    for (let i = 0; i < 26; i++) {
+      const x = 22 + ((i * 37) % 76), y = 22 + ((i * 53) % 76);
+      if (aligned) out += `<line x1="${18 + (i % 4) * 22}" y1="${24 + Math.floor(i / 4) * 11}" x2="${34 + (i % 4) * 22}" y2="${24 + Math.floor(i / 4) * 11}"/>`;
+      else { const a = (i * 47) % 180 * Math.PI / 180; out += `<line x1="${x}" y1="${y}" x2="${(x + 9 * Math.cos(a)).toFixed(1)}" y2="${(y + 9 * Math.sin(a)).toFixed(1)}"/>`; }
+    }
+    return out;
+  };
+  const body = `
+<section class="mp-section mp-lw-intro">
+  <div class="mp-lw-intro-text">
+    <span class="eyebrow mp-eyebrow">Still a Natural Slate Roof</span>
+    <h2 class="mp-h2">Real stone, <em>on a lighter system.</em></h2>
+    <p>A lightweight slate roof is still a natural slate roof. Every piece is quarried, split and trimmed stone of the highest ASTM grade, laid with a 4-inch overlap over an HDPE interlayment instead of the traditional 10½-inch overlap. From the street it reads as traditional slate. On the rafters it weighs roughly a third less.</p>
+    <ul class="mp-lw-chips"><li>ASTM C406 S1</li><li>35–40% lighter</li><li>Spanish &amp; Vermont stone</li></ul>
+  </div>
+  <div class="mp-lw-fit">
+    <span class="mp-label">Perfect for</span>${fit.map(([h, p]) => `
+    <div class="mp-lw-fit-item"><h3>${h}</h3><p>${p}</p></div>`).join("")}
+  </div>
+</section>
+
+<section class="mp-section mp-section-cream">
+  <span class="eyebrow mp-eyebrow mp-center-eyebrow">The System</span>
+  <h2 class="mp-statement-h">How lightweight slate works</h2>
+  <p class="mp-move-intro">Traditional slate gives three layers of protection: each course is covered by the 7½ in. exposure of the second course and the 3 in. headlap of the third. Lightweight slate gives you the same coverage with an HDPE interlayment between courses that does the work of the traditional headlap.</p>
+  <div class="mp-lw-compare">
+    <figure class="mp-lw-panel">
+      <span class="mp-label">Traditional slate</span>
+      <img src="assets/materials/lightweight/traditional.webp" alt="Traditional slate: 18 in. slates at 7.5 in. exposure with a 10.5 in. overlap" width="1039" height="600" loading="lazy" />
+      <strong>Over 9 lb per sq ft*</strong>
+      <p>Three layers at every point: the course itself, the exposure of the course above, and the 3 in. headlap of the course above that.</p>
+    </figure>
+    <figure class="mp-lw-panel is-light">
+      <span class="mp-label">Lightweight slate</span>
+      <img src="assets/materials/lightweight/lightweight.webp" alt="Lightweight slate: 12 in. slates at 8 in. exposure with a 4 in. overlap over HDPE interlayment" width="1039" height="600" loading="lazy" />
+      <strong>Under 6 lb per sq ft*</strong>
+      <p>Shorter slates at a single overlap, with a 21 in. HDPE interlayment under every course in place of the headlap: a 35 to 40% lighter roof.</p>
+    </figure>
+  </div>
+  <p class="mp-note mp-center">*Typical for 1/4 to 3/8 in. slate. Actual weight depends on slate thickness and size. Illustrations are simplified.</p>
+</section>
+
+<section class="mp-section mp-lw-specs">
+  <div class="mp-lw-tables">
+    <div>
+      <h3 class="mp-lw-th">System specifications</h3>
+      <table class="mp-lw-table"><tbody>${specs.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("")}</tbody></table>
+    </div>
+    <div>
+      <h3 class="mp-lw-th">Pieces per square</h3>
+      <table class="mp-lw-table mp-lw-pcs"><thead><tr><th>Size (in.)</th><th>Pcs</th><th>Size (in.)</th><th>Pcs</th></tr></thead><tbody>${pieces.map(([a, b, c, d]) => `<tr><td>${a}</td><td>${b}</td><td>${c}</td><td>${d}</td></tr>`).join("")}</tbody></table>
+    </div>
+  </div>
+</section>
+
+<section class="mp-section mp-section-dark mp-lw-ratings">
+  <ul>${ratings.map(([k, h, p]) => `
+    <li><span class="mp-label">${k}</span><strong>${h}</strong><span>${p}</span></li>`).join("")}
+  </ul>
+</section>
+
+<section class="mp-section mp-section-cream mp-lw-stone">
+  <span class="eyebrow mp-eyebrow mp-center-eyebrow">The Stone</span>
+  <h2 class="mp-statement-h">What makes slate, slate</h2>
+  <p class="mp-move-intro">Roofing slate starts as clay mud on an ancient sea floor. Buried and squeezed at low temperature and pressure, its clay minerals recrystallize and line up. That alignment, called slaty cleavage, is what lets the stone split into thin, flat, durable sheets.</p>
+  <div class="mp-lw-meta" aria-label="Metamorphism: heat and pressure turn shale into slate">
+    <div class="mp-lw-rock"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="c"/><g class="f">${fibers(false)}</g></svg><span><strong>Shale / lutite</strong>Loosely packed clay minerals, laid down as sea-floor mud</span></div>
+    <div class="mp-lw-arrow"><svg viewBox="0 0 164 14" aria-hidden="true"><path d="M2 7 H158 M150 1 L160 7 L150 13"/></svg><span>Metamorphism: heat &amp; pressure</span></div>
+    <div class="mp-lw-rock is-slate"><span><strong>Slate</strong>Tightly packed, aligned chlorite and mica: slaty cleavage</span><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" class="c"/><g class="f a">${fibers(true)}</g></svg></div>
+  </div>
+
+  <h3 class="mp-lw-sub">Not every “slate” is slate</h3>
+  <p class="mp-lw-subp">The intensity of metamorphism decides what the rock becomes. Too little and the clay never fully aligns; too much and the crystals grow large and brittle. True slate sits at the optimum. Priority installs only the shaded stones.</p>
+  <div class="mp-lw-rocks-scroll">
+    <table class="mp-lw-rocks">
+      <thead><tr><th></th>${rocks.map((r) => `<th class="${r.on ? "on" : ""}">${r.name}</th>`).join("")}</tr></thead>
+      <tbody>
+        <tr><td>Water absorption</td>${rocks.map((r) => `<td class="${r.on ? "on" : ""}">${dots(r.abs)}</td>`).join("")}</tr>
+        <tr><td>Flexural strength</td>${rocks.map((r) => `<td class="${r.on ? "on" : ""}">${dots(r.flex)}</td>`).join("")}</tr>
+        <tr><td>Sheen</td>${rocks.map((r) => `<td class="${r.on ? "on" : ""}">${dots(r.sheen)}</td>`).join("")}</tr>
+        <tr><td>Cleavage / splitting</td>${rocks.map((r) => `<td class="${r.on ? "on" : ""}">${r.cleave}</td>`).join("")}</tr>
+        <tr><td>Examples</td>${rocks.map((r) => `<td class="${r.on ? "on" : ""}">${r.ex}</td>`).join("")}</tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mp-note">Relative comparison along the metamorphic scale (more dots = more of the property; for water absorption, fewer is better). Not test values for any individual quarry.</p>
+
+  <div class="mp-lw-two">
+    <div>
+      <h3 class="mp-lw-sub">Grain that works like rebar</h3>
+      <p class="mp-lw-subp">Where the original bedding planes (S0) cross the cleavage planes (S1), good slate develops a grain the Spanish quarries call <em>hebra</em>. It acts like reinforcing bar in concrete and greatly raises bending strength.</p>
+      <div class="mp-lw-hebra">
+        <figure><svg viewBox="0 0 200 70" aria-hidden="true"><path d="M100 4 v14 m-5 -5 l5 5 l5 -5" class="ar"/><rect x="10" y="26" width="180" height="22" class="pl"/><path d="M100 26 l-4 6 l5 5 l-4 6 l3 5" class="cr"/></svg><figcaption>No grain: cracks through</figcaption></figure>
+        <figure><svg viewBox="0 0 200 70" aria-hidden="true"><path d="M100 4 v14 m-5 -5 l5 5 l5 -5" class="ar"/><path d="M10 26 Q100 40 190 26 L190 48 Q100 62 10 48 Z" class="pl dk"/><path d="M18 33 Q100 46 182 33 M18 38 Q100 51 182 38 M18 43 Q100 56 182 43" class="gr"/></svg><figcaption>Hebra: grain carries the load</figcaption></figure>
+      </div>
+    </div>
+    <div>
+      <h3 class="mp-lw-sub">What it’s made of</h3>
+      <p class="mp-lw-subp">Typical roofing slate composition. These minerals are stable in normal weather; the small accessory fraction is why quarry selection matters.</p>
+      <div class="mp-lw-bar">${minerals.map(([n, v, c]) => `<span style="width:${v}%;background:${c}" title="${n} ${v}%"></span>`).join("")}</div>
+      <ul class="mp-lw-legend">${minerals.map(([n, v, c]) => `<li><i style="background:${c}"></i>${n}<b>${v}%</b></li>`).join("")}</ul>
+    </div>
+  </div>
+
+  <h3 class="mp-lw-sub">Color is set on the sea floor</h3>
+  <div class="mp-lw-colors">${colors.map(([c, h, p]) => `
+    <div><span class="mp-lw-swatch" style="background:${c}"></span><div><strong>${h}</strong><p>${p}</p></div></div>`).join("")}
+  </div>
+  <p class="mp-readmore">Read more: <a href="blog/what-makes-a-roofing-slate">What makes a roofing slate</a>.</p>
+</section>
+
+<section class="mp-section mp-lw-std">
+  <span class="eyebrow mp-eyebrow mp-center-eyebrow">The Standard</span>
+  <h2 class="mp-statement-h">S1 natural slate, nothing less</h2>
+  <p class="mp-move-intro">ASTM C406 grades roofing slate by laboratory testing, not appearance. Priority Designer installs only S1, the highest grade, hand-selected from quarries in Spain and Vermont.</p>
+  <div class="mp-lw-std-grid">
+    <div>
+      <h3 class="mp-lw-th">ASTM C406 grades</h3>
+      <ul class="mp-lw-grades">
+        <li class="on"><b>S1</b><span>Expected service life over 75 years</span><em>All we install</em></li>
+        <li><b>S2</b><span>Expected service life 40 to 75 years</span></li>
+        <li><b>S3</b><span>Expected service life 20 to 40 years</span></li>
+      </ul>
+      <span class="mp-label mp-lw-gb">Graded by</span>
+      <table class="mp-lw-table"><tbody><tr><td>Water absorption</td><td>ASTM C121</td></tr><tr><td>Modulus of rupture</td><td>ASTM C120</td></tr><tr><td>Weathering resistance</td><td>ASTM C217</td></tr></tbody></table>
+      <p class="mp-note">In a review of more than 200 EN 12326 technical sheets, Galcar® and Franvisa® slates ranked among the strongest tested for bending strength along the grain.</p>
+    </div>
+    <div class="mp-lw-dont">
+      <span class="mp-label">What we don’t install</span>
+      <h3>If it can’t prove S1, it doesn’t go on your roof.</h3>
+      <ul>
+        <li><strong>Chinese slate</strong></li>
+        <li><strong>Brazilian metalutite</strong><span>Low-grade rock with weak fabric, sold as slate.</span></li>
+        <li><strong>Undocumented stone</strong><span>Any slate without S1 test results and a known quarry.</span></li>
+      </ul>
+      <p>Stone is half the roof. The other half is the slater: even S1 slate fails when it is nailed, lapped or flashed poorly.</p>
+    </div>
+  </div>
+</section>
+
+<section class="mp-section mp-statement mp-lw-only">
+  <p>The only company in Texas able to provide and install <em>Galcar®, Franvisa®, Sierra and Lugo phyllite slate.</em></p>
+  <span class="mp-lw-tm">Galcar® and Franvisa® are registered trademarks of their respective owners.</span>
+</section>
+
+<section class="mp-section mp-section-cream">
+  <span class="eyebrow mp-eyebrow mp-center-eyebrow">On Our Roofs</span>
+  <h2 class="mp-statement-h">Recent lightweight slate roofs</h2>
+  <div class="mp-lw-roofs">${roofs.map(([f, cap]) => `
+    <figure><img src="assets/materials/lightweight/${f}.webp" alt="${esc(cap)}" width="900" height="683" loading="lazy" /><figcaption>${cap}</figcaption></figure>`).join("")}
+  </div>
+</section>
+${band("Wondering whether your house can carry slate?", "We look at the framing and tell you whether it calls for lightweight slate, traditional slate, or a little added structure.")}
+${moreMaterials("lightweight-slate")}`;
+
+  return shell({
+    slug: "lightweight-slate",
+    title: "Lightweight Natural Slate Roofing · S1 Slate, 35–40% Lighter · Priority Designer",
+    description: "Lightweight slate is real ASTM C406 S1 natural slate, Spanish and Vermont stone, laid with a 4 in. overlap over HDPE interlayment: a roof 35 to 40% lighter than traditional slate. Installed by Priority Designer in Dallas–Fort Worth.",
+    heroImage: "assets/materials/lightweight/hero.webp",
+    heroMobile: "assets/materials/lightweight/hero-mobile.webp",
+    heroPos: "center 30%",
+    crumb: "Lightweight Slate",
+    eyebrow: "Lightweight Slate · Natural S1 Stone",
+    h1: "Real S1 slate, <em>at a fraction of the weight.</em>",
+    sub: "Quarried, split and hand-selected natural slate on a lighter system. From the street it reads as traditional slate. On the rafters it weighs roughly a third less.",
+    body,
+  });
+}
+
 // ---------------------------------------------------------------------------
 export async function buildMaterials() {
   await mkdir("materials", { recursive: true });
   const pages = [
     { slug: "natural-slate", html: naturalSlatePage() },
+    { slug: "lightweight-slate", html: lightweightSlatePage() },
     { slug: "copper", html: copperPage() },
     { slug: "ludowici", html: ludowiciPage() },
     { slug: "la-escandella", html: laEscandellaPage() },

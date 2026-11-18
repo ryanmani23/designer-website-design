@@ -923,6 +923,7 @@ const NAV_ITEMS = [
     // sync with NAV_ITEMS in build-blog.mjs (static blog + material pages).
     children: [
       { label: "Natural Slate", desc: "Spanish, Vermont & New York slate", href: "materials/natural-slate" },
+      { label: "Lightweight Slate", desc: "Real S1 slate, 35 to 40% lighter", href: "materials/lightweight-slate" },
       { label: "Ludowici",      desc: "America's oldest clay roof tile", href: "materials/ludowici" },
       { label: "La Escandella", desc: "Mediterranean clay tile from Spain", href: "materials/la-escandella" },
       { label: "Brava",         desc: "The synthetic we stand behind", href: "materials/brava" },
