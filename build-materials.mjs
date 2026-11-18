@@ -481,6 +481,29 @@ ${moreMaterials("natural-slate")}`;
 // ---------------------------------------------------------------------------
 // Copper
 // ---------------------------------------------------------------------------
+const CU_SYSTEMS = [
+  { name: "Standing seam", use: "Sloped roofs", text: "Pans joined by tall, double-locked seams. Copper cleats hidden in the seams hold each pan down and still let it move.",
+    svg: '<line x1="4" y1="62" x2="156" y2="62" class="d"/><path d="M8 56 H72 V22 Q72 14 80 14 Q88 14 88 22 V30"/><path d="M152 56 H78 V24 Q78 20 80 20 Q82 20 82 24"/><path d="M70 56 l-6 6" class="t"/>' },
+  { name: "Batten seam", use: "Sloped roofs, for the look", text: "Each seam wraps a wood batten under a copper cap, giving the roof strong vertical lines. The traditional choice on historic work.",
+    svg: '<line x1="4" y1="62" x2="156" y2="62" class="d"/><rect x="68" y="32" width="24" height="26" class="w"/><path d="M8 56 H64 V30"/><path d="M152 56 H96 V30"/><path d="M60 26 H100 M60 26 V34 M100 26 V34"/>' },
+  { name: "Flat seam", use: "Domes, vaults and low slopes", text: "Small sheets locked on all four sides, then soldered watertight. Used where the slope alone cannot be trusted to shed water.",
+    svg: '<line x1="4" y1="62" x2="156" y2="62" class="d"/><path d="M8 54 H84 Q90 54 90 50 Q90 46 84 46 H76"/><path d="M152 58 H70 Q66 58 66 54 Q66 50 72 50 H80"/><circle cx="90" cy="54" r="3.2" class="s"/>' },
+];
+const CU_SPECS = [
+  ["Purity", "99.9% copper"],
+  ["Standard", "ASTM B370, sheet copper for building construction"],
+  ["Temper", "Cold-rolled: stronger than soft copper, and better at resisting the fatigue of daily expansion and contraction"],
+  ["Soft copper", "Kept for intricate, hand-formed ornament, where the metal has to bend tightly"],
+  ["Tensile strength", "32,000 psi minimum, cold-rolled"],
+  ["Thermal expansion", "0.0000098 in. per in. per °F"],
+];
+const CU_STAGES = [
+  ["#c8834f", "Bright copper", "", "The day it goes on"],
+  ["#94573a", "Cuprite", "Cu<sub>2</sub>O", "Months: a reddish-brown oxide forms"],
+  ["#4f3a2f", "Deep cuprite", "Cu<sub>2</sub>O", "Years: the oxide darkens toward brown-black"],
+  ["#5f8a78", "Brochantite", "Cu<sub>4</sub>SO<sub>4</sub>(OH)<sub>6</sub>", "Decades, faster in wetter climates: the green patina"],
+];
+
 function copperPage() {
   const where = [
     ["Valleys", "Open or closed, where the most water on the roof runs."],
@@ -489,12 +512,6 @@ function copperPage() {
     ["Penetrations", "Copper jacks in place of plastic boots that crack over a hot deck."],
     ["Drip edge and eaves", "The edge that carries water off the roof and into the gutter."],
     ["Gutters and downspouts", "Half-round and box gutters, conductor heads and leaders."],
-  ];
-  const standard = [
-    ["16 oz copper", "Sheet copper is specified by weight per square foot. Sixteen-ounce copper to ASTM B370 is stiff enough to hold its shape and heavy enough to outlast the roof."],
-    ["Formed for the condition", "Every piece is shaped for the detail it serves, and matched to the original where the house is historic, not pulled from stock shapes."],
-    ["Soldered, not sealed", "Joints are soldered, so the seal is metal to metal rather than a sealant that dries out."],
-    ["Lead-coated copper", "Where a soft gray finish suits the house better than a copper patina, or where runoff from bright copper would stain light stone or stucco."],
   ];
   const partners = [
     ["materials/natural-slate", "Natural slate", "Copper valleys, step flashing and nails beneath Spanish and Vermont slate."],
@@ -525,14 +542,7 @@ function copperPage() {
   </div>
 </section>
 
-<section class="mp-section mp-section-dark">
-  ${head("Our Standard", "Sixteen-ounce, <em>custom fabricated, soldered</em>", "When we install copper, this is how we build it.")}
-  <div class="mp-standard">${standard.map(([h, p]) => `
-    <div class="mp-std"><h3>${h}</h3><p>${p}</p></div>`).join("")}
-  </div>
-</section>
-
-<section class="mp-section mp-section-cream mp-move">
+<section class="mp-section mp-move">
   <h2 class="mp-statement-h">Copper has to be built to move</h2>
   <p class="mp-move-intro">Copper grows and shrinks with every change in temperature. A ten-foot length moves about an eighth of an inch between a cold morning and a summer afternoon, and a Texas roof sees swings like that all year. Copper that cannot move cracks at its fasteners and seams, one of the most common reasons a copper roof fails early.</p>
   <ol class="mp-reasons">${[
@@ -544,6 +554,49 @@ function copperPage() {
   </ol>
 </section>
 
+<section class="mp-section mp-section-cream mp-cu">
+  <div class="mp-cu-top">
+    <div class="mp-cu-text">
+      <span class="eyebrow mp-eyebrow">Architectural Copper</span>
+      <h2 class="mp-h2">Domes, turrets, finials <em>and flat-seam roofs</em></h2>
+      <p>Beyond flashing, we build copper as a roof of its own: hand-laid domes and turrets, cupolas, finials, bay roofs and awnings in soldered flat-seam copper, and single and double-lock standing seam.</p>
+    </div>
+    <div class="mp-cu-photos">
+      <figure class="mp-cu-ph is-main"><img src="assets/projects/westlake-designer-shingle/01.webp" alt="A hand-formed copper turret on a Westlake estate" loading="lazy" /><figcaption><a href="portfolio?p=westlake-designer-shingle">Copper turret, Westlake →</a></figcaption></figure>
+      <figure class="mp-cu-ph is-inset"><img src="assets/projects/st-louis-central-west-end-clay/04.webp" alt="A copper dormer roof weathered to green, set into clay tile in St. Louis" loading="lazy" /><figcaption><a href="portfolio?p=st-louis-central-west-end-clay">Copper dormer, St. Louis →</a></figcaption></figure>
+    </div>
+  </div>
+
+  <div class="mp-cu-block">
+    <span class="mp-label">Three ways to build a copper roof</span>
+    <div class="mp-cu-systems">${CU_SYSTEMS.map((c) => `
+      <div class="mp-cu-sys">
+        <svg viewBox="0 0 160 72" aria-hidden="true">${c.svg}</svg>
+        <h3>${c.name}</h3>
+        <span class="mp-cu-use">${c.use}</span>
+        <p>${c.text}</p>
+      </div>`).join("")}
+    </div>
+  </div>
+
+  <div class="mp-cu-grid">
+    <div class="mp-cu-metal">
+      <span class="mp-label">The metal</span>
+      <dl>${CU_SPECS.map(([k, v]) => `
+        <div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}
+      </dl>
+      <p class="mp-cu-src">Values from ASTM B370 and the Copper Development Association.</p>
+    </div>
+    <div class="mp-cu-patina">
+      <span class="mp-label">How copper weathers</span>
+      <ol class="mp-cu-stages">${CU_STAGES.map(([sw, name, chem, text]) => `
+        <li><span class="mp-cu-chip" style="background:${sw}"></span><span class="mp-cu-stage"><strong>${name}</strong>${chem ? `<em>${chem}</em>` : ""}<span>${text}</span></span></li>`).join("")}
+      </ol>
+      <p class="mp-note">The green comes from brochantite, a copper sulfate that grows on the brown oxide layer and protects the metal under it. In the dry inland air of Dallas–Fort Worth that last step is slow: expect a brown roof for many years, and green that may come in only partly. Pre-patinated copper is available for owners who want the green from the start.</p>
+    </div>
+  </div>
+</section>
+
 <section class="mp-section">
   ${head("Copper With Every Partner", "The field changes. <em>The case for copper does not.</em>")}
   <div class="mp-partner-links">${partners.map(([href, h, p]) => `
@@ -551,22 +604,7 @@ function copperPage() {
   </div>
 </section>
 
-<section class="mp-section mp-section-cream mp-arch">
-  <div class="mp-arch-text">
-    <span class="eyebrow mp-eyebrow">Architectural Copper</span>
-    <h2 class="mp-h2">Domes, turrets, finials <em>and flat-seam roofs</em></h2>
-    <p>Beyond flashing, we build copper as a roof of its own: hand-laid domes and turrets, cupolas, finials, bay roofs and awnings in soldered flat-seam copper, and single and double-lock standing seam.</p>
-    <div class="mp-patina" aria-label="How copper weathers over time">
-      <div class="mp-patina-row"><span style="background:#c8834f"></span><span style="background:#94573a"></span><span style="background:#5b4235"></span><span style="background:#5f8a78"></span></div>
-      <div class="mp-patina-labels"><span>New</span><span>Months</span><span>Years</span><span>Decades</span></div>
-      <p class="mp-note">Copper weathers from bright metal through brown toward green, a protective layer that forms on its own. In the dry inland air of Dallas–Fort Worth that last step is slow: expect a brown roof for many years, and green that may come in only partly. Pre-patinated copper is available for owners who want the green from the start.</p>
-    </div>
-  </div>
-  <figure class="mp-arch-photo">
-    <img src="assets/projects/westlake-designer-shingle/01.webp" alt="A hand-formed copper turret on a Westlake estate" loading="lazy" />
-    <figcaption><a href="portfolio?p=westlake-designer-shingle">Copper turret, Westlake →</a></figcaption>
-  </figure>
-</section>
+
 
 <section class="mp-band">
   <div class="mp-band-inner">

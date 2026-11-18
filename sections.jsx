@@ -717,35 +717,37 @@ function ManufacturerCell({ m, index }) {
 // meet, the way copper flashing sits where every roof plane meets. Desktop:
 // absolutely centred over the 2x2 grid. Phones: its own row between cards 2 & 3
 // (it is rendered in that DOM position for exactly this reason).
-function CopperMedallion() {
-  // Seal design (Ryan, 2026-11-11): copper center, patina ring, and ring text
-  // that turns slowly (stops for prefers-reduced-motion).
+function CopperMedallion({ photo = "cap" }) {
+  // Seal design (Ryan, 2026-11-11), reworked for Jack (2026-11-18): no "16 oz",
+  // a photo of our own copper work in the center, ring text that turns slowly
+  // (stops for prefers-reduced-motion). Photos: assets/materials/copper-badge/.
   return (
     <a className="mat-medallion" href="materials/copper" aria-label="Copper: the thread through every roof">
       <svg viewBox="0 0 300 300" aria-hidden="true">
         <defs>
-          <radialGradient id="cs-cu" cx="36%" cy="30%" r="78%">
-            <stop offset="0" stopColor="#dc9a66" />
+          <linearGradient id="cs-cu" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#e0a06c" />
             <stop offset=".5" stopColor="#b06a3b" />
-            <stop offset="1" stopColor="#83491f" />
-          </radialGradient>
-          <path id="cs-ring" d="M150,150 m-117,0 a117,117 0 1,1 234,0 a117,117 0 1,1 -234,0" />
+            <stop offset="1" stopColor="#7d4420" />
+          </linearGradient>
+          <clipPath id="cs-photo"><circle cx="150" cy="150" r="98" /></clipPath>
+          <path id="cs-ring" d="M150,150 m-118,0 a118,118 0 1,1 236,0 a118,118 0 1,1 -236,0" />
         </defs>
         <circle cx="150" cy="150" r="147" fill="#f5f2ec" stroke="#5f8a78" strokeWidth="2.5" />
         <circle cx="150" cy="150" r="139" fill="none" stroke="#b06a3b" strokeWidth=".8" />
-        <circle cx="150" cy="150" r="100" fill="none" stroke="#b06a3b" strokeWidth=".8" />
         <g className="cs-spin">
-          <text fontFamily="Cormorant SC, serif" fontSize="15.5" fontWeight="500" fill="#a0622a" letterSpacing="3">
-            <textPath href="#cs-ring" textLength="728" lengthAdjust="spacing">Sixteen ounce copper ✦ Formed for the condition ✦ Soldered, not sealed ✦</textPath>
+          <text fontFamily="Cormorant SC, serif" fontSize="14.5" fontWeight="500" fill="#a0622a" letterSpacing="2">
+            <textPath href="#cs-ring" textLength="735" lengthAdjust="spacing">Formed for the condition ✦ Soldered, not sealed ✦ The thread through every roof ✦</textPath>
           </text>
         </g>
-        <circle cx="150" cy="150" r="92" fill="url(#cs-cu)" />
-        <circle cx="150" cy="150" r="84" fill="none" stroke="rgba(245,242,236,.5)" strokeWidth="1" />
-        <text x="150" y="104" textAnchor="middle" fontFamily="Cormorant SC, serif" fontSize="11" letterSpacing="4" fill="rgba(245,242,236,.9)">16 OZ</text>
-        <path d="M112 152 L150 122 L188 152" fill="none" stroke="#f5f2ec" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-        <path d="M124 152 L150 132 L176 152" fill="none" stroke="rgba(245,242,236,.55)" strokeWidth="1" strokeLinejoin="round" />
-        <text x="150" y="186" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontSize="34" fill="#f5f2ec">Copper</text>
-        <text x="150" y="206" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontStyle="italic" fontSize="10.5" fill="rgba(245,242,236,.85)">the thread through every roof</text>
+        <g clipPath="url(#cs-photo)">
+          <image href={`assets/materials/copper-badge/${photo}.webp`} x="48" y="38" width="204" height="204" preserveAspectRatio="xMidYMid slice" />
+          <rect x="40" y="203" width="220" height="50" fill="url(#cs-cu)" opacity=".95" />
+          <line x1="40" y1="203" x2="260" y2="203" stroke="rgba(245,242,236,.55)" strokeWidth="1" />
+        </g>
+        <circle cx="150" cy="150" r="98" fill="none" stroke="url(#cs-cu)" strokeWidth="5" />
+        <circle cx="150" cy="150" r="104" fill="none" stroke="#b06a3b" strokeWidth=".8" />
+        <text x="150" y="229" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontSize="22" fill="#f5f2ec" letterSpacing=".5">Copper</text>
       </svg>
     </a>);
 }

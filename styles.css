@@ -5559,6 +5559,52 @@ a.mp-choose-card:hover { background: var(--cream-100); }
   .mp-profile-list { grid-template-columns: 1fr; }
 }
 
+/* Copper page: Architectural Copper, technical rebuild (Jack, 2026-11-18) */
+.mp-cu-top { display: grid; grid-template-columns: minmax(0,0.95fr) minmax(0,1.15fr); gap: clamp(36px,5vw,80px); align-items: center; max-width: 1280px; margin: 0 auto; }
+.mp-cu-photos { position: relative; padding-bottom: 70px; }
+.mp-cu-ph { margin: 0; position: relative; border-radius: 3px; overflow: hidden; box-shadow: 0 24px 50px -28px rgba(13,28,48,0.5); }
+.mp-cu-ph img { display: block; width: 100%; object-fit: cover; }
+.mp-cu-ph.is-main img { aspect-ratio: 4 / 3; }
+.mp-cu-ph.is-inset { position: absolute; left: -36px; bottom: 0; width: 42%; border: 6px solid var(--cream-50); }
+.mp-cu-ph.is-inset img { aspect-ratio: 1 / 1; object-position: center 35%; }
+.mp-cu-ph figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 14px; font-family: var(--sans); font-size: 12px; background: linear-gradient(to top, rgba(10,10,10,0.72), rgba(10,10,10,0)); }
+.mp-cu-ph.is-main figcaption { text-align: right; }
+.mp-cu-ph figcaption a { color: var(--cream-50); }
+.mp-cu-block { max-width: 1280px; margin: clamp(56px,8vh,88px) auto 0; padding-top: 32px; border-top: 1px solid rgba(26,24,20,0.12); }
+.mp-cu-systems { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 20px; margin-top: 18px; }
+.mp-cu-sys { background: var(--white); padding: 26px 26px 28px; border-radius: 3px; }
+.mp-cu-sys svg { display: block; width: 100%; max-width: 220px; height: auto; margin: 0 0 18px; fill: none; stroke: var(--copper-500); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.mp-cu-sys svg .d { stroke: rgba(26,24,20,0.35); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.mp-cu-sys svg .w { fill: #c9a77c; stroke: #8a6a45; stroke-width: 1.2; }
+.mp-cu-sys svg .t { stroke: rgba(26,24,20,0.5); stroke-width: 1.5; }
+.mp-cu-sys svg .s { fill: #9aa3a6; stroke: none; }
+.mp-cu-sys h3 { font-family: var(--serif); font-weight: 500; font-size: 26px; margin: 0; }
+.mp-cu-use { display: block; font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--copper-600); margin: 6px 0 10px; }
+.mp-cu-sys p { font-family: var(--sans) !important; font-size: 15px !important; line-height: 1.6 !important; color: rgba(26,24,20,0.75); margin: 0 !important; }
+.mp-cu-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; max-width: 1280px; margin: 20px auto 0; }
+.mp-cu-metal { background: var(--navy-900); color: var(--cream-50); padding: clamp(26px,3vw,40px); border-radius: 3px; }
+.mp-cu-metal .mp-label { color: var(--copper-400); }
+.mp-cu-metal dl { margin: 14px 0 0; }
+.mp-cu-metal dl div { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 16px; padding: 12px 0; border-top: 1px solid rgba(232,196,154,0.22); }
+.mp-cu-metal dt { font-family: var(--serif); font-size: 18px; color: var(--copper-300); }
+.mp-cu-metal dd { margin: 0; font-family: var(--sans); font-size: 14.5px; line-height: 1.55; color: rgba(244,239,230,0.85); }
+.mp-cu-src { font-family: var(--sans) !important; font-size: 12px !important; color: rgba(244,239,230,0.5); margin: 14px 0 0 !important; }
+.mp-cu-patina { background: var(--white); padding: clamp(26px,3vw,40px); border-radius: 3px; }
+.mp-cu-stages { list-style: none; margin: 16px 0 6px; padding: 0; display: flex; flex-direction: column; }
+.mp-cu-stages li { display: grid; grid-template-columns: 54px minmax(0,1fr); gap: 16px; align-items: center; padding: 10px 0; position: relative; }
+.mp-cu-stages li + li::before { content: ""; position: absolute; left: 26px; top: -10px; height: 20px; width: 1px; background: rgba(26,24,20,0.2); }
+.mp-cu-chip { width: 54px; height: 54px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08), 0 6px 14px -8px rgba(0,0,0,0.4); }
+.mp-cu-stage { display: flex; flex-direction: column; gap: 1px; }
+.mp-cu-stage strong { font-family: var(--serif); font-weight: 500; font-size: 20px; }
+.mp-cu-stage em { font-style: normal; font-family: var(--sans); font-size: 12px; color: var(--copper-600); letter-spacing: 0.04em; }
+.mp-cu-stage span { font-family: var(--sans); font-size: 14px; color: rgba(26,24,20,0.68); }
+@media (max-width: 1100px) { .mp-cu-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .mp-cu-top, .mp-cu-systems { grid-template-columns: 1fr; }
+  .mp-cu-ph.is-inset { left: 12px; width: 46%; }
+  .mp-cu-metal dl div { grid-template-columns: 1fr; gap: 2px; }
+}
+
 /* Keep exploring: other material pages as photo cards */
 .mp-explore { padding: clamp(56px,9vh,96px) clamp(20px,6vw,80px); background: var(--white); }
 .mp-explore-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 32px; max-width: 1280px; margin: 0 auto 28px; }
