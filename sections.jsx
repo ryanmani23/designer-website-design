@@ -1640,7 +1640,11 @@ function Footer() {
         <div className="footer-line">
           © 2026 PRIORITY DESIGNER · SLATE & TILE · LICENSED · BONDED · INSURED
         </div>
-        <a className="footer-privacy" href="privacy.html">Privacy</a>
+        <div className="footer-bottom-links">
+          <a className="footer-privacy" href="https://priorityroofs.com/">A Priority Roofing company</a>
+          <span className="footer-bottom-dot" aria-hidden="true">·</span>
+          <a className="footer-privacy" href="privacy.html">Privacy</a>
+        </div>
       </div>
     </footer>);
 

@@ -1779,6 +1779,8 @@ img { display: block; max-width: 100%; }
   transition: opacity 160ms ease, color 160ms ease;
 }
 .footer-privacy:hover { opacity: 1; color: var(--copper-600); }
+.footer-bottom-links { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.footer-bottom-dot { color: var(--navy-900); opacity: 0.4; font-size: 12px; }
 
 @media (max-width: 900px) {
   .footer { padding: 48px 28px 24px; }

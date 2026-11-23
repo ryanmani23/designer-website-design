@@ -171,7 +171,11 @@ export function footerMarkup() {
   </div>
   <div class="footer-bottom">
     <div class="footer-line">© 2026 PRIORITY DESIGNER · SLATE &amp; TILE · LICENSED · BONDED · INSURED</div>
-    <a class="footer-privacy" href="privacy.html">Privacy</a>
+    <div class="footer-bottom-links">
+      <a class="footer-privacy" href="https://priorityroofs.com/">A Priority Roofing company</a>
+      <span class="footer-bottom-dot" aria-hidden="true">·</span>
+      <a class="footer-privacy" href="privacy.html">Privacy</a>
+    </div>
   </div>
 </footer>`;
 }
