@@ -1652,7 +1652,7 @@ function Footer() {
 
 }
 
-function PageHero({ title, eyebrow, sub, image }) {
+function PageHero({ title, eyebrow, sub, image, imagePosition }) {
   // Subpages never mount the home Hero, but :root sets --hero-inset to 28px
   // (used by Hero's framed-edge animation). On subpages we need it at 0 so
   // the nav doesn't render with a 28px gap above it.
@@ -1666,7 +1666,7 @@ function PageHero({ title, eyebrow, sub, image }) {
     };
   }, []);
   return (
-    <section className="page-hero" data-nav-theme="dark" style={image ? { backgroundImage: `url("${image}")` } : {}}>
+    <section className="page-hero" data-nav-theme="dark" style={image ? { backgroundImage: `url("${image}")`, ...(imagePosition ? { backgroundPosition: imagePosition } : {}) } : {}}>
       {image && <div className="page-hero-img-scrim" />}
       <div className="page-hero-inner">
         {eyebrow && <span className="page-hero-eyebrow eyebrow">{eyebrow}</span>}

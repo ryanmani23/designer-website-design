@@ -623,8 +623,8 @@ ${moreMaterials("copper")}`;
 
   return shell({
     slug: "copper",
-    title: "Copper Roofing & Flashing · 16 oz Copper · Priority Designer",
-    description: "Why copper belongs on every slate and tile roof: 16 oz copper valleys, flashing, crickets, gutters, domes and turrets, soldered and formed for each condition, from Priority Designer in Dallas–Fort Worth.",
+    title: "Copper Roofing & Flashing · Priority Designer",
+    description: "Why copper belongs on every slate and tile roof: copper valleys, flashing, crickets, gutters, domes and turrets, soldered and formed for each condition, from Priority Designer in Dallas–Fort Worth.",
     heroImage: "assets/projects/highland-park-variegated-slate-copper/02.webp",
     heroPos: "center 40%",
     crumb: "Copper",

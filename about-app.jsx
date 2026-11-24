@@ -1,17 +1,18 @@
-/* global React, ReactDOM, Nav, PageHero, TeamPhoto, Ethos, PhilosophySection, ServiceArea, Partners, InstagramFeed, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, PageHero, Ethos, PhilosophySection, ServiceArea, Partners, InstagramFeed, FinalCTA, Footer */
 function App() {
   return (
     <React.Fragment>
       <Nav />
-      {/* TODO(jack): swap the hero image for the team group photo once supplied. */}
+      {/* Team photo as the hero (Jack, 2026-11-24 call), then straight into
+          The Good, the True and the Beautiful. */}
       <PageHero
         eyebrow="Est. 2016"
         title="About Priority Designer"
-        image="assets/hero/1-Nov 30 2021 08_21am-NnLB.jpg"
+        image="assets/about/team.webp"
+        imagePosition="center 32%"
       />
-      <ServiceArea />
-      <TeamPhoto />
       <Ethos />
+      <ServiceArea />
       <InstagramFeed />
       <PhilosophySection />
       <Partners />
