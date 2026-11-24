@@ -719,37 +719,32 @@ function ManufacturerCell({ m, index }) {
 // meet, the way copper flashing sits where every roof plane meets. Desktop:
 // absolutely centred over the 2x2 grid. Phones: its own row between cards 2 & 3
 // (it is rendered in that DOM position for exactly this reason).
-function CopperMedallion({ photo = "cap" }) {
-  // Seal design (Ryan, 2026-11-11), reworked for Jack (2026-11-18): no "16 oz",
-  // a photo of our own copper work in the center, ring text that turns slowly
-  // (stops for prefers-reduced-motion). Photos: assets/materials/copper-badge/.
+// Nov 24 call: Jack wanted the copper WORK to be the picture (the Westlake /
+// Daryl Johnston turret), no slate in it and no ring text, so the photo now
+// fills the whole disc inside a thin copper rim. "Copper" only shows on hover.
+function CopperMedallion({ photo = "turret-diamonds" }) {
   return (
-    <a className="mat-medallion" href="materials/copper" aria-label="Copper: the thread through every roof">
+    <a className="mat-medallion" href="materials/copper" aria-label="Copper: see our copper work">
       <svg viewBox="0 0 300 300" aria-hidden="true">
         <defs>
           <linearGradient id="cs-cu" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#e0a06c" />
+            <stop offset="0" stopColor="#e9b07a" />
             <stop offset=".5" stopColor="#b06a3b" />
-            <stop offset="1" stopColor="#7d4420" />
+            <stop offset="1" stopColor="#6f3b1b" />
           </linearGradient>
-          <clipPath id="cs-photo"><circle cx="150" cy="150" r="98" /></clipPath>
-          <path id="cs-ring" d="M150,150 m-118,0 a118,118 0 1,1 236,0 a118,118 0 1,1 -236,0" />
+          <linearGradient id="cs-fade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset=".55" stopColor="#0d1c30" stopOpacity="0" />
+            <stop offset="1" stopColor="#0d1c30" stopOpacity=".7" />
+          </linearGradient>
+          <clipPath id="cs-photo"><circle cx="150" cy="150" r="139" /></clipPath>
         </defs>
-        <circle cx="150" cy="150" r="147" fill="#f5f2ec" stroke="#5f8a78" strokeWidth="2.5" />
-        <circle cx="150" cy="150" r="139" fill="none" stroke="#b06a3b" strokeWidth=".8" />
-        <g className="cs-spin">
-          <text fontFamily="Cormorant SC, serif" fontSize="14.5" fontWeight="500" fill="#a0622a" letterSpacing="2">
-            <textPath href="#cs-ring" textLength="735" lengthAdjust="spacing">Formed for the condition ✦ Soldered, not sealed ✦ The thread through every roof ✦</textPath>
-          </text>
-        </g>
+        <circle cx="150" cy="150" r="149" fill="url(#cs-cu)" />
         <g clipPath="url(#cs-photo)">
-          <image href={`assets/materials/copper-badge/${photo}.webp`} x="48" y="38" width="204" height="204" preserveAspectRatio="xMidYMid slice" />
-          <rect x="40" y="203" width="220" height="50" fill="url(#cs-cu)" opacity=".95" />
-          <line x1="40" y1="203" x2="260" y2="203" stroke="rgba(245,242,236,.55)" strokeWidth="1" />
+          <image href={`assets/materials/copper-badge/${photo}.webp`} x="11" y="11" width="278" height="278" preserveAspectRatio="xMidYMid slice" />
+          <rect className="cs-hover" x="0" y="0" width="300" height="300" fill="url(#cs-fade)" />
+          <text className="cs-hover" x="150" y="236" textAnchor="middle" fontFamily="Cormorant SC, serif" fontSize="19" letterSpacing="4" fill="#f5f2ec">Copper →</text>
         </g>
-        <circle cx="150" cy="150" r="98" fill="none" stroke="url(#cs-cu)" strokeWidth="5" />
-        <circle cx="150" cy="150" r="104" fill="none" stroke="#b06a3b" strokeWidth=".8" />
-        <text x="150" y="229" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontSize="22" fill="#f5f2ec" letterSpacing=".5">Copper</text>
+        <circle cx="150" cy="150" r="139.5" fill="none" stroke="rgba(245,242,236,.55)" strokeWidth="1" />
       </svg>
     </a>);
 }

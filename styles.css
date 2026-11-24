@@ -5181,10 +5181,9 @@ a.mat-cell:focus-visible { outline: 2px solid var(--copper-400); outline-offset:
 .mat-medallion:hover { transform: translate(-50%, -50%) scale(1.04); }
 .mat-medallion:focus-visible { outline: 2px solid var(--copper-300); outline-offset: 6px; }
 .mat-medallion svg { display: block; width: 100%; height: 100%; }
-.cs-spin { transform-box: view-box; transform-origin: 150px 150px; animation: cs-spin 70s linear infinite; }
-.mat-medallion:hover .cs-spin { animation-duration: 18s; }
-@keyframes cs-spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .cs-spin { animation: none; } }
+.mat-medallion .cs-hover { opacity: 0; transition: opacity 0.4s ease; }
+.mat-medallion:hover .cs-hover, .mat-medallion:focus-visible .cs-hover { opacity: 1; }
+@media (hover: none) { .mat-medallion .cs-hover { opacity: 1; } }
 /* Keep the top two cards' text clear of the medallion, which reaches ~130px into
    each card's inner bottom corner. DOM order is cell, cell, medallion, cell, cell. */
 @media (min-width: 721px) {
