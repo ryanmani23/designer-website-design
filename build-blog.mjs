@@ -225,7 +225,7 @@ export const NAV_JS = `
 // plenty of detail) so no separate hi-res asset is needed.
 export const LIGHTBOX_JS = `
 (function(){
-  var figs=document.querySelectorAll('.article-figure img, .article-body p > img, .pj-gallery img');
+  var figs=document.querySelectorAll('.article-figure img, .article-body p > img, .pj-gallery img, .pj-copy figure img');
   if(!figs.length) return;
   var box=document.createElement('div');
   box.className='lightbox';

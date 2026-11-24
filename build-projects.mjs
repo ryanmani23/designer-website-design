@@ -142,7 +142,8 @@ function projectCards(list, heading, eyebrow = "Our Work") {
 function projectPage(p, all, doc) {
   const slug = pageSlug(p);
   const d = doc ? doc.data : {};
-  let photos = [...gallery(p), ...(d.moreGallery ? d.moreGallery.split(",").map((s) => s.trim()) : [])];
+  const list = (v) => (v ? v.split(",").map((s) => s.trim()).filter(Boolean) : []);
+  let photos = d.gallery ? list(d.gallery) : [...gallery(p), ...list(d.moreGallery)];
   if (d.hero) photos = [d.hero, ...photos.filter((s) => s !== d.hero)]; // lead photo override
   const area = d.area || AREA_OF[p.loc];
   const details = d.details || [
