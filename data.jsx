@@ -867,30 +867,35 @@ const DISCONTINUED = {
     items: [
       {
         title: "Heinz Clay Roof Tile",
+        blog: "blog/heinz-roofing-tile-history", // Jack brief D1: link to the full history post
         sub: "c. 1900–1940s · Midwest / Colorado Region",
         desc: "Heinz designed distinct tile families engineered to emulate historical European architecture while providing modern regional weather resistance. Tiles were fired from dense, iron-rich Colorado clay beds, giving a natural terracotta-red baseline color. Heinz tiles are still found on historic homes and institutional buildings throughout the Mountain West and Midwest.",
         images: ["assets/discontinued/heinz-clay-tile/01.webp"],
       },
       {
         title: "Mineral Wells Tile Co.",
+        blog: "blog/mineral-wells-tile-history", // Jack brief D1: link to the full history post
         sub: "c. Early–Mid 20th Century · Mineral Wells, Texas",
         desc: "A prominent historic manufacturer based in Mineral Wells, Texas. Mineral Wells tiles are characterized by richly colored, artisanal clay with a distinctly varied 'bee-hive' kiln firing that creates buff-to-flashed tones. A single original batch naturally contains a blend of buffs, deep rust-reds, oranges, and smoky browns. Because they were fired in historic regional kilns, each tile is today classified as a reclaimed antique building material.",
         images: ["assets/discontinued/mineral-wells-tile/01.webp"],
       },
       {
         title: "Mound City Roofing Tile Co.",
+        blog: "blog/mound-city-roofing-tile-history", // Jack brief D1: link to the full history post
         sub: "c. 1900–1930s · St. Louis, Missouri",
         desc: "Organized to serve the booming Midwestern building market, Mound City manufactured a full line of terra-cotta roofing tile from high-grade Missouri shale. Their 'Catalog D' (c. 1911) survives in the National Building Arts Center archive and documents a comprehensive product line: interlocking Spanish, Mission, Greek, and shingle profiles, plus a full accessory suite. Available in natural burnt-red or full-glazed finishes in green, yellow, blue, brown, and black.",
         images: ["assets/discontinued/mound-city-tile/01.webp"],
       },
       {
         title: "Cincinnati Roofing Tile & Terra Cotta Co.",
+        blog: "blog/cincinnati-roofing-tile-history", // Jack brief D1: link to the full history post
         sub: "c. 1890s–Early 20th Century · Cincinnati, Ohio",
         desc: "Founded between 1895 and 1898 by Jacob Freund, the Cincinnati Roofing Tile & Terra Cotta Company operated a highly mechanized plunger-press plant in the Winton Place neighborhood of Cincinnati. Known for their vitrified 'True S'-style Spanish tiles, their products are documented on prominent historic buildings including the East Lake Golf Club clubhouse and the Atlanta Post Office. Their original catalogues are preserved in the HathiTrust Digital Library.",
         images: ["assets/discontinued/cincinnati-roofing-tile/01.webp"],
       },
       {
         title: "B. Mifflin Hood Brick Co.",
+        blog: "blog/b-mifflin-hood-tile-history", // Jack brief D1: link to the full history post
         sub: "c. 1904–1940s · Atlanta, Georgia",
         desc: "Founded by ceramicist and theologian Benjamin Mifflin Hood in Atlanta in 1904, the company expanded to six plants across Georgia, North Carolina, Tennessee, and Alabama. Hood pioneered shale-based clay-tile production in the American South and was known for distinctively matte, hand-pressed aesthetics. Signature shades included deep natural reds and 'Fire Flashed Autumn,' a multi-toned mottled brown and orange. The company dissolved in 1946, and its Atlanta showroom was added to the National Register of Historic Places in 2018.",
         images: ["assets/discontinued/mifflin-hood-tile/01.webp"],

@@ -5966,3 +5966,9 @@ a.mp-versus-card:hover { border-color: var(--copper-400); background: rgba(244,2
 @media (max-width: 600px) { .pj-trio { grid-template-columns: 1fr 1fr; } }
 .pj-before { background: var(--white); padding-top: clamp(48px,8vh,90px); }
 .pj-gallery-before figure { aspect-ratio: 4 / 3; }
+/* Homepage hero: plain-text headline under the tagline (Jack brief #1, 2026-11-24) */
+.hero-lede { margin: 18px auto 0; max-width: 560px; font-family: var(--sans); font-size: clamp(14px, 1.15vw, 16px); line-height: 1.6; letter-spacing: 0.02em; color: var(--cream-100); opacity: 0.85; }
+@media (max-width: 720px) { .hero-lede { max-width: 320px; font-size: 14px; } }
+/* Discontinued: link to the manufacturer's history post (Jack brief D1) */
+.disc-prod-more { color: var(--copper-400); white-space: nowrap; border-bottom: 1px solid rgba(212,159,106,0.4); }
+.disc-prod-more:hover { color: var(--copper-300); }

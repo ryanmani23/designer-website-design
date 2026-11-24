@@ -477,6 +477,8 @@ function HeroSlides({ revealed }) {
         <div className="hero-sub">
           Slate <span className="dot">·</span> Clay Tile <span className="dot">·</span> Copper
         </div>
+        {/* Jack's Nov brief, homepage #1: a plain-text headline under the tagline (also gives Google real words). */}
+        <p className="hero-lede">Natural slate, clay tile and copper roofs for historic and estate homes across Dallas–Fort{"\u00a0"}Worth, St.{"\u00a0"}Louis and beyond.</p>
         <div className="hero-slides-caption" aria-live="polite">{slides[active].name}</div>
       </div>
       <div className="scroll-tag">
@@ -1168,7 +1170,7 @@ function Discontinued({ onJump }) {
                   String(i + 1).padStart(2, "0")}
                 </div>
                 <div className="title">{p.title}<small>{p.sub}</small></div>
-                <div className="desc">{p.desc}</div>
+                <div className="desc">{p.desc}{p.blog && <> <a className="disc-prod-more" href={p.blog}>Read the full history →</a></>}</div>
               </div>);
           })}
         </div>
