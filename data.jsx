@@ -488,12 +488,15 @@ const PROJECTS = [
     gallery: [1,2,3,4,5,6].map((n) => `assets/projects/st-louis-central-west-end-clay/0${n}.webp`),
   },
   {
-    name: "St. Louis Residence · Ludowici Clay Tile",
+    // 2026-11-24: Jack's Kingsbury Place showcase (content/projects/kingsbury-place-ludowici-tile-roof.md)
+    // owns this job's page. Street name OK in public copy, never the house number (Ryan).
+    name: "Kingsbury Place · Ludowici Clay Tile",
     slug: "st-louis-ludowici-tile",
+    pageSlug: "kingsbury-place-ludowici-tile-roof",
     loc: "St. Louis, MO",
-    tag: "Clay Tile · Ludowici S-Tile",
+    tag: "Clay Tile · Ludowici Spanish Tile",
     type: "Clay Tile",
-    blend: "Ludowici Summer Rose & Clay Red",
+    blend: "Ludowici Spanish 13, Summer Rose & Historic Clay Red",
     desc: "Ludowici S-profile clay tile over a St. Louis residence, a hand-blended field detailed in copper at every transition.",
     longDesc: "A St. Louis residence finished in Ludowici S-tile, a clay-tile profile prized for its deep, repeating S-curve shadow line. We re-underlaid in a high-temperature ice-and-water membrane, blended the tile across the field, and detailed the chimney and valley flashings in copper. The roof is built to outlast the building beneath it.",
     image: "assets/projects/st-louis-ludowici-tile/01.webp",

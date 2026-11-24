@@ -223,9 +223,9 @@ export const NAV_JS = `
 // keyboard-focusable), closes on Escape, backdrop click, or the close button.
 // The enlarged view reuses the image's own src (natives are up to ~1400px,
 // plenty of detail) so no separate hi-res asset is needed.
-const LIGHTBOX_JS = `
+export const LIGHTBOX_JS = `
 (function(){
-  var figs=document.querySelectorAll('.article-figure img, .article-body p > img');
+  var figs=document.querySelectorAll('.article-figure img, .article-body p > img, .pj-gallery img');
   if(!figs.length) return;
   var box=document.createElement('div');
   box.className='lightbox';
@@ -249,7 +249,7 @@ const LIGHTBOX_JS = `
   Array.prototype.forEach.call(figs,function(img){
     img.setAttribute('role','button'); img.setAttribute('tabindex','0'); img.setAttribute('aria-label','Enlarge image');
     function trigger(){
-      var fig=img.closest('.article-figure');
+      var fig=img.closest('.article-figure, figure');
       var capEl=fig?fig.querySelector('figcaption'):null;
       open(img.currentSrc||img.src, img.alt, capEl?capEl.textContent.trim():'');
     }

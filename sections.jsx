@@ -1944,6 +1944,7 @@ function ProjectDetail({ slug, onClose }) {
             {project.coming && <div><dt>Status</dt><dd className="is-coming">Project coming</dd></div>}
           </dl>
           <p className="project-detail-long">{project.longDesc || project.desc}</p>
+          <a className="project-detail-page" href={`projects/${project.pageSlug || project.slug}`}>See the full project <ArrowRight size={13} /></a>
           <a className="btn-copper project-detail-cta" href="contact.html">Discuss a Similar Project <ArrowRight size={14} /></a>
         </div>
       </article>
@@ -2486,6 +2487,24 @@ const SERVICE_AREAS = [
   "Southlake", "Westover Hills", "Aledo", "Fort Worth Historic Districts",
   "Oak Cliff", "Lake Highlands", "Irving Estate Properties",
 ];
+
+// About page team photo (Jack sent the group shot 2026-11-24; brief item A2).
+function TeamPhoto() {
+  return (
+    <section className="team-photo" aria-label="Our team">
+      <div className="team-photo-head">
+        <span className="eyebrow">Our Team</span>
+        <h2>The people <em>behind every roof</em></h2>
+        <p>The estimators, project managers and crew leads behind every Priority Designer roof.</p>
+      </div>
+      <figure className="team-photo-fig">
+        <picture>
+          <source media="(max-width: 720px)" srcSet="assets/about/team-mobile.webp" />
+          <img src="assets/about/team.webp" alt="The Priority Designer team in matching shirts on stone steps" width="1800" height="1299" loading="lazy" />
+        </picture>
+      </figure>
+    </section>);
+}
 
 function ServiceArea() {
   const renderGroup = (k) =>

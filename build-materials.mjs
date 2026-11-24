@@ -148,15 +148,18 @@ const BLENDS = [
 // ---------------------------------------------------------------------------
 // Shared page shell
 // ---------------------------------------------------------------------------
-function shell({ slug, title, description, heroImage, heroMobile, heroPos = "center", crumb, eyebrow, h1, sub, body, extraJs = "" }) {
-  const url = `${SITE}/materials/${slug}`;
+// Shared static-page shell (also used by build-projects.mjs for /projects/*
+// and /areas/* pages). `section` = the URL folder + breadcrumb parent.
+export function shell({ slug, title, description, heroImage, heroMobile, heroPos = "center", crumb, eyebrow, h1, sub, body, extraJs = "",
+  section = { path: "materials", name: "Materials", href: "materials" }, navActive = "materials.html", extraSchema = [] }) {
+  const url = `${SITE}/${section.path}/${slug}`;
   const ogImage = `${SITE}/${heroImage}`;
   const schema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: `${SITE}/` },
-      { "@type": "ListItem", position: 2, name: "Materials", item: `${SITE}/materials` },
+      { "@type": "ListItem", position: 2, name: section.name, item: `${SITE}/${section.href}` },
       { "@type": "ListItem", position: 3, name: crumb, item: url },
     ],
   };
@@ -172,7 +175,7 @@ function shell({ slug, title, description, heroImage, heroMobile, heroPos = "cen
 </script>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<!-- Served from /materials/<slug>; resolve relative nav/asset paths against the site root. -->
+<!-- Served from /<section>/<slug>; resolve relative nav/asset paths against the site root. -->
 <base href="/" />
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16.png" />
@@ -191,9 +194,9 @@ function shell({ slug, title, description, heroImage, heroMobile, heroPos = "cen
 <meta name="twitter:title" content="${esc(title)}" />
 <meta name="twitter:description" content="${esc(description)}" />
 <meta name="twitter:image" content="${ogImage}" />
-<script type="application/ld+json">
-${JSON.stringify(schema, null, 2)}
-</script>
+${[schema, ...extraSchema].map((sc) => `<script type="application/ld+json">
+${JSON.stringify(sc, null, 2)}
+</script>`).join("\n")}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+SC:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
@@ -208,12 +211,12 @@ ${heroMobile
 ${heroMobile ? `@media (max-width:720px){.mp-hero{background-image:url('/${heroMobile}')}}` : ""}</style>
 </head>
 <body class="mp-page">
-${navMarkup("materials.html")}
+${navMarkup(navActive)}
 <header class="mp-hero">
   <div class="mp-hero-scrim"></div>
   <div class="mp-hero-inner">
     <nav class="article-breadcrumb" aria-label="Breadcrumb">
-      <a href="materials">Materials</a> <span>/</span> <span>${esc(crumb)}</span>
+      <a href="${section.href}">${esc(section.name)}</a> <span>/</span> <span>${esc(crumb)}</span>
     </nav>
     <span class="eyebrow mp-hero-eyebrow">${eyebrow}</span>
     <h1 class="mp-hero-title">${h1}</h1>

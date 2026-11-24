@@ -12,6 +12,7 @@ import * as esbuild from "esbuild";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { buildBlog } from "./build-blog.mjs";
 import { buildMaterials } from "./build-materials.mjs";
+import { buildProjects } from "./build-projects.mjs";
 
 const OUT = "dist";
 const SITE = "https://prioritydesigner.com";
@@ -74,7 +75,7 @@ async function buildCss() {
 
 // Static sitemap covering the hand-authored pages plus every generated blog
 // article, so new articles appear in the sitemap automatically on build.
-async function buildSitemap(articles, materials = []) {
+async function buildSitemap(articles, materials = [], pj = { projects: [], areas: [] }) {
   // Clean (extensionless) URLs: Cloudflare serves these directly and
   // 307-redirects the .html forms to them, so the sitemap lists the canonical
   // served URLs.
@@ -90,10 +91,12 @@ async function buildSitemap(articles, materials = []) {
   const mats = materials.map((slug) => ({
     loc: `${SITE}/materials/${slug}`, freq: "monthly", pri: "0.8",
   }));
+  const areas = pj.areas.map((slug) => ({ loc: `${SITE}/areas/${slug}`, freq: "monthly", pri: "0.8" }));
+  const projs = pj.projects.map((slug) => ({ loc: `${SITE}/projects/${slug}`, freq: "yearly", pri: "0.6" }));
   const arts = articles.map((a) => ({
     loc: `${SITE}/blog/${a.slug}`, freq: "yearly", pri: "0.7", lastmod: a.date,
   }));
-  const urls = [...base, ...mats, ...arts].map((u) =>
+  const urls = [...base, ...mats, ...areas, ...projs, ...arts].map((u) =>
     `  <url>\n    <loc>${u.loc}</loc>\n${u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>\n` : ""}    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`).join("\n");
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
   await writeFile("sitemap.xml", xml);
@@ -109,11 +112,12 @@ async function buildAll() {
     buildCss().then((b) => console.log(`  dist/styles.css  ${(b / 1024).toFixed(1)} KB`)),
   );
   tasks.push(
-    Promise.all([buildBlog(), buildMaterials()]).then(([articles, materials]) => {
+    Promise.all([buildBlog(), buildMaterials(), buildProjects()]).then(([articles, materials, pj]) => {
       articles.forEach((a) => console.log(`  blog/${a.slug}.html`));
       materials.forEach((m) => console.log(`  materials/${m}.html`));
-      return buildSitemap(articles, materials).then(() =>
-        console.log(`  sitemap.xml  (${articles.length} articles, ${materials.length} material pages)`));
+      console.log(`  projects/*.html  (${pj.projects.length})  areas: ${pj.areas.join(", ")}`);
+      return buildSitemap(articles, materials, pj).then(() =>
+        console.log(`  sitemap.xml  (${articles.length} articles, ${materials.length} material pages, ${pj.projects.length} projects, ${pj.areas.length} areas)`));
     }),
   );
   await Promise.all(tasks);
@@ -134,8 +138,10 @@ if (watch) {
       buildAll().then(() => console.log("rebuilt.")).catch((e) => console.error(e));
     }, 100);
   };
-  for (const f of [...new Set(Object.values(PAGES).flat()), "styles.css", "build-materials.mjs"]) {
+  for (const f of [...new Set(Object.values(PAGES).flat()), "styles.css", "build-materials.mjs", "build-projects.mjs"]) {
     fsWatch(f, rebuild);
   }
   fsWatch("content/blog", rebuild); // rebuild article pages on content edits
+  fsWatch("content/projects", rebuild);
+  fsWatch("content/areas", rebuild);
 }

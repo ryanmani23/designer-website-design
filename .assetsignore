@@ -22,6 +22,7 @@ worker
 /build.mjs
 /build-blog.mjs
 /build-materials.mjs
+/build-projects.mjs
 /styles.css
 /*.jsx
 

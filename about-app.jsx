@@ -1,4 +1,4 @@
-/* global React, ReactDOM, Nav, PageHero, Ethos, PhilosophySection, ServiceArea, Partners, InstagramFeed, FinalCTA, Footer */
+/* global React, ReactDOM, Nav, PageHero, TeamPhoto, Ethos, PhilosophySection, ServiceArea, Partners, InstagramFeed, FinalCTA, Footer */
 function App() {
   return (
     <React.Fragment>
@@ -10,6 +10,7 @@ function App() {
         image="assets/hero/1-Nov 30 2021 08_21am-NnLB.jpg"
       />
       <ServiceArea />
+      <TeamPhoto />
       <Ethos />
       <InstagramFeed />
       <PhilosophySection />
