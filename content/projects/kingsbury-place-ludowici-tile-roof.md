@@ -49,6 +49,8 @@ Every piece of metal on the roof is [copper](/materials/copper): the valleys, th
 
 Over the side entry, we built a copper awning by hand, shaped to the arch of the masonry opening it shelters.
 
+<div class="pj-pair"><figure><img src="assets/projects/kingsbury-place/14-awning-before.webp" alt="The original side-entry awning of a historic St. Louis home, worn and torn, before it was replaced" loading="lazy"><figcaption>The side entry before the new awning</figcaption></figure><figure><img src="assets/projects/kingsbury-place/15-awning-install.webp" alt="Crew fitting a new awning over the arched side entry of a historic brick home" loading="lazy"><figcaption>Fitting the awning to the arch</figcaption></figure></div>
+
 ## Own a historic clay tile roof?
 
 If you own a historic clay tile roof, especially one with pieces that can no longer be bought, we would like to see it. Call [(214) 214-4909](tel:+12142144909) or [request an inspection](/contact).
