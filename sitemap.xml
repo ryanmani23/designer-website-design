@@ -206,6 +206,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://prioritydesigner.com/projects/st-louis-central-west-end-slate-copper</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://prioritydesigner.com/projects/st-louis-la-escandella-tile</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>

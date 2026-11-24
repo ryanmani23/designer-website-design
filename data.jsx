@@ -482,6 +482,20 @@ const PROJECTS = [
     ],
   },
   {
+    // 2026-11-24: Jack's spotlight zip "Nwamu-st-louis-central-west-end-slate-copper" (CompanyCam project 100780207).
+    // The finished July 21 photos exist only at 480-800px; May 4 drone shots (full size) used for the lead + details.
+    // TODO(jack): confirm the slate product (the CompanyCam tags list natural, lightweight and GAF Slateline options).
+    name: "St. Louis Residence · Slate & Copper",
+    slug: "st-louis-central-west-end-slate-copper",
+    loc: "St. Louis, MO",
+    tag: "Slate · Copper",
+    type: "Slate",
+    desc: "A brick residence in St. Louis's Central West End re-roofed in slate, with flat-seam copper on the dormer roofs and copper flashings throughout.",
+    longDesc: "A brick residence in St. Louis's Central West End, re-roofed in slate. The dormer roofs are flat-seam copper, the valleys, chimneys and wall flashings are copper, and the low-slope roofs behind the house were redone at the same time.",
+    image: "assets/projects/st-louis-central-west-end-slate-copper/01.webp",
+    gallery: [1,2,3,4,5,6,7,8,9,10].map((n) => `assets/projects/st-louis-central-west-end-slate-copper/${String(n).padStart(2, "0")}.webp`),
+  },
+  {
     name: "St. Louis Residence · La Escandella Clay Tile",
     slug: "st-louis-la-escandella-tile",
     loc: "St. Louis, MO",
