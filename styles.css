@@ -5964,3 +5964,5 @@ a.mp-versus-card:hover { border-color: var(--copper-400); background: rgba(244,2
 .pj-pair img, .pj-trio img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; cursor: zoom-in; display: block; }
 .pj-pair figcaption, .pj-trio figcaption { font-family: var(--sans); font-size: 13px; line-height: 1.45; color: rgba(26,24,20,0.62); margin-top: 8px; }
 @media (max-width: 600px) { .pj-trio { grid-template-columns: 1fr 1fr; } }
+.pj-before { background: var(--white); padding-top: clamp(48px,8vh,90px); }
+.pj-gallery-before figure { aspect-ratio: 4 / 3; }

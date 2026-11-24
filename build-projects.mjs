@@ -187,6 +187,18 @@ function projectPage(p, all, doc) {
     <figure class="${i === 0 ? "pj-wide" : ""}"><img src="${src}" alt="${esc(`${p.name}, photo ${i + 1}`)}" loading="${i < 2 ? "eager" : "lazy"}"></figure>`).join("")}
   </div>
 </section>
+${p.before && p.before.length ? `
+<section class="mp-section pj-before" aria-label="Before">
+  <div class="section-head mp-head">
+    <div class="left">
+      <span class="eyebrow">Before</span>
+      <h2>The roof we replaced</h2>
+    </div>
+  </div>
+  <div class="pj-gallery pj-gallery-before">${p.before.map((src, i) => `
+    <figure><img src="${src}" alt="${esc(`${p.name}, the roof before our work, photo ${i + 1}`)}" loading="lazy"></figure>`).join("")}
+  </div>
+</section>` : ""}
 ${materialCards(materialsFor(p))}
 ${projectCards(more, nearby.length ? `More roofs nearby` : `More projects like this`)}`;
 

@@ -100,6 +100,18 @@ const PROJECTS = [
     ],
   },
   {
+    // 2026-11-24: from Jack's "project spotlight" photo zips (Maple Bluff, WI). Blend not given yet.
+    name: "Maple Bluff Tudor · Vermont Slate & Copper",
+    slug: "maple-bluff-vermont-slate",
+    loc: "Maple Bluff, WI",
+    tag: "Natural Slate · Vermont",
+    type: "Slate",
+    desc: "A stone Tudor in Maple Bluff, Wisconsin, re-roofed in Vermont slate with copper gutters, valleys and flashings throughout.",
+    longDesc: "A stone and half-timbered Tudor in Maple Bluff, Wisconsin, re-roofed in natural Vermont slate. Every gutter, downspout, valley and flashing is copper, along with the copper roof over the breezeway that links the courtyard wing to the house.",
+    image: "assets/projects/maple-bluff-vermont-slate/sp-01.webp",
+    gallery: [],
+  },
+  {
     // Jack's "Cain roof" (Priority CAM job 1469), photos Aug–Sep 2026. Madison, WI.
     name: "Madison Residence · Franvisa Slate",
     slug: "madison-franvisa-slate",
@@ -165,6 +177,18 @@ const PROJECTS = [
       "assets/projects/highland-park-vermont-black-slate/02.webp",
       "assets/projects/highland-park-vermont-black-slate/03.webp",
     ],
+  },
+  {
+    // 2026-11-24: from Jack's "project spotlight" photo zips (Highland Park, Vermont blend). Blend recipe not given yet.
+    name: "Highland Park Cottage · Vermont Slate Blend",
+    slug: "highland-park-vermont-blend-slate",
+    loc: "Highland Park, TX",
+    tag: "Natural Slate · Vermont Blend",
+    type: "Slate",
+    desc: "A Highland Park cottage taken from a composition roof to a blend of Vermont slate, with copper at the eaves, valleys and chimney.",
+    longDesc: "A Highland Park cottage that had been wearing a composition roof, taken back to natural slate. We laid a blend of Vermont slate across the steep gables and the low wings, and finished the eaves, valleys and chimney in copper.",
+    image: "assets/projects/highland-park-vermont-blend-slate/sp-01.webp",
+    gallery: [],
   },
   {
     name: "University Park Residence · Clipped Galcar Slate",
@@ -523,6 +547,141 @@ const PROJECTS = [
     ],
   },
 ];
+
+// 2026-11-24: Jack's "Priority Designer project spotlight photos" (8 emails, 17 zips, Nov 23).
+// Extra finished photos are appended to each job's gallery; `before` photos show the roof we replaced.
+// Not used yet (weak or unfinished sets): Carlock, Durbin, Wilson, Sock, Nwamu (low-res), Reese (CeDUR, out of scope).
+const SPOTLIGHT = {
+  "maple-bluff-vermont-slate": {
+    "gallery": [
+      "assets/projects/maple-bluff-vermont-slate/sp-01.webp",
+      "assets/projects/maple-bluff-vermont-slate/sp-02.webp",
+      "assets/projects/maple-bluff-vermont-slate/sp-03.webp",
+      "assets/projects/maple-bluff-vermont-slate/sp-04.webp",
+      "assets/projects/maple-bluff-vermont-slate/sp-05.webp",
+      "assets/projects/maple-bluff-vermont-slate/sp-06.webp",
+      "assets/projects/maple-bluff-vermont-slate/sp-07.webp",
+      "assets/projects/maple-bluff-vermont-slate/sp-08.webp"
+    ],
+    "before": [
+      "assets/projects/maple-bluff-vermont-slate/before-01.webp",
+      "assets/projects/maple-bluff-vermont-slate/before-02.webp",
+      "assets/projects/maple-bluff-vermont-slate/before-03.webp"
+    ]
+  },
+  "highland-park-vermont-blend-slate": {
+    "gallery": [
+      "assets/projects/highland-park-vermont-blend-slate/sp-01.webp",
+      "assets/projects/highland-park-vermont-blend-slate/sp-02.webp",
+      "assets/projects/highland-park-vermont-blend-slate/sp-03.webp",
+      "assets/projects/highland-park-vermont-blend-slate/sp-04.webp",
+      "assets/projects/highland-park-vermont-blend-slate/sp-05.webp",
+      "assets/projects/highland-park-vermont-blend-slate/sp-06.webp",
+      "assets/projects/highland-park-vermont-blend-slate/sp-07.webp"
+    ],
+    "before": [
+      "assets/projects/highland-park-vermont-blend-slate/before-01.webp",
+      "assets/projects/highland-park-vermont-blend-slate/before-02.webp"
+    ]
+  },
+  "university-park-galcar-slate": {
+    "gallery": [
+      "assets/projects/university-park-galcar-slate/sp-01.webp",
+      "assets/projects/university-park-galcar-slate/sp-02.webp"
+    ],
+    "before": [
+      "assets/projects/university-park-galcar-slate/before-01.webp",
+      "assets/projects/university-park-galcar-slate/before-02.webp"
+    ]
+  },
+  "university-park-slate": {
+    "gallery": [
+      "assets/projects/university-park-slate/sp-01.webp"
+    ],
+    "before": [
+      "assets/projects/university-park-slate/before-01.webp",
+      "assets/projects/university-park-slate/before-02.webp",
+      "assets/projects/university-park-slate/before-03.webp"
+    ]
+  },
+  "highland-park-variegated-slate-copper": {
+    "gallery": [
+      "assets/projects/highland-park-variegated-slate-copper/sp-01.webp",
+      "assets/projects/highland-park-variegated-slate-copper/sp-02.webp"
+    ],
+    "before": [
+      "assets/projects/highland-park-variegated-slate-copper/before-01.webp"
+    ]
+  },
+  "nichols-hills-brava-slate": {
+    "gallery": [
+      "assets/projects/nichols-hills-brava-slate/sp-01.webp",
+      "assets/projects/nichols-hills-brava-slate/sp-02.webp"
+    ],
+    "before": [
+      "assets/projects/nichols-hills-brava-slate/before-01.webp",
+      "assets/projects/nichols-hills-brava-slate/before-02.webp"
+    ]
+  },
+  "highland-park-vermont-black-slate": {
+    "gallery": [
+      "assets/projects/highland-park-vermont-black-slate/sp-01.webp",
+      "assets/projects/highland-park-vermont-black-slate/sp-02.webp",
+      "assets/projects/highland-park-vermont-black-slate/sp-03.webp"
+    ],
+    "before": [
+      "assets/projects/highland-park-vermont-black-slate/before-01.webp",
+      "assets/projects/highland-park-vermont-black-slate/before-02.webp"
+    ]
+  },
+  "st-louis-tri-color-slate": {
+    "gallery": [
+      "assets/projects/st-louis-tri-color-slate/sp-01.webp",
+      "assets/projects/st-louis-tri-color-slate/sp-02.webp",
+      "assets/projects/st-louis-tri-color-slate/sp-03.webp"
+    ],
+    "before": [
+      "assets/projects/st-louis-tri-color-slate/before-01.webp",
+      "assets/projects/st-louis-tri-color-slate/before-02.webp"
+    ]
+  },
+  "st-louis-estate-slate": {
+    "gallery": [
+      "assets/projects/st-louis-estate-slate/sp-01.webp",
+      "assets/projects/st-louis-estate-slate/sp-02.webp"
+    ],
+    "before": [
+      "assets/projects/st-louis-estate-slate/before-01.webp",
+      "assets/projects/st-louis-estate-slate/before-02.webp"
+    ]
+  },
+  "highland-park-unfading-grey-slate": {
+    "gallery": [
+      "assets/projects/highland-park-unfading-grey-slate/sp-01.webp",
+      "assets/projects/highland-park-unfading-grey-slate/sp-02.webp"
+    ],
+    "before": [
+      "assets/projects/highland-park-unfading-grey-slate/before-01.webp",
+      "assets/projects/highland-park-unfading-grey-slate/before-02.webp"
+    ]
+  },
+  "st-louis-central-west-end-clay": {
+    "gallery": [
+      "assets/projects/st-louis-central-west-end-clay/sp-01.webp",
+      "assets/projects/st-louis-central-west-end-clay/sp-02.webp"
+    ],
+    "before": [
+      "assets/projects/st-louis-central-west-end-clay/before-01.webp",
+      "assets/projects/st-louis-central-west-end-clay/before-02.webp"
+    ]
+  }
+};
+PROJECTS.forEach((p) => {
+  const extra = SPOTLIGHT[p.slug];
+  if (!extra) return;
+  p.gallery = [...(p.gallery || []).filter((g) => !extra.gallery.includes(g)), ...extra.gallery];
+  if (extra.before.length) p.before = extra.before;
+});
 
 // Pins for the homepage "Jobs of Distinction" map. x/y are in the 960x600 SVG space.
 // Schema: { name, city, state, metro, x, y, system, scope, blurb, image, slug }

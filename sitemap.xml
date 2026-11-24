@@ -86,6 +86,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://prioritydesigner.com/projects/maple-bluff-vermont-slate</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://prioritydesigner.com/projects/madison-franvisa-slate</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
@@ -107,6 +112,11 @@
   </url>
   <url>
     <loc>https://prioritydesigner.com/projects/highland-park-vermont-black-slate</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://prioritydesigner.com/projects/highland-park-vermont-blend-slate</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
