@@ -625,8 +625,11 @@ ${moreMaterials("copper")}`;
     slug: "copper",
     title: "Copper Roofing & Flashing · Priority Designer",
     description: "Why copper belongs on every slate and tile roof: copper valleys, flashing, crickets, gutters, domes and turrets, soldered and formed for each condition, from Priority Designer in Dallas–Fort Worth.",
-    heroImage: "assets/projects/highland-park-variegated-slate-copper/02.webp",
-    heroPos: "center 40%",
+    // Nov 24 call: the copper walkway in the Materials grid links here, so the
+    // page opens on the full walkway photo (Maple Bluff job, Aug 18 drone shot).
+    heroImage: "assets/materials/copper-walkway/walkway-hero.webp",
+    heroMobile: "assets/materials/copper-walkway/walkway-hero-mobile.webp",
+    heroPos: "center 56%",
     crumb: "Copper",
     eyebrow: "Copper · The Thread Through Every Roof",
     h1: "The thread through <em>every roof.</em>",

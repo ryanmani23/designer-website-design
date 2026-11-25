@@ -5172,30 +5172,38 @@ a.mat-cell:focus-visible { outline: 2px solid var(--copper-400); outline-offset:
   padding-bottom: 3px; margin-top: 4px;
 }
 .mat-cell-hover .mat-cell-link { margin-top: 10px; }
-.mat-grid.has-medallion { position: relative; }
-.mat-medallion {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  z-index: 6; width: 270px; height: 270px; border-radius: 50%; display: block;
-  filter: drop-shadow(0 24px 30px rgba(13,28,48,0.45)); transition: transform 0.5s ease;
+/* Copper walkway between the four partner cards (see CopperWalkway). The image
+   is 358x1028; its walkway band is 58.1% of the width, so width = band / .581
+   and the centre square bulges ~0.36 x band into each card's inner corner. */
+.mat-grid.has-walkway { position: relative; --walk-band: clamp(96px, 11vw, 160px); }
+.mat-walkway {
+  position: absolute; left: 50%; top: 0; bottom: 0; transform: translateX(-50%);
+  z-index: 6; display: flex; align-items: center; overflow: hidden; width: calc(var(--walk-band) / 0.581);
+  filter: drop-shadow(0 18px 26px rgba(13,28,48,0.42)); transition: filter 0.4s ease;
 }
-.mat-medallion:hover { transform: translate(-50%, -50%) scale(1.04); }
-.mat-medallion:focus-visible { outline: 2px solid var(--copper-300); outline-offset: 6px; }
-.mat-medallion svg { display: block; width: 100%; height: 100%; }
-.mat-medallion .cs-hover { opacity: 0; transition: opacity 0.4s ease; }
-.mat-medallion:hover .cs-hover, .mat-medallion:focus-visible .cs-hover { opacity: 1; }
-@media (hover: none) { .mat-medallion .cs-hover { opacity: 1; } }
-/* Keep the top two cards' text clear of the medallion, which reaches ~130px into
-   each card's inner bottom corner. DOM order is cell, cell, medallion, cell, cell. */
+.mat-walkway picture { display: block; width: 100%; }
+.mat-walkway img { display: block; width: 100%; height: auto; }
+.mat-walkway:hover { filter: drop-shadow(0 18px 26px rgba(13,28,48,0.42)) brightness(1.06); }
+.mat-walkway:focus-visible { outline: 2px solid var(--copper-300); outline-offset: 6px; }
+.mat-walkway-label {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  font-family: var(--serif-sc); font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; white-space: nowrap;
+  color: var(--cream-50); background: rgba(13,28,48,0.72); padding: 7px 12px 6px; border-radius: 2px;
+  opacity: 0; transition: opacity 0.35s ease; pointer-events: none;
+}
+.mat-walkway:hover .mat-walkway-label, .mat-walkway:focus-visible .mat-walkway-label { opacity: 1; }
+@media (hover: none) { .mat-walkway-label { opacity: 1; } }
 @media (min-width: 721px) {
-  .mat-grid.has-medallion > .mat-cell { min-height: 430px; }
-  .mat-grid.has-medallion > .mat-cell:nth-child(1) .mat-cell-rest,
-  .mat-grid.has-medallion > .mat-cell:nth-child(1) .mat-cell-hover { right: 150px; }
-  .mat-grid.has-medallion > .mat-cell:nth-child(2) .mat-cell-rest,
-  .mat-grid.has-medallion > .mat-cell:nth-child(2) .mat-cell-hover { left: 150px; }
+  .mat-grid.has-walkway { column-gap: var(--walk-band); }
+  .mat-grid.has-walkway > .mat-cell { min-height: 380px; }
+  /* keep the top cards' text clear of the centre square's bulge */
+  .mat-grid.has-walkway > .mat-cell:nth-child(1) .mat-cell-rest,
+  .mat-grid.has-walkway > .mat-cell:nth-child(1) .mat-cell-hover { right: calc(var(--walk-band) * 0.36 + 24px); }
+  .mat-grid.has-walkway > .mat-cell:nth-child(2) .mat-cell-rest,
+  .mat-grid.has-walkway > .mat-cell:nth-child(2) .mat-cell-hover { left: calc(var(--walk-band) * 0.36 + 24px); }
 }
 @media (max-width: 720px) {
-  .mat-medallion { position: relative; left: auto; top: auto; transform: none; justify-self: center; margin: 14px 0; width: 220px; height: 220px; }
-  .mat-medallion:hover { transform: scale(1.03); }
+  .mat-walkway { position: relative; left: auto; top: auto; bottom: auto; transform: none; width: 100%; margin: 10px 0; overflow: visible; }
 }
 
 /* ---------- static material pages (build-materials.mjs) ---------- */

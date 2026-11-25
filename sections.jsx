@@ -715,37 +715,24 @@ function ManufacturerCell({ m, index }) {
     </Tag>);
 }
 
-// Copper medallion (Jack's 2026-11 brief): sits where the four partner cards
-// meet, the way copper flashing sits where every roof plane meets. Desktop:
-// absolutely centred over the 2x2 grid. Phones: its own row between cards 2 & 3
-// (it is rendered in that DOM position for exactly this reason).
-// Nov 24 call: Jack wanted the copper WORK to be the picture (the Westlake /
-// Daryl Johnston turret), no slate in it and no ring text, so the photo now
-// fills the whole disc inside a thin copper rim. "Copper" only shows on hover.
-function CopperMedallion({ photo = "turret-diamonds" }) {
+// Copper walkway (Jack, Nov 24 call): the copper breezeway from the Maple Bluff
+// job, shot straight down, cut out along its copper edge and run through the gap
+// between the four partner cards so it "connects the four tabs". Clicking it
+// opens the Copper page, which leads with the full walkway photo. Desktop: a
+// vertical spine between the two columns. Phones: a horizontal band between
+// cards 2 and 3 (it is rendered in that DOM position for exactly this reason).
+function CopperWalkway() {
+  // "A" = the photo as shot (one arm still has loose deck boards). "B" = the
+  // clean arm mirrored onto the other side; built for comparison, not used
+  // unless Ryan/Jack choose it.
+  const v = "A";
   return (
-    <a className="mat-medallion" href="materials/copper" aria-label="Copper: see our copper work">
-      <svg viewBox="0 0 300 300" aria-hidden="true">
-        <defs>
-          <linearGradient id="cs-cu" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#e9b07a" />
-            <stop offset=".5" stopColor="#b06a3b" />
-            <stop offset="1" stopColor="#6f3b1b" />
-          </linearGradient>
-          <linearGradient id="cs-fade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset=".55" stopColor="#0d1c30" stopOpacity="0" />
-            <stop offset="1" stopColor="#0d1c30" stopOpacity=".7" />
-          </linearGradient>
-          <clipPath id="cs-photo"><circle cx="150" cy="150" r="139" /></clipPath>
-        </defs>
-        <circle cx="150" cy="150" r="149" fill="url(#cs-cu)" />
-        <g clipPath="url(#cs-photo)">
-          <image href={`assets/materials/copper-badge/${photo}.webp`} x="11" y="11" width="278" height="278" preserveAspectRatio="xMidYMid slice" />
-          <rect className="cs-hover" x="0" y="0" width="300" height="300" fill="url(#cs-fade)" />
-          <text className="cs-hover" x="150" y="236" textAnchor="middle" fontFamily="Cormorant SC, serif" fontSize="19" letterSpacing="4" fill="#f5f2ec">Copper →</text>
-        </g>
-        <circle cx="150" cy="150" r="139.5" fill="none" stroke="rgba(245,242,236,.55)" strokeWidth="1" />
-      </svg>
+    <a className="mat-walkway" href="materials/copper" aria-label="Copper: see the copper walkway and the rest of our copper work">
+      <picture>
+        <source media="(max-width: 720px)" srcSet={`assets/materials/copper-walkway/walkway-${v}-h.webp`} />
+        <img src={`assets/materials/copper-walkway/walkway-${v}-v.webp`} alt="" width="358" height="1028" loading="lazy" />
+      </picture>
+      <span className="mat-walkway-label">Copper →</span>
     </a>);
 }
 
@@ -772,11 +759,11 @@ function Manufacturers({ banner = "partners", medallion = false }) {
       </div>
       }
 
-      <div className={`mat-grid${medallion ? " has-medallion" : ""}`}>
+      <div className={`mat-grid${medallion ? " has-walkway" : ""}`}>
         {MANUFACTURERS.map((m, i) =>
           <React.Fragment key={m.name}>
             <ManufacturerCell m={m} index={i} />
-            {medallion && i === 1 && <CopperMedallion />}
+            {medallion && i === 1 && <CopperWalkway />}
           </React.Fragment>
         )}
       </div>
